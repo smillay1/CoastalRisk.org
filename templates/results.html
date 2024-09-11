@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Vulnerability Index</title>
+    <style>
+        body {
+            background-color: #e0efff;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .variable {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .low {
+            color: green;
+        }
+
+        .moderate {
+            color: orange;
+        }
+
+        .high {
+            color: red;
+        }
+
+        .cvi-score {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 100px;
+        }
+
+        .cvi-text {
+            font-size: 3rem;
+            margin-bottom: 30px;
+        }
+
+        .variables-container {
+            margin-bottom: 30px;
+        }
+
+        .variable {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .slider-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider-container label {
+            width: 200px;
+            text-align: left;
+            margin-right: 20px;
+        }
+
+        .slider {
+            appearance: none;
+            width: 200px;
+            height: 8px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s, background-color .2s;
+            margin-right: 20px;
+            pointer-events: none; 
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: black;
+            border-radius: 50%;
+            pointer-events: none; 
+        }
+
+        .slider-value {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* Gradient for the slider */
+        .slider::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, green, yellow, red);
+        }
+
+        /* Color the slider based on the value */
+        #erosion::-webkit-slider-runnable-track,
+        #sea-level::-webkit-slider-runnable-track,
+        #tides::-webkit-slider-runnable-track,
+        #geomorphology::-webkit-slider-runnable-track 
+        #waves::-webkit-slider-runnable-track 
+        #slope::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, green, yellow, red);
+        }
+
+        #erosion::-moz-range-track,
+        #sea-level::-moz-range-track,
+        #tides::-moz-range-track,
+        #geomorphology::-moz-range-track
+        #waves::-moz-range-track 
+        #slope::-moz-range-track {
+            background: linear-gradient(to right, green, yellow, red);
+        }
+
+        /* Map container */
+        #map {
+        width: 70%; 
+        height: 400px; 
+        margin: 20px auto; 
+        border: 2px solid #ddd; 
+        border-radius: 1px; 
+    }
+
+        
+        .container {
+            position: relative;
+        }
+
+
+.line {
+    position: absolute;
+    width: 2px;
+    background-color: black; 
+    z-index: -1;
+}
+
+
+/* For larger screens */
+@media (min-width: 1300px) {
+    #line1 {
+        left: 29vw;
+        top: 170px;
+        height: 360px;
+        transform: rotate(77deg);
+        transform-origin: top left;
+    }
+
+    #line2 {
+        left: 36vw;
+        top: 177px;
+        height: 200px;
+        transform: rotate(69deg);
+        transform-origin: top left;
+    }
+
+    #line3 {
+        left: 44vw;
+        top: 185px;
+        height: 83px;
+        transform: rotate(30deg);
+        transform-origin: top right;
+    }
+
+    #line4 {
+        right: 29vw;
+        top: 170px;
+        height: 360px;
+        transform: rotate(-77deg);
+        transform-origin: top right;
+    }
+
+    #line5 {
+        right: 36vw;
+        top: 177px;
+        height: 200px;
+        transform: rotate(-69deg);
+        transform-origin: top right;
+    }
+
+    #line6 {
+        right: 45vw;
+        top: 185px;
+        height: 83px;
+        transform: rotate(-30deg);
+        transform-origin: top right;
+    }
+}
+
+/* For smaller screens */
+@media (max-width: 1300px) {
+    #line1 {
+        display: none;
+    }
+
+    #line2 {
+        display: none;
+    }
+
+    #line3 {
+        display: none;
+    }
+
+    #line4 {
+        display: none;
+    }
+
+    #line5 {
+        display: none;
+    }
+
+    #line6 {
+        display: none;
+    }
+}
+
+
+.new-search-button {
+    background-color: white;
+    color: #00796b;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.new-search-button:hover {
+    background-color: #00796b;
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.new-search-button:active {
+    background-color: #00796b;
+    color: white;
+    border: 2px solid transparent;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.latlong-container {
+    position: absolute;
+    bottom: 40px; 
+    left: 300px; 
+    text-align: left;
+}
+
+.latlong-text {
+    margin: 0;
+    font-size: 1rem;
+    color: black;
+}
+
+.Notice {
+    margin: 0;
+    font-size: 1rem;
+    color: black;
+    margin-top: 100px;
+}
+
+    </style>
+</head>
+<body>
+
+    
+    <div class="container">
+       
+        <div class="cvi-text">Overall Coastal Vulnerability Index in {{ address }}:</div>
+        <div class="cvi-score {{ 'low' if results['cvi'] == 'Low' else 'moderate' if results['cvi'] == 'Moderate' else 'high' }}">
+            {{ results['cvi'] }}
+        </div>
+
+
+        <div class="variables-container">
+            <div class="row">
+            <div class="variable">
+                <label for="erosion">Erosion Levels</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="{{ erosion_value }}" class="slider" id="erosion" readonly>
+                </div>
+                <span class="slider-value">{{ results['erosion'] }}</span>
+                <div id="line1" class="line"></div>
+            </div>
+        
+        
+            <div class="variable">
+                <label for="sea-level">Sea Level Risk</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="{{ sea_level_value }}" class="slider" id="sea-level" readonly>
+                </div>
+                <span class="slider-value">{{ results['sea_level'] }}</span>
+                <div id="line2" class="line"></div>
+            </div>
+        
+        
+            <div class="variable">
+                <label for="tides">Tidal Risk</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="tides" readonly>
+                </div>
+                <span class="slider-value">{{ results['tides'] }}</span>
+                <div id="line3" class="line"></div>
+            </div>
+        
+       
+            <div class="variable">
+                <label for="geomorphology">Geomorphology Risk</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="{{ geomorphology_value }}" class="slider" id="geomorphology" readonly>
+                </div>
+                <span class="slider-value">{{ results['geomorphology'] }}</span>
+                <div id="line4" class="line"></div>
+            </div>
+
+            <div class="variable">
+                <label for="waves">Wave Levels</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="waves" readonly>
+                </div>
+                <span class="slider-value">{{ results['waves'] }}</span>
+                <div id="line5" class="line"></div>
+            </div>
+
+            <div class="variable">
+                <label for="slope">Coastal Slope Risk</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="slope" readonly>
+                </div>
+                <span class="slider-value">{{ results['slope'] }}</span>
+                <div id="line6" class="line"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        
+        function mapValue(descriptiveValue) {
+            const valueMap = {
+                "Very Low": 1,
+                "Low": 2,
+                "Moderate": 3,
+                "High": 4,
+                "Very High": 5
+            };
+            return valueMap[descriptiveValue];
+        }
+    
+        
+        document.getElementById('erosion').value = mapValue("{{ results['erosion'] }}");
+        document.getElementById('sea-level').value = mapValue("{{ results['sea_level'] }}");
+        document.getElementById('tides').value = mapValue("{{ results['tides'] }}");
+        document.getElementById('geomorphology').value = mapValue("{{ results['geomorphology'] }}");
+        document.getElementById('waves').value = mapValue("{{ results['waves'] }}");
+        document.getElementById('slope').value = mapValue("{{ results['slope'] }}");
+    </script>
+        
+
+        <div id="map"></div>
+        
+        <div class="latlong-container">
+            <p class="latlong-text">
+                <strong>Latitude:</strong> {{ latitude }}<br>
+                <strong>Longitude:</strong> {{ longitude }}<br>
+            </p>
+        </div>
+
+        <a href="{{ url_for('index') }}" class="new-search-button">New Search</a>
+
+    </div>
+
+    
+    <script>
+        function initMap() {
+            const addressCoords = { lat: parseFloat("{{ latitude }}"), lng: parseFloat("{{ longitude }}") };
+            const dataCoords = { lat: parseFloat("{{ data_latitude }}"), lng: parseFloat("{{ data_longitude }}") };
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: addressCoords
+            });
+
+            const addressMarker = new google.maps.Marker({
+                position: addressCoords,
+                map: map,
+                title: 'Your Address'
+            });
+
+            const dataMarker = new google.maps.Marker({
+                position: dataCoords,
+                map: map,
+                title: 'Data Point'
+            });
+
+            const line = new google.maps.Polyline({
+                path: [addressCoords, dataCoords],
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map
+            });
+        }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
+    </script>
+
+<div class="Notice">
+        This data was obtained from the USGS Coastal Change Hazards Portal
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #e0f7fa;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            padding: 0px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #004d40;
+            margin-bottom: 20px;
+        }
+        .donation-message {
+            font-size: 1.2rem;
+            color: #004d40;
+            margin-bottom: 30px;
+        }
+        .qr-code {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .link-button {
+            font-size: 1.1rem;
+            background-color: white;
+            color: #00796b;
+            padding: 12px 24px; 
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 60%;
+            margin: 10px auto 20px;
+            font-weight: bold;
+            border: 2px solid transparent;
+            transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-button:hover {
+            background-color: #00796b;
+            color: white;
+            border: 2px solid white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .link-button:active {
+            background-color: #00796b;
+            color: white;
+            border: 2px solid transparent;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .venmo-link {
+            background-color: #4285F4; 
+            color: white; 
+        }
+
+        .paypal-link {
+            background-color: #6497c7; 
+            color: white;
+        }
+
+        .back-button {
+            padding: 8px 16px; 
+            font-size: 0.9rem;
+            width: 10%;
+        }
+
+        .title-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 2.9rem;
+            color: #004d40;
+            margin: 0px;
+            margin-top: 0;
+        }
+
+        .qr-code{
+            height: 40px; 
+            width: auto;
+            vertical-align: middle; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title-container">
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="width: 200px; height: auto;" class="wave-icon left-wave">
+        <div class="title">Help cover the cost of this website and keep your coastal data free. Thank you!</div>
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="width: 200px; height: auto;" class="wave-icon right-wave">
+    </div>
+
+    
+    <img src="{{ url_for('static', filename='venmo.png') }}" alt="Wave Icon" style="width: 300px; height: auto;" class="wave-icon right-wave">
+
+    <a href="https://venmo.com/u/Sam-Millay" target="_blank" class="link-button venmo-link">Venmo Link</a>
+
+    <img src="{{ url_for('static', filename='paypal.png') }}" alt="paypal" style="width: 300px; height: auto;" class="wave-icon right-wave">
+
+   
+    <a href="https://www.paypal.com/paypalme/SamuelMillay" target="_blank" class="link-button paypal-link">Paypal Link</a>
+
+    <a href="{{ url_for('index') }}" class="link-button back-button">Back</a>
+
+</body>
+</html>
