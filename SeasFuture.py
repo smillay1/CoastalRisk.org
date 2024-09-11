@@ -6,7 +6,7 @@ import json
 from haversine import haversine, Unit
 import urllib.parse
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 CORS(app)
 
 # Load GeoJSON data
