@@ -7,7 +7,7 @@ from haversine import haversine, Unit
 import urllib.parse
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://coastalrisk.org"}})
 
 # Load GeoJSON data
 def load_geojson():
