@@ -248,7 +248,7 @@
     const form = event.target; 
     const noteElement = document.querySelector('.note'); 
 
-    fetch('/results', {
+    fetch('https://coastalrisk-backend.herokuapp.com/results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
