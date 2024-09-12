@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
     <title>CoastalRisk</title>
     <style>
         body {
@@ -248,7 +249,7 @@
     const form = event.target; 
     const noteElement = document.querySelector('.note'); 
 
-    fetch('/results', {
+    fetch('https://coastalrisk-backend.herokuapp.com/results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
