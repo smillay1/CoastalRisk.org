@@ -1,6 +1,6 @@
 altgraph==0.17.2
 blinker==1.7.0
-Cartopy==0.23.0
+Cartopy==0.21.1
 certifi==2023.11.17
 cftime==1.6.4
 charset-normalizer==3.3.2
