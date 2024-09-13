@@ -12,7 +12,7 @@ CORS(app, resources={r"/*": {"origins": "https://coastalrisk.org"}})
 # Load GeoJSON data
 def load_geojson():
     try:
-        with open('/CoastalCalculator.geojson', 'r') as file:
+        with open('CoastalCalculator.geojson', 'r') as file:
             geojson_data = json.load(file)
             print("GeoJSON data loaded successfully")
             return geojson_data
