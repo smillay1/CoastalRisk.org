@@ -22,6 +22,8 @@ def load_geojson():
 
 geojson_data = load_geojson()
 
+
+
 # Load environment variables
 def load_env():
     try:
