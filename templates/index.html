@@ -18,6 +18,9 @@
             padding: 45px;
         }
 
+    /* For larger screens */
+    @media (min-width: 900px) {
+
         .title-container {
             display: flex;
             justify-content: center;
@@ -194,6 +197,202 @@
             
         }
 
+        .mobile {
+            margin: 0;
+            font-size: 1rem;
+            color: #e0f7fa;
+            margin-top: 300px;
+}
+
+    }
+
+    /* For smaller screens */
+    @media (max-width: 900px) {
+
+
+        .title-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 5rem;
+            color: #004d40;
+            margin: 0 10px;
+        }
+
+        .wave-icon-left, .wave-icon-right {
+            height: 40px; 
+            width: auto;
+            vertical-align: middle; 
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 10px; 
+        }
+
+        .wave-icon {
+          display: none;
+        }
+
+
+        .subheading {
+            font-size: 1.5rem;
+            color: #00796b;
+            margin-bottom: 30px;
+            height: 40px;
+        }
+
+        .panels-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            width: 200%;
+            max-width: 1500px;
+            margin-right: -400px
+        }
+
+        .main-panel {
+            background-color: white;
+            padding: 20px;
+            border-radius: 1px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            margin-right: 20px;
+            flex-grow: 0; 
+        }
+
+        .side-panel {
+            display: none;
+        }
+
+
+        h2 {
+            text-align: center;  
+            margin: 0 auto;  
+            font-size: 1.8rem;
+            color: #004d40;
+            margin-bottom: 20px;
+        }
+
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            width: 100%;
+            border-radius: 1px;
+            border: 1px solid black;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #00796b;
+            border: none;
+            border-radius: 1px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e0f7fa;
+            color: #00796b;
+            border: 1px solid #00796b;
+        }
+
+        .form-container {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 5px;
+    }
+
+        #address {
+        flex: 1;
+        margin-right: 10px;
+        }
+
+        .note {
+            font-size: 1rem;
+            color: black;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .resources ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .help {
+            color: #00796b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .resources li {
+            margin-bottom: 10px;
+        }
+
+        .resources a {
+            color: #00796b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+        }
+
+        .donation-container {
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: center; 
+            width: 40%; 
+            padding-left: 0;
+            padding-top: 0; 
+            margin-top: 100px;
+            margin-right: 200px;
+        }
+
+        .donation-message {
+            margin-right: 10px; 
+        }
+
+
+        .donate-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #00796b;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .donate-button:hover {
+            background-color: white;
+            color: #00796b;
+            border: 1px solid #00796b;
+            
+        }
+
+        .mobile {
+            margin: 0;
+            font-size: 1rem;
+            color: black;
+            margin-top: 100px;
+            margin-right: 200px;
+            text-align: center;
+}
+
+    }
+
+
 
 
     </style>
@@ -347,6 +546,11 @@ function flashNoteRed(element) {
     <div class="donation-container">
         <span class="donation-message">Keep your climate data free:</span>
         <a href="donate" class="donate-button">Support</a>
+    </div>
+
+    <div class="mobile">
+        <div>
+        For full funcionality use a computer/widen your screen
     </div>
     
     
