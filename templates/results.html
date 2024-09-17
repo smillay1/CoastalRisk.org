@@ -15,7 +15,115 @@
         }
 
 
-        .row {
+
+/* For larger screens */
+@media (min-width: 1300px) {
+    #line1 {
+        left: 29vw;
+        top: 170px;
+        height: 360px;
+        transform: rotate(77deg);
+        transform-origin: top left;
+    }
+
+    #line2 {
+        left: 36vw;
+        top: 177px;
+        height: 200px;
+        transform: rotate(69deg);
+        transform-origin: top left;
+    }
+
+    #line3 {
+        left: 44vw;
+        top: 185px;
+        height: 83px;
+        transform: rotate(30deg);
+        transform-origin: top right;
+    }
+
+    #line4 {
+        right: 29vw;
+        top: 170px;
+        height: 360px;
+        transform: rotate(-77deg);
+        transform-origin: top right;
+    }
+
+    #line5 {
+        right: 36vw;
+        top: 177px;
+        height: 200px;
+        transform: rotate(-69deg);
+        transform-origin: top right;
+    }
+
+    #line6 {
+        right: 45vw;
+        top: 185px;
+        height: 83px;
+        transform: rotate(-30deg);
+        transform-origin: top right;
+    }
+
+
+.new-search-button {
+    background-color: white;
+    color: #00796b;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.new-search-button:hover {
+    background-color: #00796b;
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.new-search-button:active {
+    background-color: #00796b;
+    color: white;
+    border: 2px solid transparent;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.latlong-container {
+    position: absolute;
+    bottom: 40px; 
+    left: 300px; 
+    text-align: left;
+}
+
+.latlong-text {
+    margin: 0;
+    font-size: 1rem;
+    color: black;
+}
+
+.Notice {
+    margin: 0;
+    font-size: 1rem;
+    color: black;
+    margin-top: 100px;
+}
+
+.mobile {
+    color: #e0efff;
+}
+
+
+
+.row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
@@ -39,14 +147,19 @@
         }
 
         .cvi-score {
+            position: relative;
             font-size: 5rem;
             font-weight: bold;
             margin-bottom: 100px;
+            top: -60px;
+           
         }
 
         .cvi-text {
+            position: relative;
             font-size: 3rem;
             margin-bottom: 15px;
+            top: -60px;
         }
 
         .variables-container {
@@ -145,55 +258,8 @@
 }
 
 
-/* For larger screens */
-@media (min-width: 1300px) {
-    #line1 {
-        left: 29vw;
-        top: 170px;
-        height: 360px;
-        transform: rotate(77deg);
-        transform-origin: top left;
-    }
 
-    #line2 {
-        left: 36vw;
-        top: 177px;
-        height: 200px;
-        transform: rotate(69deg);
-        transform-origin: top left;
-    }
 
-    #line3 {
-        left: 44vw;
-        top: 185px;
-        height: 83px;
-        transform: rotate(30deg);
-        transform-origin: top right;
-    }
-
-    #line4 {
-        right: 29vw;
-        top: 170px;
-        height: 360px;
-        transform: rotate(-77deg);
-        transform-origin: top right;
-    }
-
-    #line5 {
-        right: 36vw;
-        top: 177px;
-        height: 200px;
-        transform: rotate(-69deg);
-        transform-origin: top right;
-    }
-
-    #line6 {
-        right: 45vw;
-        top: 185px;
-        height: 83px;
-        transform: rotate(-30deg);
-        transform-origin: top right;
-    }
 }
 
 /* For smaller screens */
@@ -221,10 +287,8 @@
     #line6 {
         display: none;
     }
-}
 
-
-.new-search-button {
+    .new-search-button {
     background-color: white;
     color: #00796b;
     padding: 10px 20px;
@@ -262,9 +326,7 @@
 }
 
 .latlong-text {
-    margin: 0;
-    font-size: 1rem;
-    color: black;
+    display: none;
 }
 
 .Notice {
@@ -273,6 +335,71 @@
     color: black;
     margin-top: 100px;
 }
+
+
+.row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .variable {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .low {
+            color: green;
+        }
+
+        .moderate {
+            color: orange;
+        }
+
+        .high {
+            color: red;
+        }
+
+        .cvi-score {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 100px;
+        }
+
+        .cvi-text {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .variables-container {
+            display: none;
+        }
+
+        .variable {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+
+.line {
+    position: absolute;
+    width: 2px;
+    background-color: black; 
+    z-index: -1;
+}
+
+.mobile {
+    margin: 0;
+    font-size: 1rem;
+    color: black;
+    margin-top: 100px;
+}
+
+}
+
+
+
 
     </style>
 </head>
@@ -422,6 +549,12 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
     </script>
+
+
+<div class="mobile">
+    <div>
+    For full funcionality use a computer
+</div>
 
 <div class="Notice">
         This data was obtained from the USGS Coastal Change Hazards Portal
