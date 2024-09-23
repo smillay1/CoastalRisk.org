@@ -72,7 +72,7 @@ def results():
                 closest_feature = find_closest_feature(longitude, latitude)
                 if closest_feature:
                     coastal_vulnerability_data = get_coastal_data_from_feature(closest_feature)
-                    return render_template('results.html', address=address, results=coastal_vulnerability_data, latitude=latitude, longitude=longitude)
+                    return render_template('results.html', address=address, results=coastal_vulnerability_data, latitude=latitude, longitude=longitude, GOOGLE_MAPS_API_KEY=api_key)
                 else:
                     return jsonify({"error": "Your location is too far from the coast."}), 404
             else:
