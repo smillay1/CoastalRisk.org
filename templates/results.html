@@ -113,7 +113,7 @@
     position: absolute;
     bottom: 50px; 
     right: 15%; 
-    gap: 10px; 
+    gap: 15px; 
     white-space: nowrap;
 }
 
@@ -129,7 +129,8 @@
     margin: 0;
     font-size: 1rem;
     color: black;
-    margin-top: 50px;
+    margin-bottom: 60px;
+    background-color: yellow;
 }
 
 .mobile {
@@ -354,7 +355,7 @@
     
 }
 
-.Notice {
+.notice {
     margin: 0;
     font-size: 1rem;
     color: black;
@@ -577,13 +578,16 @@
                 position: dataCoords,
                 map: map,
                 title: 'Coastal Risk Data Point',
-                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                icon: {
+                    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                    scaledSize: new google.maps.Size(40, 40)
+                }
             });
 
             const line = new google.maps.Polyline({
                 path: [addressCoords, dataCoords],
                 geodesic: true,
-                strokeColor: "#FF0000",
+                strokeColor: "black",
                 strokeOpacity: 1.0,
                 strokeWeight: 2,
                 map: map
@@ -600,7 +604,7 @@
     <strong>For full funcionality: Use a computer/widen your screen<strong>
 </div>
 
-<div class="Notice">
+<div class="notice">
         This data was obtained from the USGS Coastal Change Hazards Portal
     </div>
 
