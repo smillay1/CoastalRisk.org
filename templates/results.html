@@ -100,17 +100,30 @@
 }
 
 .latlong-container {
+    display: flex;
     position: absolute;
-    bottom: 40px; 
-    left: 300px; 
-    text-align: left;
+    bottom: 50px; /* Anchored 10px above the bottom of the map */
+    left: 15%; /* Stick to the left side of the map */
+    gap: 18px; /* Space between latitude and longitude */
+    white-space: nowrap; /* Prevent wrapping */
 }
 
-.latlong-text {
+.map-key-container {
+    display: flex;
+    position: absolute;
+    bottom: 50px; /* Anchored 10px above the bottom of the map */
+    right: 15%; /* Stick to the right side of the map */
+    gap: 10px; /* Adjust the gap as needed */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.latlong-text, .map-key {
     margin: 0;
     font-size: 1rem;
     color: black;
+    white-space: nowrap; /* Prevent individual text wrapping */
 }
+
 
 .Notice {
     margin: 0;
@@ -120,7 +133,7 @@
 }
 
 .mobile {
-    color: #e0efff;
+    display: none;
 }
 
 
@@ -252,12 +265,12 @@
         }
 
 
-.line {
-    position: absolute;
-    width: 2px;
-    background-color: black; 
-    z-index: -1;
-}
+        .line {
+            position: absolute;
+            width: 2px;
+            background-color: black; 
+            z-index: -1;
+        }
 
 
 
@@ -329,6 +342,16 @@
 
 .latlong-text {
     display: none;
+}
+
+
+.map-key {
+    display: none;
+}
+
+.map-key-container {
+    display: none;
+    
 }
 
 .Notice {
@@ -502,14 +525,32 @@
     </script>
         
 
-        <div id="map"></div>
+
+    <div id="map"></div>
         
+        
+
+        <div class="map-key-container">
+            <p class="map-key">
+                <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Red Marker" style="width: 15px; height: 15px; margin-right: 5px;">
+                <span>Your Address</span>
+            
+            
+                <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="Blue Marker" style="width: 15px; height: 15px; margin-right: 5px;">
+                <span>Coastal Risk Data Point</span>
+            
+             </p>
+        </div>
+
         <div class="latlong-container">
             <p class="latlong-text">
                 <strong>Latitude:</strong> {{ latitude }}<br>
+            </p>
+            <p class="latlong-text">
                 <strong>Longitude:</strong> {{ longitude }}<br>
             </p>
         </div>
+        
 
         <a href="{{ url_for('index') }}" class="new-search-button">New Search</a>
 
@@ -519,7 +560,7 @@
     <script>
         function initMap() {
             const addressCoords = { lat: parseFloat("{{ latitude }}"), lng: parseFloat("{{ longitude }}") };
-            const dataCoords = { lat: parseFloat("{{ data_latitude }}"), lng: parseFloat("{{ data_longitude }}") };
+            const dataCoords = { lat: parseFloat("{{ feature_lat }}"), lng: parseFloat("{{ feature_lng }}") };
 
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 10,
@@ -535,7 +576,8 @@
             const dataMarker = new google.maps.Marker({
                 position: dataCoords,
                 map: map,
-                title: 'Data Point'
+                title: 'Coastal Risk Data Point',
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
             });
 
             const line = new google.maps.Polyline({
@@ -555,7 +597,7 @@
 
 <div class="mobile">
     <div>
-    For full funcionality: Use a computer/widen your screen
+    <strong>For full funcionality: Use a computer/widen your screen<strong>
 </div>
 
 <div class="Notice">
