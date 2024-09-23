@@ -96,8 +96,6 @@ def donate():
 
 def find_closest_feature(lng, lat):
     closest_feature = None
-    feature_lat = None
-    feature_lng = None
     closest_distance = float('inf')
     try:
         for feature in geojson_data['features']:
