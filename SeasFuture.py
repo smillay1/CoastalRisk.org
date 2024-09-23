@@ -70,9 +70,10 @@ def results():
 
                 # Call the function to find the coastal vulnerability data
                 closest_feature = find_closest_feature(longitude, latitude)
+                feature_lat, feature_lng = get_feature_lat_lng(longitude, latitude)
                 if closest_feature:
                     coastal_vulnerability_data = get_coastal_data_from_feature(closest_feature)
-                    return render_template('results.html', address=address, results=coastal_vulnerability_data, latitude=latitude, longitude=longitude, GOOGLE_MAPS_API_KEY=api_key)
+                    return render_template('results.html', address=address, results=coastal_vulnerability_data, latitude=latitude, longitude=longitude, GOOGLE_MAPS_API_KEY=api_key, feature_lat=feature_lat, feature_lng = feature_lng)
                 else:
                     return jsonify({"error": "Your location is too far from the coast."}), 404
             else:
@@ -115,6 +116,35 @@ def find_closest_feature(lng, lat):
     except Exception as e:
         print(f"Error finding closest feature: {e}")
         return None
+
+
+def get_feature_lat_lng(lng, lat):
+    closest_feature_lat = None
+    closest_feature_lng = None
+    closest_distance = float('inf')
+    for feature in geojson_data['features']:
+        
+        if feature['geometry']['type'] == 'MultiLineString':
+            
+            for line in feature['geometry']['coordinates']:
+               
+                for coordinate_pair in line:
+                    try:
+                        feature_lng, feature_lat = coordinate_pair
+                        
+                        distance = haversine((lat, lng), (feature_lat, feature_lng), unit=Unit.MILES)
+                        
+                        
+                        if distance < closest_distance:
+                            closest_distance = distance
+                            closest_feature_lat = feature_lat
+                            closest_feature_lng = feature_lng
+                    except ValueError as e:
+                        print(f"Error unpacking coordinates: {coordinate_pair} - {e}")
+    
+    
+    return closest_feature_lat, closest_feature_lng
+
 
 def get_coastal_data_from_feature(feature):
     if feature is None:
