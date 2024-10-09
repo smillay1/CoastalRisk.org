@@ -55,13 +55,13 @@
             }
 
             .title {
-                font-size: 5rem;
+                font-size: 8rem;
                 color: #004d40;
                 margin: 0 10px;
             }
 
             .wave-icon-left, .wave-icon-right {
-                height: 40px; 
+                height: 60px; 
                 width: auto;
                 vertical-align: middle; 
             }
@@ -91,7 +91,7 @@
                 align-items: flex-start; 
                 width: 100%;
                 max-width: 1500px;
-                margin-top: 20vh;
+                margin-top: 30vh;
             }
 
             .main-panel, .left-panel {
@@ -103,6 +103,7 @@
                 flex-grow: 0; 
                 border: 2px solid #004d40; 
                 border-radius: 15px;
+                flex-direction: column;
             }
 
             .left-panel {
@@ -181,13 +182,13 @@
             }
 
             .title {
-                font-size: 5rem;
+                font-size: 8rem;
                 color: #004d40;
                 margin: 0 10px;
             }
 
             .wave-icon-left, .wave-icon-right {
-                height: 40px; 
+                height:60px; 
                 width: auto;
                 vertical-align: middle; 
             }
@@ -216,7 +217,7 @@
                 align-items: center;
                 width: 100%;
                 max-width: 1500px;
-                margin-top: 20vh;
+                margin-top: 30vh;
             }
 
             .main-panel, .left-panel {
@@ -228,6 +229,7 @@
                 flex-grow: 0; 
                 border: 2px solid #004d40; 
                 margin-bottom: 20px;
+                flex-direction: column;
             }
 
             .left-panel {
@@ -320,11 +322,14 @@
     </script>
     <div class="panels-container">
         <div class="left-panel">
+            <h2>Complete Coastal Risk Analysis</h2>
+            <h3>Receive a 10 page Coastal Climate Report of your location with Sattelite Imagery (Worldwide)</h3>
             <img src="{{ url_for('static', filename='development.png') }}" alt="Development Image">
         </div>
+
         <div class="main-panel">
-            <h2>Risk Calculator</h2>
-            <h3>Enter a location to determine its coastal vulnerability:</h3>
+            <h2>Free Risk Calculator</h2>
+            <h3>Enter a location to determine its coastal vulnerability (Only Continental USA):</h3>
             <form action="/results" method="POST">
                 <div class="form-container">
                     <input type="text" id="address" name="address" placeholder="eg. 3 Bagshot Row, Hobbiton Bag End, Hobbiton" required>
