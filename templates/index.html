@@ -7,7 +7,6 @@
     <title>CoastalRisk</title>
     <style>
         body {
-            transform: scale(0.75);
             display: flex;
             flex-direction: column; 
             justify-content: flex-start;
@@ -18,397 +17,291 @@
             padding: 45px;
         }
 
-    /* For larger screens */
-    @media (min-width: 900px) {
-
-        body {
-            transform: scale(0.75);
-            display: flex;
-            flex-direction: column; 
-            justify-content: flex-start;
-            align-items: center;
-            background-color: #e0f7fa;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            margin: 0;
-            padding: 45px;
-            margin-top: -100px
-        }
-
-        .title-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .title {
-            font-size: 5rem;
-            color: #004d40;
-            margin: 0 10px;
-        }
-
-        .wave-icon-left, .wave-icon-right {
-            height: 40px; 
-            width: auto;
-            vertical-align: middle; 
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 0 10px; 
-        }
-
-        .wave-icon {
-          width: 50px;
-          height: auto;
-        }
-
-
-        .subheading {
-            font-size: 1.5rem;
-            color: #00796b;
-            margin-bottom: 30px;
-            height: 40px;
-        }
-
-        .panels-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; 
-            width: 100%;
-            max-width: 1500px;
-        }
-
-        .main-panel {
+        .navbar {
+            width: 100vw;
             background-color: white;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 60%;
-            margin-right: 20px;
-            flex-grow: 0; 
-            border: 2px solid #004d40; 
-            border-radius: 7px;
-            
-        }
-
-        .side-panel {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 30%;
-            flex-grow: 1; 
-            border: 1px solid #004d40; 
-            border-radius: 7px;
-            
-        }
-
-
-        h2 {
-            text-align: center;  
-            margin: 0 auto;  
-            font-size: 1.8rem;
-            color: #004d40;
-            margin-bottom: 20px;
-        }
-
-
-        input[type="text"] {
-            padding: 10px;
-            font-size: 1rem;
-            width: 100%;
-            border-radius: 1px;
-            border: 1px solid black;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #00796b;
-            border: none;
-            border-radius: 1px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #e0f7fa;
-            color: #00796b;
-            border: 1px solid #00796b;
-        }
-
-        .form-container {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 5px;
-    }
-
-        #address {
-        flex: 1;
-        margin-right: 10px;
-        }
-
-        .note {
-            font-size: 1rem;
-            color: black;
-            margin-top: 5px;
+            padding: 20px 0;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
             text-align: center;
-        }
-
-        .resources ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .help {
-            color: #00796b;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .resources li {
-            margin-bottom: 10px;
-        }
-
-        .resources a {
-            color: #00796b;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .resources a:hover {
-            text-decoration: underline;
-        }
-
-        .donation-container {
-            display: flex; 
-            justify-content: flex-start; 
-            align-items: center; 
-            width: 40%; 
-            padding-left: 0;
-            padding-top: 0; 
-            margin-top: -260px;
-            margin-right: 200px;
-
-        }
-
-        .donation-message {
-            margin-right: 10px; 
-        }
-
-
-        .donate-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #00796b;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .donate-button:hover {
-            background-color: white;
-            color: #00796b;
-            border: 1px solid #00796b;
-            
-        }
-
-    }
-
-    /* For smaller screens */
-    @media (max-width: 900px) {
-
-
-        .title-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .title {
-            font-size: 5rem;
+            font-size: 2rem;
             color: #004d40;
-            margin: 0 10px;
-        }
-
-        .wave-icon-left, .wave-icon-right {
-            height: 40px; 
-            width: auto;
-            vertical-align: middle; 
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 0 10px; 
-        }
-
-        .wave-icon {
-          display: none;
-        }
-
-
-        .subheading {
-            font-size: 1.5rem;
-            color: #00796b;
-            margin-bottom: 30px;
-            height: 40px;
-        }
-
-        .panels-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; 
-            width: 140%;
-            max-width: 1500px;
-            
-        }
-
-        .main-panel {
-            background-color: white;
-            padding: 20px;
-            border-radius: 1px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 200%;
-            flex-grow: 0; 
-            border: 2px solid #004d40; 
-            border-radius: 7px;
-        }
-
-        .side-panel {
-            display: none;
-        }
-
-
-        h2 {
-            text-align: center;  
-            margin: 0 auto;  
-            font-size: 1.8rem;
-            color: #004d40;
-            margin-bottom: 20px;
-        }
-
-
-        input[type="text"] {
-            padding: 10px;
-            font-size: 1rem;
-            width: 100%;
-            border-radius: 1px;
-            border: 1px solid black;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #00796b;
-            border: none;
-            border-radius: 1px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #e0f7fa;
-            color: #00796b;
-            border: 1px solid #00796b;
-        }
-
-        .form-container {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 5px;
-    }
-
-        #address {
-        flex: 1;
-        margin-right: 10px;
-        }
-
-        .note {
-            font-size: 1rem;
-            color: black;
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        .resources ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .help {
-            color: #00796b;
-            text-decoration: none;
             font-weight: bold;
+            z-index: 1000;
         }
 
-        .resources li {
-            margin-bottom: 10px;
+        /* For larger screens */
+        @media (min-width: 900px) {
+
+            body {
+                display: flex;
+                flex-direction: column; 
+                justify-content: flex-start;
+                align-items: center;
+                background-color: #e0f7fa;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                margin: 0;
+                padding: 45px;
+                margin-top: -100px;
+            }
+
+            .title-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 80px;
+            }
+
+            .title {
+                font-size: 5rem;
+                color: #004d40;
+                margin: 0 10px;
+            }
+
+            .wave-icon-left, .wave-icon-right {
+                height: 40px; 
+                width: auto;
+                vertical-align: middle; 
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin: 0 10px; 
+            }
+
+            .wave-icon {
+                width: 50px;
+                height: auto;
+            }
+
+            .subheading {
+                font-size: 3rem;
+                color: #00796b;
+                margin-top: 20vh;
+                margin-bottom: 30px;
+                height: 40px;
+                text-align: center;
+            }
+
+            .panels-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start; 
+                width: 100%;
+                max-width: 1500px;
+                margin-top: 20vh;
+            }
+
+            .main-panel, .left-panel {
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                width: 60%;
+                margin-right: 20px;
+                flex-grow: 0; 
+                border: 2px solid #004d40; 
+                border-radius: 15px;
+            }
+
+            .left-panel {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .left-panel img {
+                width: 100%;
+                height: auto;
+                border-radius: 15px;
+            }
+
+            h2 {
+                text-align: center;  
+                margin: 0 auto;  
+                font-size: 1.8rem;
+                color: #004d40;
+                margin-bottom: 20px;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+                font-size: 1rem;
+                width: 100%;
+                border-radius: 10px;
+                border: 1px solid black;
+                margin-bottom: 20px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 1rem;
+                color: white;
+                background-color: #00796b;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #e0f7fa;
+                color: #00796b;
+                border: 1px solid #00796b;
+            }
+
+            .form-container {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 5px;
+            }
+
+            #address {
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .note {
+                font-size: 1rem;
+                color: black;
+                margin-top: 5px;
+                text-align: center;
+            }
         }
 
-        .resources a {
-            color: #00796b;
-            text-decoration: none;
-            font-weight: bold;
+        /* For smaller screens */
+        @media (max-width: 900px) {
+
+            .title-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 80px;
+            }
+
+            .title {
+                font-size: 5rem;
+                color: #004d40;
+                margin: 0 10px;
+            }
+
+            .wave-icon-left, .wave-icon-right {
+                height: 40px; 
+                width: auto;
+                vertical-align: middle; 
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin: 0 10px; 
+            }
+
+            .wave-icon {
+                display: none;
+            }
+
+            .subheading {
+                font-size: 3rem;
+                color: #00796b;
+                margin-top: 30vh;
+                margin-bottom: 30px;
+                height: 40px;
+                text-align: center;
+            }
+
+            .panels-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                max-width: 1500px;
+                margin-top: 20vh;
+            }
+
+            .main-panel, .left-panel {
+                background-color: white;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                width: 90%;
+                flex-grow: 0; 
+                border: 2px solid #004d40; 
+                margin-bottom: 20px;
+            }
+
+            .left-panel {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .left-panel img {
+                width: 100%;
+                height: auto;
+                border-radius: 15px;
+            }
+
+            h2 {
+                text-align: center;  
+                margin: 0 auto;  
+                font-size: 1.8rem;
+                color: #004d40;
+                margin-bottom: 20px;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+                font-size: 1rem;
+                width: 100%;
+                border-radius: 10px;
+                border: 1px solid black;
+                margin-bottom: 20px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 1rem;
+                color: white;
+                background-color: #00796b;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #e0f7fa;
+                color: #00796b;
+                border: 1px solid #00796b;
+            }
+
+            .form-container {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 5px;
+            }
+
+            #address {
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .note {
+                font-size: 1rem;
+                color: black;
+                margin-top: 5px;
+                text-align: center;
+            }
         }
-
-        .resources a:hover {
-            text-decoration: underline;
-        }
-
-        .donation-container {
-            display: flex; 
-            justify-content: flex-start; 
-            align-items: center; 
-            width: 75%; 
-            padding-left: 0;
-            padding-top: 0; 
-            margin-top: 50px;
-            
-        }
-
-        .donation-message {
-            margin-right: 10px; 
-        }
-
-
-        .donate-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #00796b;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .donate-button:hover {
-            background-color: white;
-            color: #00796b;
-            border: 1px solid #00796b;
-            
-        }
-
-    }
-
-
-
-
     </style>
 </head>
 <body>
-
-
-    <div class="title-container">
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="width: 200px; height: auto;" class="wave-icon left-wave">
-        <div class="title">CoastalRisk</div>
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="width: 200px; height: auto;" class="wave-icon right-wave">
+    <div class="navbar">
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="height: 40px; vertical-align: middle;" class="wave-icon-left">
+        CoastalRisk
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="height: 40px; vertical-align: middle;" class="wave-icon-right">
     </div>
-    
     <div class="subheading" id="subheading"></div>
 
     <script>
@@ -423,10 +316,12 @@
             }
         }
 
-        
         window.onload = typeWriter;
     </script>
     <div class="panels-container">
+        <div class="left-panel">
+            <img src="{{ url_for('static', filename='development.png') }}" alt="Development Image">
+        </div>
         <div class="main-panel">
             <h2>Risk Calculator</h2>
             <h3>Enter a location to determine its coastal vulnerability:</h3>
@@ -437,8 +332,6 @@
                 </div>
                 <p class="note">Note: addresses must be in the continental USA within 20 miles of the coast</p>
             </form>
-
-            
         </div>
 
         <p id="error-message" style="color: red; display: none;">An error occurred. Please try again.</p>
@@ -471,7 +364,7 @@
     })
     .then(data => {
         if (data && data.error) {
-           
+            
             if (data.error === "No geocoding results found.") {
                 flashNoteRed(noteElement); 
                 return; 
@@ -494,7 +387,6 @@
     });
 });
 
-
 function flashNoteRed(element) {
     const originalColor = element.style.color; 
     element.style.color = 'red'; 
@@ -503,51 +395,7 @@ function flashNoteRed(element) {
         element.style.color = originalColor; 
     }, 2000); 
 }
-
 </script>
-
-
-
-        <div class="side-panel">
-            <h2>Additional Resources</h2>
-            <div class="resources">
-                <h3>What is a Coastal Vulnerability Index?</h3>
-                <ul>
-                    <li><a href="https://climate-adapt.eea.europa.eu/en/metadata/tools/coastal-vulnerability-index-2013-cvi#:~:text=The%20Coastal%20Vulnerability%20Index%20(CVI,et%20al.%2C%201991)." target="_blank">- Learn more about Coastal Vulnerability</a></li>
-                    <li><a href="https://www.britannica.com/science/geomorphology" target="_blank">- What is Geomorphology?</a></li>
-                </ul>
-            
-                <h3>Marine Protection Organizations:</h3>
-                <ul>
-                    <li><a href="https://oceana.org/" target="_blank">- Oceana</a></li>
-                    <li><a href="https://cleanoceanproject.org/" target="_blank">- Clean Ocean Project</a></li>
-                    <li><a href="https://theoceancleanup.com/" target="_blank">- The Ocean Cleanup</a></li>
-                </ul>
-                <h3>Further Reading:</h3>
-
-                <ul>
-                    <li><a href="https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level#:~:text=Evidence%20suggests%20sea%20level%20along,measured%20from%201920%20to%202020." target="_blank">- Sea Level Rise</a></li>
-                    <li><a href="https://sealevel.nasa.gov/understanding-sea-level/overview/" target="_blank">- NASA's Sea Level Change Portal</a></li>
-                    <li><a href="https://oceanliteracy.unesco.org/ocean-resources/" target="_blank">- Why are the Oceans so Important?</a></li>
-                
-                </ul>
-                <h3>Questions? Email Sam Millay at:</h3>
-                <div class = "help">
-                    - Email smillay55@gmail.com
-                </div>
-
-                
-                
-            </div>
-        </div>
-
     </div>
-
-    <div class="donation-container">
-        <span class="donation-message">Keep your climate data free:</span>
-        <a href="donate" class="donate-button">Support</a>
-    </div>
-
-    
 </body>
 </html>
