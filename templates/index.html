@@ -11,15 +11,15 @@
             flex-direction: column; 
             justify-content: flex-start;
             align-items: center;
-            background-color: #e0f7fa;
             font-family: Georgia, 'Times New Roman', Times, serif;
             margin: 0;
             padding: 45px;
+            
         }
 
         .navbar {
             width: 100vw;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px 0;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             position: fixed;
@@ -32,6 +32,12 @@
             z-index: 1000;
         }
 
+        .wave-icon-left, .wave-icon-right {
+            height: 40px;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
         /* For larger screens */
         @media (min-width: 900px) {
 
@@ -40,7 +46,6 @@
                 flex-direction: column; 
                 justify-content: flex-start;
                 align-items: center;
-                background-color: #e0f7fa;
                 font-family: Georgia, 'Times New Roman', Times, serif;
                 margin: 0;
                 padding: 45px;
@@ -56,12 +61,12 @@
 
             .title {
                 font-size: 8rem;
-                color: #004d40;
+                color: #000000;
                 margin: 0 10px;
             }
 
             .wave-icon-left, .wave-icon-right {
-                height: 60px; 
+                height: 80px; 
                 width: auto;
                 vertical-align: middle; 
             }
@@ -76,14 +81,24 @@
                 height: auto;
             }
 
-            .subheading {
-                font-size: 3rem;
-                color: #00796b;
-                margin-top: 20vh;
+            #subheading {
+                font-size: 2rem; 
+                color: white; 
+                margin-top: 40vh;
                 margin-bottom: 30px;
-                height: 40px;
                 text-align: center;
             }
+
+
+            .information-box {
+                color: white;
+                padding: 20px;
+                max-width: 1200px;
+                text-align: center;
+                margin-top: 60px;
+                font-size: 1.2rem;
+            }
+
 
             .panels-container {
                 display: flex;
@@ -91,7 +106,7 @@
                 align-items: flex-start; 
                 width: 100%;
                 max-width: 1500px;
-                margin-top: 30vh;
+                margin-top: 1vh;
             }
 
             .main-panel, .left-panel {
@@ -101,9 +116,14 @@
                 width: 60%;
                 margin-right: 20px;
                 flex-grow: 0; 
-                border: 2px solid #004d40; 
+                border: 2px solid #000000; 
                 border-radius: 15px;
                 flex-direction: column;
+                transition: box-shadow 0.3s ease;
+            }
+
+            .main-panel:hover, .left-panel:hover {
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
             }
 
             .left-panel {
@@ -122,7 +142,7 @@
                 text-align: center;  
                 margin: 0 auto;  
                 font-size: 1.8rem;
-                color: #004d40;
+                color: #000000;
                 margin-bottom: 20px;
             }
 
@@ -139,17 +159,22 @@
                 padding: 10px 20px;
                 font-size: 1rem;
                 color: white;
-                background-color: #00796b;
+                background-color: #000000;
                 border: none;
                 border-radius: 10px;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
             }
 
+            button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+
             button:hover {
-                background-color: #e0f7fa;
-                color: #00796b;
-                border: 1px solid #00796b;
+                background-color: white;
+                color: #000000;
+                border: 1px solid #000000;
             }
 
             .form-container {
@@ -183,7 +208,7 @@
 
             .title {
                 font-size: 8rem;
-                color: #004d40;
+                color: #000000;
                 margin: 0 10px;
             }
 
@@ -202,34 +227,48 @@
                 display: none;
             }
 
-            .subheading {
-                font-size: 3rem;
-                color: #00796b;
-                margin-top: 30vh;
+            #subheading {
+                font-size: 2rem; 
+                color: white; 
+                margin-top: 40vh;
                 margin-bottom: 30px;
-                height: 40px;
                 text-align: center;
+            }
+
+            .information-box {
+                color: white;
+                padding: 20px;
+                max-width: 1200px;
+                text-align: center;
+                margin-top: 60px;
+                font-size: 1.2rem;
             }
 
             .panels-container {
                 display: flex;
-                flex-direction: column;
-                align-items: center;
+                justify-content: space-between;
+                align-items: flex-start; 
                 width: 100%;
                 max-width: 1500px;
-                margin-top: 30vh;
+                margin-top: 1vh;
+                flex-direction: column;
             }
 
             .main-panel, .left-panel {
                 background-color: white;
                 padding: 20px;
-                border-radius: 15px;
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                width: 90%;
+                width: 60%;
+                margin-right: 20px;
                 flex-grow: 0; 
-                border: 2px solid #004d40; 
-                margin-bottom: 20px;
+                border: 2px solid #000000; 
+                border-radius: 15px;
                 flex-direction: column;
+                transition: box-shadow 0.3s ease;
+            }
+
+            .main-panel:hover, .left-panel:hover {
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
             }
 
             .left-panel {
@@ -248,7 +287,7 @@
                 text-align: center;  
                 margin: 0 auto;  
                 font-size: 1.8rem;
-                color: #004d40;
+                color: #000000;
                 margin-bottom: 20px;
             }
 
@@ -265,17 +304,22 @@
                 padding: 10px 20px;
                 font-size: 1rem;
                 color: white;
-                background-color: #00796b;
+                background-color: #000000;
                 border: none;
                 border-radius: 10px;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
             }
 
+            button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+
             button:hover {
                 background-color: #e0f7fa;
                 color: #00796b;
-                border: 1px solid #00796b;
+                border: 1px solid #000000;
             }
 
             .form-container {
@@ -296,13 +340,48 @@
                 text-align: center;
             }
         }
+
+        .information-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 50px;
+            position: relative;
+        }
+
+        .line-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .information-text {
+            font-size: 1.8rem;
+            color: #004d40;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        
+
+        #subheading::after {
+            content: '|';
+            animation: blink 1s steps(2, start) infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; } 
+            51%, 100% { opacity: 0; } 
+        }
+
     </style>
 </head>
-<body>
+<body style="background: url('{{ url_for('static', filename='background.tif') }}') no-repeat center center fixed; background-size: cover; padding: 45px;">
     <div class="navbar">
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="height: 40px; vertical-align: middle;" class="wave-icon-left">
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-left" >
         CoastalRisk
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="height: 40px; vertical-align: middle;" class="wave-icon-right">
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-right" >
     </div>
     <div class="subheading" id="subheading"></div>
 
@@ -314,16 +393,23 @@
             if (i < subheadingText.length) {
                 document.getElementById("subheading").innerHTML += subheadingText.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50); 
+                setTimeout(typeWriter, 30); 
             }
         }
 
         window.onload = typeWriter;
     </script>
+
+    
+
+    
+    <div class="information-box">
+        We provide analysis information on how you and your community will be affected by sea level rise, flooding, and erosion:
+    </div>
     <div class="panels-container">
         <div class="left-panel">
             <h2>Complete Coastal Risk Analysis</h2>
-            <h3>Receive a 10 page Coastal Climate Report of your location with Sattelite Imagery (Worldwide)</h3>
+            <h3>Receive a 10 page Coastal Climate Report of your location with Satellite Imagery (Worldwide):</h3>
             <img src="{{ url_for('static', filename='development.png') }}" alt="Development Image">
         </div>
 
@@ -333,74 +419,80 @@
             <form action="/results" method="POST">
                 <div class="form-container">
                     <input type="text" id="address" name="address" placeholder="eg. 3 Bagshot Row, Hobbiton Bag End, Hobbiton" required>
-                    <button type="submit">Submit</button>
+                    <button type="submit" aria-label="Submit address to get coastal risk analysis">Submit</button>
                 </div>
-                <p class="note">Note: addresses must be in the continental USA within 20 miles of the coast</p>
+                <p class="note" aria-live="polite">Note: addresses must be in the continental USA within 20 miles of the coast</p>
             </form>
         </div>
 
         <p id="error-message" style="color: red; display: none;">An error occurred. Please try again.</p>
 
-<script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); 
 
-    const address = document.getElementById('address').value;
-    const errorMessage = document.getElementById('error-message');
-    const form = event.target; 
-    const noteElement = document.querySelector('.note'); 
+        const address = document.getElementById('address').value;
+        const errorMessage = document.getElementById('error-message');
+        const form = event.target; 
+        const noteElement = document.querySelector('.note'); 
+        const submitButton = form.querySelector('button[type="submit"]');
+        
+        
+        submitButton.disabled = true;
 
-    fetch('https://coastalrisk-backend-01f7cf588349.herokuapp.com/results', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            address: address
+        fetch('https://coastalrisk-backend-01f7cf588349.herokuapp.com/results', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                address: address
+            })
         })
-    })
-    .then(response => {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            return response.json();
-        } else {
-            form.submit();
-        }
-    })
-    .then(data => {
-        if (data && data.error) {
-            
-            if (data.error === "No geocoding results found.") {
+        .then(response => {
+            submitButton.disabled = false; 
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return response.json();
+            } else {
+                form.submit();
+            }
+        })
+        .then(data => {
+            if (data && data.error) {
+                
+                if (data.error === "No geocoding results found.") {
+                    flashNoteRed(noteElement); 
+                    return; 
+                }
+
+                
+                if (data.error === "Address is too far from the coast.") {
+                    flashNoteRed(noteElement); 
+                    return; 
+                }
+
+                
                 flashNoteRed(noteElement); 
                 return; 
             }
-
-            
-            if (data.error === "Address is too far from the coast.") {
-                flashNoteRed(noteElement); 
-                return; 
-            }
-
-           
+        })
+        .catch(error => {
+            submitButton.disabled = false;  
             flashNoteRed(noteElement); 
-            return; 
-        }
-    })
-    .catch(error => {
-        flashNoteRed(noteElement); 
-        console.error('Fetch error:', error);
+            console.error('Fetch error:', error);
+        });
     });
-});
 
-function flashNoteRed(element) {
-    const originalColor = element.style.color; 
-    element.style.color = 'red'; 
+    function flashNoteRed(element) {
+        const originalColor = element.style.color; 
+        element.style.color = 'red'; 
 
-    setTimeout(() => {
-        element.style.color = originalColor; 
-    }, 2000); 
-}
-</script>
+        setTimeout(() => {
+            element.style.color = originalColor; 
+        }, 2000); 
+    }
+    </script>
     </div>
 </body>
 </html>
