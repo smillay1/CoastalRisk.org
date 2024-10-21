@@ -9,12 +9,13 @@
     <style>
         body {
             
-            background-color: #e0f7fa;
             font-family: Georgia, 'Times New Roman', Times, serif;
             text-align: center;
             transform: scale(0.8);
             overflow-y: auto;
             margin-top: -20px;
+            background-image: url("{{ url_for('static', filename='background.jpeg') }}");
+            background-size: cover;
             
         }
 
@@ -27,6 +28,7 @@
         height: 360px;
         transform: rotate(77deg);
         transform-origin: top left;
+        color: white;
     }
 
     #line2 {
@@ -35,6 +37,7 @@
         height: 200px;
         transform: rotate(69deg);
         transform-origin: top left;
+        color: white;
     }
 
     #line3 {
@@ -43,6 +46,7 @@
         height: 83px;
         transform: rotate(30deg);
         transform-origin: top right;
+        color: white;
     }
 
     #line4 {
@@ -51,6 +55,7 @@
         height: 360px;
         transform: rotate(-77deg);
         transform-origin: top right;
+        color: white;
     }
 
     #line5 {
@@ -59,6 +64,7 @@
         height: 200px;
         transform: rotate(-69deg);
         transform-origin: top right;
+        color: white;
     }
 
     #line6 {
@@ -67,6 +73,7 @@
         height: 83px;
         transform: rotate(-30deg);
         transform-origin: top right;
+        color: white;
     }
 
 
@@ -87,14 +94,14 @@
 }
 
 .new-search-button:hover {
-    background-color: #00796b;
+    background-color: black;
     color: white;
     border: 2px solid white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .new-search-button:active {
-    background-color: #00796b;
+    background-color: black;
     color: white;
     border: 2px solid transparent;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
@@ -183,7 +190,7 @@
 
         .variable {
             font-size: 1.2rem;
-            color: #333;
+            color: white;
             margin-bottom: 20px;
         }
 
@@ -215,7 +222,7 @@
             appearance: none;
             width: 10px;
             height: 10px;
-            background: black;
+            background: white;
             border-radius: 50%;
             pointer-events: none; 
         }
@@ -257,7 +264,7 @@
         margin: 20px auto; 
         border: 2px solid #ddd; 
         border-radius: 3px; 
-        border-color: #004d40;
+        border-color: white;
     }
 
         
@@ -269,7 +276,7 @@
         .line {
             position: absolute;
             width: 2px;
-            background-color: black; 
+            background-color: white;
             z-index: -1;
         }
 
@@ -347,7 +354,7 @@
 .map-key {
     margin: 0;
     font-size: 1rem;
-    color: black;
+    color: white;
     white-space: nowrap; 
 }
 
@@ -364,7 +371,7 @@
 .notice {
     margin: 0;
     font-size: 1rem;
-    color: black;
+    color: white;
     margin-top: 20px;
 }
 
@@ -449,7 +456,7 @@
             appearance: none;
             width: 10px;
             height: 10px;
-            background: black;
+            background: white;
             border-radius: 50%;
             pointer-events: none; 
         }
@@ -489,7 +496,7 @@
         width: 90%; 
         height: 200px; 
         margin: 20px auto; 
-        border: 2px solid #004d40;
+        border: 2px solid white;
     }
       
         .container {
@@ -500,7 +507,7 @@
         .line {
             position: absolute;
             width: 2px;
-            background-color: black; 
+            background-color: white; 
             z-index: -1;
         }
     }
