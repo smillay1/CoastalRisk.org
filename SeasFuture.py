@@ -40,9 +40,6 @@ def load_env():
 load_env()
 
 
-
-
-
 @app.route('/')
 def index():
     try:
