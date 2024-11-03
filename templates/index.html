@@ -112,7 +112,7 @@
                 margin-top: 1vh;
             }
 
-            .main-panel, .left-panel {
+            .main-panel {
                 background-color: white;
                 padding: 20px;
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -123,10 +123,25 @@
                 border-radius: 15px;
                 flex-direction: column;
                 transition: box-shadow 0.3s ease;
+                
             }
 
-            .main-panel:hover, .left-panel:hover {
-                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            .left-panel {
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                width: 60%;
+                margin-right: 20px;
+                flex-grow: 0; 
+                border: 2px solid #000000; 
+                border-radius: 15px;
+                flex-direction: column;
+                transition: box-shadow 0.3s ease;
+                box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .left-panel:hover {
+                box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.6);
             }
 
             .left-panel {
@@ -412,7 +427,7 @@
     <div class="panels-container">
         <div class="left-panel">
             <h2>Complete Coastal Risk Analysis</h2>
-            <h3>Receive a 10 page Coastal Climate Report of your location with Satellite Imagery (Worldwide):</h3>
+            <h3>Order a 10 page Coastal Climate Report of your location driven by Satellite Imagery and our AI-powered coastal climate model (Worldwide):</h3>
             <img src="{{ url_for('static', filename='development.png') }}" alt="Development Image">
         </div>
 

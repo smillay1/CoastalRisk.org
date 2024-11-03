@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <title>Order Complete Climate Report - CoastalRisk</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 45px;
+            background-image: url("{{ url_for('static', filename='background.jpeg') }}");
+            background-size: cover;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .panels-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 80%;
+            max-width: 1500px;
+            margin-top: 5vh;
+        }
+
+        .leftpanel {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            border: 2px solid black;
+            border-radius: 15px;
+            transition: box-shadow 0.3s ease;
+            text-align: left;
+        }
+
+
+        .rightpanel {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            border: 2px solid black;
+            border-radius: 15px;
+            transition: box-shadow 0.3s ease;
+            text-align: left;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .rightpanel:hover {
+            box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .left-panel {
+            font-size: 1.6rem;
+        }
+
+        .right-panel {
+            font-size: 1.4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: black;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            font-size: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border 0.3s ease;
+        }
+
+        button:hover {
+            background-color: black;
+            color: white;
+            border: 3px solid black;
+            border-radius: 10px;
+        }
+
+        .order-button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">The World Loses $40 billion to flooding every year. Invest now to be informed for the future.</div>
+    <div class="panels-container">
+        <div class="leftpanel">
+            <p class="price"> - You pay: $99</p>
+        </div>
+        <div class="rightpanel">
+            <h2>What's Included:</h2>
+            <ul>
+                <li>- 10-page detailed climate analysis of your specific location</li>
+                <li>- Satellite imagery showcasing risk areas</li>
+                <li>- Comprehensive sea level rise projections</li>
+                <li>- Flooding and erosion impact assessments</li>
+                <li>- Customized recommendations for mitigating risks</li>
+            </ul>
+        </div>
+    </div>
+    <div class="order-button-container">
+        <button type="button">Order</button>
+    </div>
+</body>
+</html>
