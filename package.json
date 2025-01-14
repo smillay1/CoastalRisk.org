@@ -1,0 +1,19 @@
+{
+  "name": "seas",
+  "version": "1.0.0",
+  "description": "Website where users can access coastal vulnerability data in the continental USA within 20 miles of the coast.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "geotiff": "^2.1.3",
+    "leaflet-geotiff": "^0.2.0",
+    "stripe": "^17.3.1"
+  }
+}

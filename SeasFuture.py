@@ -7,9 +7,9 @@ from haversine import haversine, Unit
 import urllib.parse
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["https://coastalrisk.org", "https://66e41117e86395fce4b28e7e--magnificent-melomakarona-e43288.netlify.app"]}})
+CORS(app, resources={r"/*": {"origins": ["https://coastalrisk.org"]}})
 
-# Load GeoJSON data
+# Load GeoJSON
 def load_geojson():
     try:
         with open('CoastalCalculator.geojson', 'r') as file:
@@ -25,7 +25,7 @@ geojson_data = load_geojson()
 
 
 
-# Load environment variables
+# Load env with its variables
 def load_env():
     try:
         with open('./SeasFuture.env', 'r') as file:
@@ -53,7 +53,7 @@ def index():
 @app.route('/results', methods=['POST'])
 def results():
     try:
-        # Fetching user input
+        # Fetching the user's input
         address = request.form['address']
         print(f"Address received: {address}")
 

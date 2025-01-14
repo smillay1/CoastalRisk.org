@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Risk Climate Report</title>
+    <style>
+        body {
+            background-color: #123262;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 45px;
+        }
+
+        .report-container {
+            background-color: #ffffff;
+            border: 2px solid black;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        h1, h2, h3, p {
+            color: black;
+            text-align: center;
+        }
+
+        .layer-section {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .map-container {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 20px auto;
+            border: 3px solid #000;
+            border-radius: 15px;
+            box-sizing: border-box;
+            overflow: hidden; /* Ensure the image stays inside the container */
+        }
+
+        .map-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image fills the container */
+        }
+
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            max-width: 300px;
+            height: 2px;
+            background: #000;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 5px;
+            background: #000;
+            cursor: pointer;
+            transform: rotate(90deg);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 30px;
+            background: #000;
+            cursor: pointer;
+            transform: rotate(90deg);
+        }
+
+        .divider {
+            width: 100%;
+            height: 2px;
+            background-color: #123262;
+            margin: 40px 0;
+        }
+
+        .scale {
+            width: 100%;
+            max-width: 300px;
+            height: 20px;
+            background: linear-gradient(to right, white, darkblue);
+            margin-top: 10px;
+            border-radius: 15px;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 5px;
+            color: black;
+        }
+
+        .vegetation-scale {
+            width: 100%;
+            max-width: 300px;
+            height: 20px;
+            background: linear-gradient(to right, white, green);
+            margin-top: 10px;
+            border-radius: 15px;
+        }
+
+        .vegetation-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 5px;
+            color: black;
+        }
+
+        .water-scale {
+            width: 100%;
+            max-width: 300px;
+            height: 20px;
+            background: linear-gradient(to right, white, lightblue, darkblue);
+            margin-top: 10px;
+            border-radius: 15px;
+        }
+
+        .water-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 5px;
+            color: black;
+        }
+
+        .flood-risk-scale {
+            width: 100%;
+            max-width: 300px;
+            height: 20px;
+            background: linear-gradient(to right, darkgreen, lightgreen, yellow, orange, red);
+            margin-top: 10px;
+            border-radius: 15px;
+        }
+
+        .flood-risk-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 5px;
+            color: black;
+        }
+
+        .slider-container {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .map-container {
+                width: 90%;
+                height: 200px;
+            }
+
+            input[type="range"] {
+                max-width: 90%;
+            }
+
+            .scale {
+                max-width: 90%;
+            }
+
+            .scale-labels {
+                max-width: 90%;
+            }
+
+            .vegetation-scale {
+                max-width: 90%;
+            }
+
+            .vegetation-scale-labels {
+                max-width: 90%;
+            }
+
+            .water-scale {
+                max-width: 90%;
+            }
+
+            .water-scale-labels {
+                max-width: 90%;
+            }
+
+            .flood-risk-scale {
+                max-width: 90%;
+            }
+
+            .flood-risk-scale-labels {
+                max-width: 90%;
+            }
+
+            .slider-container {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <header>
+            <h1>Coastal Risk Climate Report: [Client Name]</h1>
+            <div class="divider"></div>
+            <p style="text-align: left;"><strong>Address:</strong> [Property Address]</p>
+            <p style="text-align: left;"><strong>Date:</strong> [Report Date]</p>
+            <p style="text-align: left;"><strong>Prepared by:</strong> CoastalRisk</p>
+            <div class="divider"></div>
+        </header>
+
+        <section id="welcome-section">
+            <h2>Welcome to Your Climate Report</h2>
+            <div class="layer-section">
+                <ul style="text-align: left;">
+                    <li><strong>Overview:</strong>
+                        <ul style="margin-left: 20px; list-style-type: disc;">
+                            <li>Your location's risk of being flooded</li>
+                            <li>Your location's risk posed by erosion</li>
+                            <li>How your location's risk compares to others in your area</li>
+                            <li>Your location's overall Coastal Risk </li>
+                            <p></p>
+                        </ul>
+                    </li>
+                    <li><strong>Satellite Imagery:</strong>
+                        <ul style="margin-left: 20px; list-style-type: disc;">
+                            <li>Your area:</li>
+                                <ul><li>A map of your location's satellite view</li></ul>
+                            <li>Elevation in your area:</li>
+                                <ul><li>A map of the elevation surrounding your location</li></ul>
+                                <ul><li>Elevation is a key element in determining flood risk, typically lower elevations are more prone to coastal flooding</li></ul>
+                            <li>Vegetaion in your area:</li>
+                                <ul><li>A map of vegetation levels surrounding your location</li></ul>
+                                <ul><li>Higher levels of vegetation typically indicate higher resiliency against flooding</li></ul>
+                            <li>Typical water presence in your area:</li>
+                                <ul><li>A map showing water frequency in your area</li></ul>
+                                <ul><li>Higher water frequencies are indicators of consistent flood activity</li></ul>
+                            <li>Overall flood risk map:</li>
+                                <ul><li>Created compiling the previous variables and more</li></ul>
+                                <ul><li>Trained with artificial intelligence to capture your coastal flood risk</li></ul>
+                            <li>History of erosion in your area:</li>
+                                <ul><li>Created by using satellite snapshots from 1990, 2000, 2010 and 2010</li></ul>
+                                <ul><li>Snapshots are then layered over one another to measure erosion over the last 30 years</li></ul>
+
+                        </ul>
+                    </li>
+                    <p></p>
+                    <li><strong>Your Overall Risk:</strong>
+                        <ul style="margin-left: 20px; list-style-type: disc;">
+                            <li>Based on all data collected, your overall Coastal Risk score</li>
+                            <li>Based on all data collected, your overall Coastal Risk score</li>
+                            <strong><li>How your location's risk compares to locations in your surrounding area:</li></strong>
+                            <ul><li>Compare your location's risk to your neighbors' in your area</li></ul>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="divider"></div>
+        </section>
+
+        <section id="overview-section">
+            <h2>1. Overview</h2>
+            <div class="layer-section">
+                <!-- Overview content will be added here in the future -->
+            </div>
+            <div class="divider"></div>
+        </section>
+
+        <section id="property-from-space-section">
+            <h2>2. Your Property from Space</h2>
+            <div class="layer-section">
+                <label style="margin-top: 20px; font-weight: bold;">Your Area:</label>
+                <div id="satelliteMap" class="map-container">
+                    <img src="https://storage.googleapis.com/coastalrisk-storage/satellite.png" alt="Satellite View">
+                </div>
+            </div>
+        
+            <div class="layer-section">
+                <label style="margin-top: 20px; font-weight: bold;">Elevation in Your Area:</label>
+                <div id="elevationMap" class="map-container">
+                    <img src="https://storage.googleapis.com/coastalrisk-storage/elevation.png" alt="Elevation Map">
+                </div>
+                <div class="scale"></div>
+                <div class="scale-labels">
+                    <span>0m</span>
+                    <span>50m</span>
+                </div>
+            </div>
+        
+            <div class="layer-section">
+                <label style="margin-top: 20px; font-weight: bold;">Vegetation in Your Area:</label>
+                <div id="ndviMap" class="map-container">
+                    <img src="https://storage.googleapis.com/coastalrisk-storage/ndvi.png" alt="NDVI Map">
+                </div>
+                <div class="vegetation-scale"></div>
+                <div class="vegetation-scale-labels">
+                    <span>No Vegetation</span>
+                    <span>High Vegetation</span>
+                </div>
+            </div>
+        
+            <div class="layer-section">
+                <label style="margin-top: 20px; font-weight: bold;">Typical Water Presence in Your Area:</label>
+                <div id="waterMap" class="map-container">
+                    <img src="https://storage.googleapis.com/coastalrisk-storage/ndwi.png" alt="NDWI Map">
+                </div>
+                <div class="water-scale"></div>
+                <div class="water-scale-labels">
+                    <span>Low Frequency</span>
+                    <span>High Frequency</span>
+                </div>
+            </div>
+        
+            <div class="layer-section">
+                <label style="margin-top: 20px; font-weight: bold;">Overall Flood Risk Map:</label>
+                <div id="floodRiskMap" class="map-container">
+                    <img src="https://storage.googleapis.com/coastalrisk-storage/FloodRisk.png" alt="Flood Risk Map">
+                </div>
+                <div class="flood-risk-scale"></div>
+                <div class="flood-risk-scale-labels">
+                    <span>Low Risk</span>
+                    <span>High Risk</span>
+                </div>
+            </div>
+        
+            <div class="layer-section">
+                <label style="margin-top: 20px; font-weight: bold;">History of Erosion in Your Area:</label>
+                <div id="erosionMap" class="map-container">
+                    <img src="https://storage.googleapis.com/coastalrisk-storage/erosion.png" alt="Erosion History Map">
+                </div>
+            </div>
+            <div class="divider"></div>
+        </section>
+        
+
+            
+
+        <section id="overall-risk-section">
+            <h2>3. Your Overall Risk</h2>
+            <div class="layer-section">
+                <p style="text-align: left;">This section provides an overview of your overall flood and erosion risk levels. Based on our analysis, we have calculated your risk level using various data points, including elevation, vegetation, and water presence.</p>
+            </div>
+            <h3>3.1 How Your Risk Compares with Other Properties in Your Area</h3>
+            <div class="layer-section">
+                <p style="text-align: left;">Compared to other properties in your area, your risk level is [higher/lower/about the same]. This comparison helps you understand where your property stands in terms of vulnerability to coastal hazards.</p>
+            </div>
+            <div class="divider"></div>
+        </section>
+
+        <section id="recommendations-section">
+            <h2>4. Our Recommendations</h2>
+            <div class="layer-section">
+                <p style="text-align: left;">Based on your personal coastal risk level, we recommend the following actions to better protect your property from coastal climate hazards:</p>
+                <ul style="text-align: left;">
+                    <li>Consider elevating key structures to reduce flood risk.</li>
+                    <li>Invest in natural vegetation barriers to help absorb water.</li>
+                    <li>Stay informed about local flood warnings and evacuation procedures.</li>
+                </ul>
+            </div>
+            <div class="divider"></div>
+        </section>
+    </div>
+
+
+    
+</body>
+</html>

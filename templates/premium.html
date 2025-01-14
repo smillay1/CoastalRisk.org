@@ -35,7 +35,7 @@
             margin-top: 5vh;
         }
 
-        .leftpanel {
+        .leftpanel, .rightpanel {
             background-color: white;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -44,31 +44,10 @@
             border-radius: 15px;
             transition: box-shadow 0.3s ease;
             text-align: left;
-        }
-
-
-        .rightpanel {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 45%;
-            border: 2px solid black;
-            border-radius: 15px;
-            transition: box-shadow 0.3s ease;
-            text-align: left;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
         }
 
         .rightpanel:hover {
             box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .left-panel {
-            font-size: 1.6rem;
-        }
-
-        .right-panel {
-            font-size: 1.4rem;
         }
 
         h2 {
@@ -118,24 +97,26 @@
     </style>
 </head>
 <body>
-    <div class="title">The World Loses $40 billion to flooding every year. Invest now to be informed for the future.</div>
+    <div class="title">Flooding costs property owners worldwide roughly $40 billion annually. Invest in a Climate Report now to save money and be informed for the future.</div>
     <div class="panels-container">
         <div class="leftpanel">
-            <p class="price"> - You pay: $99</p>
+            <p class="price">- You pay: $39</p>
         </div>
         <div class="rightpanel">
             <h2>What's Included:</h2>
             <ul>
-                <li>- 10-page detailed climate analysis of your specific location</li>
-                <li>- Satellite imagery showcasing risk areas</li>
-                <li>- Comprehensive sea level rise projections</li>
-                <li>- Flooding and erosion impact assessments</li>
-                <li>- Customized recommendations for mitigating risks</li>
+                <li>- A detailed climate analysis of your specific location delivered to your email inbox in 48 hours or less</li>
+                <li>- Advanced satellite imagery showcasing the environmental risks surrounding your location</li>
+                <li>- Coastal Risk flood hazard and erosion scores to measure how safe your location is from harm</li>
+                <li>- Customized property preparation recommendations for mitigating risks to help you save from future climate damage</li>
             </ul>
         </div>
     </div>
     <div class="order-button-container">
-        <button type="button">Order</button>
+        <!-- Redirect to payment.html -->
+        <a href="/payment.html">
+            <button type="button">Order</button>
+        </a>
     </div>
 </body>
 </html>
