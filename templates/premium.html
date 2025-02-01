@@ -112,11 +112,19 @@
             </ul>
         </div>
     </div>
-    <div class="order-button-container">
+    <button id="order-button">Order Here</button>
 
-        <a href="{{ url_for('payment') }}">
-            <button type="button">Order</button>
-        </a>
-    </div>
+<script>
+  document.getElementById("order-button").addEventListener("click", async () => {
+      const response = await fetch("/create-checkout-session", { method: "POST" });
+      const session = await response.json();
+      if (session.url) {
+          window.location.href = session.url;
+      } else {
+          alert("Error creating checkout session.");
+      }
+  });
+</script>
+
 </body>
 </html>
