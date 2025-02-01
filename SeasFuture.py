@@ -130,8 +130,8 @@ def create_checkout_session():
                 'quantity': 1,
             }],
             mode='payment',
-            success_url='https://coastalrisk.org/success',
-            cancel_url='https://coastalrisk.org/cancel',
+            success_url='https://coastalrisk.org/index',
+            cancel_url='https://coastalrisk.org/premium',
         )
         return jsonify({'url': checkout_session.url})
     except Exception as e:
