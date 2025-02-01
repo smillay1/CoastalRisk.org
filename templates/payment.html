@@ -44,33 +44,28 @@
         button:hover {
             background-color: #0056b3;
         }
-
-        .hidden {
-            display: none;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>This page is under construction</h2>
+        <h2>Complete Your Order</h2>
         <p>Order your full Coastal Risk Report for <strong>$39</strong></p>
-
-        <form id="payment-form">
-            <div id="card-element"><!-- Stripe.js injects the Card Element --></div>
-            <div id="card-errors" class="error-message" role="alert"></div>
-            <button id="submit-button">Pay $39</button>
-        </form>
-
-        <p id="payment-status" class="hidden">Processing...</p>
+        <button id="checkout-button">Pay $39</button>
     </div>
 
-    <script src="frontend.js"></script>
+    <script>
+        document.getElementById("checkout-button").addEventListener("click", async () => {
+            const response = await fetch("/create-checkout-session", { method: "POST" });
+            const session = await response.json();
+            if (session.url) {
+                window.location.href = session.url;
+            } else {
+                alert("Error creating checkout session.");
+            }
+        });
+    </script>
 
 </body>
 </html>
+
