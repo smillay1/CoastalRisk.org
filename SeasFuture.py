@@ -120,7 +120,7 @@ def premium():
     return render_template("premium.html")
 
 @app.route("/payment")
-def premium():
+def payment():
      return render_template("payment.html")
 
 
