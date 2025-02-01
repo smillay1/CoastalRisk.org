@@ -5,9 +5,12 @@ import requests
 import json
 from haversine import haversine, Unit
 import urllib.parse
+import stripe
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://coastalrisk.org"]}})
+
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 # Load GeoJSON
 def load_geojson():
@@ -90,14 +93,35 @@ def results():
         print(f"Error in results route: {str(e)}")
         return "Error processing request", 500
 
+@app.route('/create-payment-intent', methods=['POST'])
+def create_payment():
+    try:
+        data = request.get_json()
+        amount = data.get('amount')
+
+        
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency='usd',
+            automatic_payment_methods={"enabled": True}
+        )
+
+        return jsonify({"clientSecret": intent.client_secret})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/get-stripe-public-key", methods=["GET"])
+def get_stripe_public_key():
+    return jsonify({"publicKey": os.getenv("STRIPE_PUBLIC_KEY")})
+
 
 @app.route("/premium")
 def premium():
     return render_template("premium.html")
 
-# @app.route("/payment")
-# def premium():
-#     return render_template("payment.html")
+@app.route("/payment")
+def premium():
+     return render_template("payment.html")
 
 
 def find_closest_feature(lng, lat):
