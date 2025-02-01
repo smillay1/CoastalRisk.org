@@ -95,9 +95,9 @@ def results():
 def premium():
     return render_template("premium.html")
 
-@app.route("/payment")
-def premium():
-    return render_template("payment.html")
+# @app.route("/payment")
+# def premium():
+#     return render_template("payment.html")
 
 
 def find_closest_feature(lng, lat):
