@@ -89,10 +89,11 @@ def results():
     except Exception as e:
         print(f"Error in results route: {str(e)}")
         return "Error processing request", 500
-    
-@app.route('/donate')
-def donate():
-    return render_template('donate.html')
+
+
+@app.route("/premium")
+def premium():
+    return render_template("premium.html")
 
 
 def find_closest_feature(lng, lat):
