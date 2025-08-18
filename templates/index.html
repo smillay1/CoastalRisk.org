@@ -30,14 +30,23 @@
             position: fixed;
             top: 0;
             left: 0;
-            text-align: center;
+            text-align: left;
             font-size: 2rem;
             color: black;
             font-weight: bold;
             z-index: 1000;
         }
 
-        .wave-icon-left,
+        .navbar-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+
         .wave-icon-right {
             height: 40px;
             vertical-align: middle;
@@ -71,7 +80,7 @@
                 margin: 0 10px;
             }
 
-            .wave-icon-left,
+
             .wave-icon-right {
                 height: 80px;
                 width: auto;
@@ -236,7 +245,7 @@
                 margin: 0 10px;
             }
 
-            .wave-icon-left,
+
             .wave-icon-right {
                 height: 60px;
                 width: auto;
@@ -414,9 +423,10 @@
 
 <body>
     <div class="navbar">
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-left">
-        CoastalRisk
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-right">
+        <a href="{{ url_for('index') }}" class="navbar-link">
+            CoastalRisk
+            <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right">
+        </a>
     </div>
     <div class="subheading" id="subheading"></div>
 
