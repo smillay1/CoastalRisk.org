@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,9 @@
     <title>CoastalRisk</title>
     <style>
         body {
-            
+
             display: flex;
-            flex-direction: column; 
+            flex-direction: column;
             justify-content: flex-start;
             align-items: center;
             font-family: Georgia, 'Times New Roman', Times, serif;
@@ -22,7 +23,8 @@
 
         .navbar {
             width: 100vw;
-            background-color: rgba(255, 255, 255, 0.9);
+            height: 20px;
+            background-color: white;
             padding: 20px 0;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             position: fixed;
@@ -35,7 +37,8 @@
             z-index: 1000;
         }
 
-        .wave-icon-left, .wave-icon-right {
+        .wave-icon-left,
+        .wave-icon-right {
             height: 40px;
             vertical-align: middle;
             cursor: pointer;
@@ -46,7 +49,7 @@
 
             body {
                 display: flex;
-                flex-direction: column; 
+                flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
                 font-family: Georgia, 'Times New Roman', Times, serif;
@@ -68,15 +71,16 @@
                 margin: 0 10px;
             }
 
-            .wave-icon-left, .wave-icon-right {
-                height: 80px; 
+            .wave-icon-left,
+            .wave-icon-right {
+                height: 80px;
                 width: auto;
-                vertical-align: middle; 
+                vertical-align: middle;
             }
 
             h1 {
                 font-size: 3rem;
-                margin: 0 10px; 
+                margin: 0 10px;
             }
 
             .wave-icon {
@@ -85,8 +89,8 @@
             }
 
             #subheading {
-                font-size: 3rem; 
-                color: white; 
+                font-size: 3rem;
+                color: white;
                 margin-top: 28vh;
                 margin-bottom: 25px;
                 text-align: center;
@@ -96,17 +100,18 @@
             .information-box {
                 color: white;
                 padding: 20px;
-                max-width: 1200px;
-                text-align: center;
+                max-width: 800px;
+                text-align: left;
                 margin-top: 60px;
-                font-size: 1.6rem;
+                font-size: 1.1rem;
+                margin-left: -500px;
             }
 
 
             .panels-container {
                 display: flex;
                 justify-content: space-between;
-                align-items: center; 
+                align-items: center;
                 width: 100%;
                 max-width: 1500px;
                 margin-top: 1vh;
@@ -118,12 +123,12 @@
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
                 width: 60%;
                 margin-right: 20px;
-                flex-grow: 0; 
-                border: 2px solid #000000; 
+                flex-grow: 0;
+                border: 2px solid #000000;
                 border-radius: 15px;
                 flex-direction: column;
                 transition: box-shadow 0.3s ease;
-                
+
             }
 
             .left-panel {
@@ -132,8 +137,8 @@
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
                 width: 60%;
                 margin-right: 20px;
-                flex-grow: 0; 
-                border: 2px solid #000000; 
+                flex-grow: 0;
+                border: 2px solid #000000;
                 border-radius: 15px;
                 flex-direction: column;
                 transition: box-shadow 0.3s ease;
@@ -141,7 +146,7 @@
             }
 
             .left-panel:hover {
-                box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.6);
+                box-shadow: 0px 0px 90px white;
             }
 
             .left-panel {
@@ -157,8 +162,8 @@
             }
 
             h2 {
-                text-align: center;  
-                margin: 0 auto;  
+                text-align: center;
+                margin: 0 auto;
                 font-size: 1.8rem;
                 color: #000000;
                 margin-bottom: 20px;
@@ -172,6 +177,7 @@
                 border: 1px solid black;
                 margin-bottom: 20px;
             }
+
 
             button {
                 padding: 10px 20px;
@@ -230,15 +236,16 @@
                 margin: 0 10px;
             }
 
-            .wave-icon-left, .wave-icon-right {
-                height:60px; 
+            .wave-icon-left,
+            .wave-icon-right {
+                height: 60px;
                 width: auto;
-                vertical-align: middle; 
+                vertical-align: middle;
             }
 
             h1 {
                 font-size: 3rem;
-                margin: 0 10px; 
+                margin: 0 10px;
             }
 
             .wave-icon {
@@ -246,8 +253,8 @@
             }
 
             #subheading {
-                font-size: 3rem; 
-                color: white; 
+                font-size: 3rem;
+                color: white;
                 margin-top: 10vh;
                 margin-bottom: 30px;
                 text-align: center;
@@ -257,35 +264,37 @@
                 color: white;
                 padding: 20px;
                 max-width: 1200px;
-                text-align: center;
+                text-align: left;
                 margin-top: 60px;
-                font-size: 1.6rem;
+                font-size: 1.1rem;
             }
 
             .panels-container {
                 display: flex;
                 justify-content: space-between;
-                align-items: center; 
+                align-items: center;
                 width: 150%;
                 max-width: 1500px;
                 margin-top: 1vh;
                 flex-direction: column;
             }
 
-            .main-panel, .left-panel {
+            .main-panel,
+            .left-panel {
                 background-color: white;
                 padding: 20px;
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
                 width: 60%;
                 margin-right: 20px;
-                flex-grow: 0; 
-                border: 2px solid #000000; 
+                flex-grow: 0;
+                border: 2px solid #000000;
                 border-radius: 15px;
                 flex-direction: column;
                 transition: box-shadow 0.3s ease;
             }
 
-            .main-panel:hover, .left-panel:hover {
+            .main-panel:hover,
+            .left-panel:hover {
                 box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
             }
 
@@ -302,8 +311,8 @@
             }
 
             h2 {
-                text-align: center;  
-                margin: 0 auto;  
+                text-align: center;
+                margin: 0 auto;
                 font-size: 1.8rem;
                 color: #000000;
                 margin-bottom: 20px;
@@ -381,7 +390,7 @@
             text-align: center;
         }
 
-        
+
 
         #subheading::after {
             content: '|';
@@ -389,17 +398,25 @@
         }
 
         @keyframes blink {
-            0%, 50% { opacity: 1; } 
-            51%, 100% { opacity: 0; } 
-        }
 
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="navbar">
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-left" >
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-left">
         CoastalRisk
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-right" >
+        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" class="wave-icon-right">
     </div>
     <div class="subheading" id="subheading"></div>
 
@@ -411,110 +428,116 @@
             if (i < subheadingText.length) {
                 document.getElementById("subheading").innerHTML += subheadingText.charAt(i);
                 i++;
-                setTimeout(typeWriter, 45); 
+                setTimeout(typeWriter, 45);
             }
         }
 
         window.onload = typeWriter;
     </script>
 
-    
 
-    
+
+
     <div class="information-box">
-        We provide analysis on how sea level rise, flooding, and erosion will impact you and your community:
+        <p> We provide analysis on how sea level rise, flooding, and erosion will impact you and your community.</p>
+        <p>Order a CoastalRisk Analysis today to get a complete report on your location, or use our free risk
+            calculator to get
+            a basic analysis of your coastal risk:</p>
     </div>
     <div class="panels-container">
-        <div class="left-panel">
-            <h2>Complete Coastal Risk Analysis</h2>
-            <h3>Order a complete Coastal Climate Report of your location driven by Satellite Imagery and our AI-powered coastal climate model:</h3>
-            <a href="{{ url_for('premium') }}">
-                <button>Order Here</button>
-            </a>
-            
+        <a href="{{ url_for('premium') }}" style="text-decoration: none; color: inherit;">
+            <div class="left-panel">
+                <h2 style=" text-decoration: none; color: black;">Complete Coastal Risk Analysis</h2>
+                <h3 style="text-decoration: none; color: black;">Order a complete Coastal Climate Report of your
+                    location
+                </h3>
+        </a>
+    </div>
 
-        </div>
+    <div class="main-panel">
+        <h2>Free Risk Calculator</h2>
+        <h3>Enter a location to determine its basic coastal risk (Only continental USA):</h3>
+        <form action="/results" method="POST">
+            <div class="form-container">
+                <input type="text" id="address" name="address"
+                    placeholder="eg. 3 Bagshot Row, Hobbiton Bag End, Hobbiton" required>
+                <button type="submit" aria-label="Submit address to get coastal risk analysis">Submit</button>
+            </div>
+            <p class="note" aria-live="polite">Note: addresses must be in the continental USA within 20 miles of
+                the
+                coast.</p>
+        </form>
+    </div>
 
-        <div class="main-panel">
-            <h2>Free Risk Calculator</h2>
-            <h3>Enter a location to determine its basic coastal risk (Only continental USA):</h3>
-            <form action="/results" method="POST">
-                <div class="form-container">
-                    <input type="text" id="address" name="address" placeholder="eg. 3 Bagshot Row, Hobbiton Bag End, Hobbiton" required>
-                    <button type="submit" aria-label="Submit address to get coastal risk analysis">Submit</button>
-                </div>
-                <p class="note" aria-live="polite">Note: addresses must be in the continental USA within 20 miles of the coast.</p>
-            </form>
-        </div>
-
-        <p id="error-message" style="color: red; display: none;">An error occurred. Please try again.</p>
+    <p id="error-message" style="color: red; display: none;">An error occurred. Please try again.</p>
 
     <script>
-        document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault(); 
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        const address = document.getElementById('address').value;
-        const errorMessage = document.getElementById('error-message');
-        const form = event.target; 
-        const noteElement = document.querySelector('.note'); 
-        const submitButton = form.querySelector('button[type="submit"]');
-        
-        
-        submitButton.disabled = true;
+            const address = document.getElementById('address').value;
+            const errorMessage = document.getElementById('error-message');
+            const form = event.target;
+            const noteElement = document.querySelector('.note');
+            const submitButton = form.querySelector('button[type="submit"]');
 
-        fetch('https://coastalrisk-backend-01f7cf588349.herokuapp.com/results', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                address: address
+
+            submitButton.disabled = true;
+
+            fetch('https://coastalrisk-backend-01f7cf588349.herokuapp.com/results', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    address: address
+                })
             })
-        })
-        .then(response => {
-            submitButton.disabled = false; 
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                form.submit();
-            }
-        })
-        .then(data => {
-            if (data && data.error) {
-                
-                if (data.error === "No geocoding results found.") {
-                    flashNoteRed(noteElement); 
-                    return; 
-                }
+                .then(response => {
+                    submitButton.disabled = false;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        form.submit();
+                    }
+                })
+                .then(data => {
+                    if (data && data.error) {
 
-                
-                if (data.error === "Address is too far from the coast.") {
-                    flashNoteRed(noteElement); 
-                    return; 
-                }
+                        if (data.error === "No geocoding results found.") {
+                            flashNoteRed(noteElement);
+                            return;
+                        }
 
-                
-                flashNoteRed(noteElement); 
-                return; 
-            }
-        })
-        .catch(error => {
-            submitButton.disabled = false;  
-            flashNoteRed(noteElement); 
-            console.error('Fetch error:', error);
+
+                        if (data.error === "Address is too far from the coast.") {
+                            flashNoteRed(noteElement);
+                            return;
+                        }
+
+
+                        flashNoteRed(noteElement);
+                        return;
+                    }
+                })
+                .catch(error => {
+                    submitButton.disabled = false;
+                    flashNoteRed(noteElement);
+                    console.error('Fetch error:', error);
+                });
         });
-    });
 
-    function flashNoteRed(element) {
-        const originalColor = element.style.color; 
-        element.style.color = 'red'; 
+        function flashNoteRed(element) {
+            const originalColor = element.style.color;
+            element.style.color = 'red';
 
-        setTimeout(() => {
-            element.style.color = originalColor; 
-        }, 2000); 
-    }
+            setTimeout(() => {
+                element.style.color = originalColor;
+            }, 2000);
+        }
     </script>
     </div>
 </body>
+
 </html>
