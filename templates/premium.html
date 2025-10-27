@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,12 +19,57 @@
             background-size: cover;
         }
 
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 24px;
+            z-index: 1000;
+            font-size: 2rem;
+            color: black;
+            font-weight: 700;
+        }
+
+        .navbar-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: inherit;
+            font-size: 1.1rem;
+            font-weight: 3;
+            margin-right: 150px;
+        }
+
         .title {
             font-size: 2.5rem;
             color: white;
             text-align: center;
             margin-bottom: 30px;
             font-weight: bold;
+        }
+
+        .wave-icon-right {
+            height: 80px;
+            width: auto;
+            vertical-align: middle;
         }
 
         .panels-container {
@@ -35,7 +81,8 @@
             margin-top: 5vh;
         }
 
-        .leftpanel, .rightpanel {
+        .leftpanel,
+        .rightpanel {
             background-color: white;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -96,8 +143,27 @@
         }
     </style>
 </head>
+
 <body>
-    <div class="title">Flooding costs property owners worldwide roughly $40 billion annually. Invest in a Climate Report now to save money and be informed for the future.</div>
+    <div class="navbar">
+        <a href="{{ url_for('index') }}" class="navbar-link">
+            CoastalRisk
+            <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right">
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('index', _anchor='mission') }}">mission</a>
+            <a href="{{ url_for('index', _anchor='philosophy') }}">philosophy</a>
+            <a href="{{ url_for('index', _anchor='contact') }}">contact</a>
+        </nav>
+    </div>
+    <div class="subheading" id="subheading"></div>
+
+
+
+
+
+    <div class="title">Flooding costs property owners worldwide roughly $40 billion annually. Invest in a Climate Report
+        now to save money and be informed for the future.</div>
     <div class="panels-container">
         <div class="leftpanel">
             <p class="price">- You pay: $39</p>
@@ -105,26 +171,29 @@
         <div class="rightpanel">
             <h2>What's Included:</h2>
             <ul>
-                <li>- A detailed climate analysis of your specific location delivered to your email inbox in 48 hours or less</li>
+                <li>- A detailed climate analysis of your specific location delivered to your email inbox in 48 hours or
+                    less</li>
                 <li>- Advanced satellite imagery showcasing the environmental risks surrounding your location</li>
                 <li>- Coastal Risk flood hazard and erosion scores to measure how safe your location is from harm</li>
-                <li>- Customized property preparation recommendations for mitigating risks to help you save from future climate damage</li>
+                <li>- Customized property preparation recommendations for mitigating risks to help you save from future
+                    climate damage</li>
             </ul>
         </div>
     </div>
     <button id="order-button">Order Here</button>
 
-<script>
-  document.getElementById("order-button").addEventListener("click", async () => {
-      const response = await fetch("/create-checkout-session", { method: "POST" });
-      const session = await response.json();
-      if (session.url) {
-          window.location.href = session.url;
-      } else {
-          alert("Error creating checkout session.");
-      }
-  });
-</script>
+    <script>
+        document.getElementById("order-button").addEventListener("click", async () => {
+            const response = await fetch("/create-checkout-session", { method: "POST" });
+            const session = await response.json();
+            if (session.url) {
+                window.location.href = session.url;
+            } else {
+                alert("Error creating checkout session.");
+            }
+        });
+    </script>
 
 </body>
+
 </html>

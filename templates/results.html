@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -8,631 +9,682 @@
     <title>Coastal Vulnerability Index</title>
     <style>
         body {
-            
+
             font-family: Georgia, 'Times New Roman', Times, serif;
             text-align: center;
-            transform: scale(0.8);
             overflow-y: auto;
             margin-top: -20px;
             background-image: url("{{ url_for('static', filename='background.jpeg') }}");
             background-size: cover;
-            
+
         }
 
-
-/* For larger screens */
-@media (min-width: 1150px) {
-    #line1 {
-        left: 29vw;
-        top: 170px;
-        height: 360px;
-        transform: rotate(77deg);
-        transform-origin: top left;
-        color: white;
-    }
-
-    #line2 {
-        left: 36vw;
-        top: 177px;
-        height: 200px;
-        transform: rotate(69deg);
-        transform-origin: top left;
-        color: white;
-    }
-
-    #line3 {
-        left: 44vw;
-        top: 185px;
-        height: 83px;
-        transform: rotate(30deg);
-        transform-origin: top right;
-        color: white;
-    }
-
-    #line4 {
-        right: 29vw;
-        top: 170px;
-        height: 360px;
-        transform: rotate(-77deg);
-        transform-origin: top right;
-        color: white;
-    }
-
-    #line5 {
-        right: 36vw;
-        top: 177px;
-        height: 200px;
-        transform: rotate(-69deg);
-        transform-origin: top right;
-        color: white;
-    }
-
-    #line6 {
-        right: 45vw;
-        top: 185px;
-        height: 83px;
-        transform: rotate(-30deg);
-        transform-origin: top right;
-        color: white;
-    }
-
-
-.new-search-button {
-    background-color: white;
-    color: black;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 25px;
-    border: 2px solid transparent;
-    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
-
-.new-search-button:hover {
-    background-color: black;
-    color: white;
-    border: 2px solid white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.new-search-button:active {
-    background-color: black;
-    color: white;
-    border: 2px solid transparent;
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
-}
-
-.latlong-container {
-    display: flex;
-    position: absolute;
-    bottom: 50px; 
-    left: 15%; 
-    gap: 18px; 
-    white-space: nowrap; 
-}
-
-.map-key-container {
-    display: flex;
-    position: absolute;
-    bottom: 50px; 
-    right: 15%; 
-    gap: 15px; 
-    white-space: nowrap;
-}
-
-.latlong-text, .map-key {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-    white-space: nowrap; 
-}
-
-
-.notice {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-    margin-top: 25px;
-    
-}
-
-
-
-
-
-.row {
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            padding: 10px 24px;
+            z-index: 1000;
+            font-size: 2rem;
+            color: black;
+            font-weight: 700;
         }
 
-        .variable {
-            flex: 1;
-            margin: 0 10px;
-        }
-
-        .low {
-            color: green;
-        }
-
-        .moderate {
-            color: orange;
-        }
-
-        .high {
-            color: red;
-        }
-
-        .cvi-score {
-            position: relative;
-            font-size: 5rem;
-            font-weight: bold;
-            margin-bottom: 100px;
-            top: -60px;
-            color: white;
-           
-        }
-
-        .cvi-text {
-            position: relative;
-            font-size: 3rem;
-            margin-bottom: 15px;
-            top: -60px;
-            color: white;
-        }
-
-        .variables-container {
-            margin-bottom: 30px;
-        }
-
-        .variable {
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .slider-container {
-            display: flex;
-            justify-content: center;
+        .navbar-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
             align-items: center;
+            gap: 10px;
         }
 
-        .slider-container label {
-            width: 200px;
-            text-align: left;
-            margin-right: 20px;
-        }
-
-        .slider {
-            appearance: none;
-            width: 200px;
-            height: 8px;
-            background: white;
-            outline: none;
-            margin-right: 20px;
-            pointer-events: none; 
-        }
-
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none; 
-        }
-
-        .slider-value {
-            font-size: 1.2rem;
-            width: 30px;
-            text-align: center;
-        }
-
-        /* Gradient for the slider */
-        .slider::-webkit-slider-runnable-track {
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 3px; 
-        }
-
-        /* Color the slider based on the value */
-        #erosion::-webkit-slider-runnable-track,
-        #sea-level::-webkit-slider-runnable-track,
-        #tides::-webkit-slider-runnable-track,
-        #geomorphology::-webkit-slider-runnable-track 
-        #waves::-webkit-slider-runnable-track 
-        #slope::-webkit-slider-runnable-track {
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 3px; 
-        }
-
-        #erosion::-moz-range-track,
-        #sea-level::-moz-range-track,
-        #tides::-moz-range-track,
-        #geomorphology::-moz-range-track
-        #waves::-moz-range-track 
-        #slope::-moz-range-track {
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 3px; 
-        }
-
-        /* Map container */
-        #map {
-        width: 70%; 
-        height: 400px; 
-        margin: 20px auto; 
-        border: 2px solid white;
-        border-radius: 3px; 
-        border-color: white;
-    }
-
-        
-        .container {
-            position: relative;
-        }
-
-
-        .line {
-            position: absolute;
-            width: 2px;
-            background-color: white;
-            z-index: -1;
-        }
-
-
-}
-
-/* For smaller screens */
-@media (max-width: 1150px) {
-    #line1 {
-        display: none;
-    }
-
-    #line2 {
-        display: none;
-    }
-
-    #line3 {
-        display: none;
-    }
-
-    #line4 {
-        display: none;
-    }
-
-    #line5 {
-        display: none;
-    }
-
-    #line6 {
-        display: none;
-    }
-
-    .new-search-button {
-    background-color: white;
-    color: black;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 25px;
-    border: 2px solid transparent;
-    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
-
-.new-search-button:hover {
-    background-color: black;
-    color: white;
-    border: 2px solid white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.new-search-button:active {
-    background-color: black;
-    color: white;
-    border: 2px solid transparent;
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
-}
-
-.latlong-container {
-    position: absolute;
-    bottom: 40px; 
-    left: 300px; 
-    text-align: left;
-}
-
-.latlong-text {
-    display: none;
-}
-
-
-.map-key {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-    white-space: nowrap; 
-}
-
-.map-key-container {
-    display: flex;
-    position: absolute;
-    border-radius: 3px; 
-    bottom: 50px; 
-    right: 15%; 
-    gap: 15px; 
-    white-space: nowrap;
-    
-}
-
-.notice {
-    margin: 0;
-    font-size: 1rem;
-    color: white;
-    margin-top: 20px;
-}
-
-
-.row {
-    display: flex;
-    flex-wrap: wrap; 
-    justify-content: space-between;
-    margin-bottom: 20px;
-    flex-direction: row; 
-}
-
-.variable {
-    flex: 0 0 30%; 
-    margin: 0 10px 20px 0; 
-}
-
-        .low {
-            color: green;
-        }
-
-        .moderate {
-            color: orange;
-        }
-
-        .high {
-            color: red;
-        }
-
-        .cvi-score {
-            position: relative;
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            top: 20px;
-            color: white;
-           
-        }
-
-        .cvi-text {
-            position: relative;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            margin-top: -25px;
-            color: white;
-            
-        }
-
-        .variables-container {
-            margin-bottom: 30px;
-        }
-
-        .variable {
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .slider-container {
+        .nav-links {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 24px;
+            margin-left: auto;
         }
 
-        .slider-container label {
-            width: 200px;
-            text-align: left;
-            margin-right: 20px;
-        }
-
-        .slider {
-            appearance: none;
-            width: 100px;
-            height: 8px;
-            background: white;
-            outline: none;
-            margin-right: 20px;
-            pointer-events: none; 
-        }
-
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none; 
-        }
-
-        .slider-value {
-            font-size: 1rem;
-            width: 30px;
-            text-align: center;
-        }
-
-        /* Gradient for the slider */
-        .slider::-webkit-slider-runnable-track {
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 3px; 
-        }
-
-        /* Color the slider based on the value */
-        #erosion::-webkit-slider-runnable-track,
-        #sea-level::-webkit-slider-runnable-track,
-        #tides::-webkit-slider-runnable-track,
-        #geomorphology::-webkit-slider-runnable-track 
-        #waves::-webkit-slider-runnable-track 
-        #slope::-webkit-slider-runnable-track {
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 3px; 
-        }
-
-        #erosion::-moz-range-track,
-        #sea-level::-moz-range-track,
-        #tides::-moz-range-track,
-        #geomorphology::-moz-range-track
-        #waves::-moz-range-track 
-        #slope::-moz-range-track {
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 3px; 
-        }
-
-        /* Map container */
-        #map {
-        width: 90%; 
-        height: 200px; 
-        margin: 20px auto; 
-        border: 2px solid white;
-    }
-      
-        .container {
-            position: relative;
+        .nav-links a {
+            text-decoration: none;
+            color: inherit;
+            font-size: 1.1rem;
+            font-weight: 3;
+            margin-right: 150px;
         }
 
 
-        .line {
-            position: absolute;
-            width: 2px;
-            background-color: white; 
-            z-index: -1;
+        /* For larger screens */
+        @media (min-width: 1150px) {
+            #line1 {
+                left: 29vw;
+                top: 170px;
+                height: 360px;
+                transform: rotate(77deg);
+                transform-origin: top left;
+                color: white;
+            }
+
+            #line2 {
+                left: 36vw;
+                top: 177px;
+                height: 200px;
+                transform: rotate(69deg);
+                transform-origin: top left;
+                color: white;
+            }
+
+            #line3 {
+                left: 44vw;
+                top: 185px;
+                height: 83px;
+                transform: rotate(30deg);
+                transform-origin: top right;
+                color: white;
+            }
+
+            #line4 {
+                right: 29vw;
+                top: 170px;
+                height: 360px;
+                transform: rotate(-77deg);
+                transform-origin: top right;
+                color: white;
+            }
+
+            #line5 {
+                right: 36vw;
+                top: 177px;
+                height: 200px;
+                transform: rotate(-69deg);
+                transform-origin: top right;
+                color: white;
+            }
+
+            #line6 {
+                right: 45vw;
+                top: 185px;
+                height: 83px;
+                transform: rotate(-30deg);
+                transform-origin: top right;
+                color: white;
+            }
+
+
+            .new-search-button {
+                background-color: white;
+                color: black;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 25px;
+                border: 2px solid transparent;
+                transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
+
+            .new-search-button:hover {
+                background-color: black;
+                color: white;
+                border: 2px solid white;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            .new-search-button:active {
+                background-color: black;
+                color: white;
+                border: 2px solid transparent;
+                box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .latlong-container {
+                display: flex;
+                position: absolute;
+                bottom: 50px;
+                left: 15%;
+                gap: 18px;
+                white-space: nowrap;
+            }
+
+            .map-key-container {
+                display: flex;
+                position: absolute;
+                bottom: 50px;
+                right: 15%;
+                gap: 15px;
+                white-space: nowrap;
+            }
+
+            .latlong-text,
+            .map-key {
+                margin: 0;
+                font-size: 1rem;
+                color: white;
+                white-space: nowrap;
+            }
+
+
+            .notice {
+                margin: 0;
+                font-size: 1rem;
+                color: white;
+                margin-top: 25px;
+
+            }
+
+
+
+
+
+            .row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+
+            .variable {
+                flex: 1;
+                margin: 0 10px;
+            }
+
+            .low {
+                color: green;
+            }
+
+            .moderate {
+                color: orange;
+            }
+
+            .high {
+                color: red;
+            }
+
+            .cvi-score {
+                position: relative;
+                font-size: 5rem;
+                font-weight: bold;
+                margin-bottom: 100px;
+                top: -60px;
+                color: white;
+
+            }
+
+            .cvi-text {
+                position: relative;
+                font-size: 3rem;
+                margin-bottom: 15px;
+                top: -60px;
+                color: white;
+            }
+
+            .variables-container {
+                margin-bottom: 30px;
+            }
+
+            .variable {
+                font-size: 1.2rem;
+                color: white;
+                margin-bottom: 20px;
+            }
+
+            .slider-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .slider-container label {
+                width: 200px;
+                text-align: left;
+                margin-right: 20px;
+            }
+
+            .slider {
+                appearance: none;
+                width: 200px;
+                height: 8px;
+                background: white;
+                outline: none;
+                margin-right: 20px;
+                pointer-events: none;
+            }
+
+            .slider::-webkit-slider-thumb {
+                appearance: none;
+                width: 10px;
+                height: 10px;
+                background: white;
+                border-radius: 50%;
+                pointer-events: none;
+            }
+
+            .slider-value {
+                font-size: 1.2rem;
+                width: 30px;
+                text-align: center;
+            }
+
+            /* Gradient for the slider */
+            .slider::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, green, yellow, red);
+                border-radius: 3px;
+            }
+
+            /* Color the slider based on the value */
+            #erosion::-webkit-slider-runnable-track,
+            #sea-level::-webkit-slider-runnable-track,
+            #tides::-webkit-slider-runnable-track,
+            #geomorphology::-webkit-slider-runnable-track #waves::-webkit-slider-runnable-track #slope::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, green, yellow, red);
+                border-radius: 3px;
+            }
+
+            #erosion::-moz-range-track,
+            #sea-level::-moz-range-track,
+            #tides::-moz-range-track,
+            #geomorphology::-moz-range-track #waves::-moz-range-track #slope::-moz-range-track {
+                background: linear-gradient(to right, green, yellow, red);
+                border-radius: 3px;
+            }
+
+            /* Map container */
+            #map {
+                width: 70%;
+                height: 400px;
+                margin: 20px auto;
+                border: 2px solid white;
+                border-radius: 3px;
+                border-color: white;
+            }
+
+
+            .container {
+                position: relative;
+            }
+
+
+            .line {
+                position: absolute;
+                width: 2px;
+                background-color: white;
+                z-index: -1;
+            }
+
+
         }
-    }
+
+        /* For smaller screens */
+        @media (max-width: 1150px) {
+            #line1 {
+                display: none;
+            }
+
+            #line2 {
+                display: none;
+            }
+
+            #line3 {
+                display: none;
+            }
+
+            #line4 {
+                display: none;
+            }
+
+            #line5 {
+                display: none;
+            }
+
+            #line6 {
+                display: none;
+            }
+
+            .new-search-button {
+                background-color: white;
+                color: black;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 25px;
+                border: 2px solid transparent;
+                transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
+
+            .new-search-button:hover {
+                background-color: black;
+                color: white;
+                border: 2px solid white;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            .new-search-button:active {
+                background-color: black;
+                color: white;
+                border: 2px solid transparent;
+                box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .latlong-container {
+                position: absolute;
+                bottom: 40px;
+                left: 300px;
+                text-align: left;
+            }
+
+            .latlong-text {
+                display: none;
+            }
 
 
+            .map-key {
+                margin: 0;
+                font-size: 1rem;
+                color: white;
+                white-space: nowrap;
+            }
+
+            .map-key-container {
+                display: flex;
+                position: absolute;
+                border-radius: 3px;
+                bottom: 50px;
+                right: 15%;
+                gap: 15px;
+                white-space: nowrap;
+
+            }
+
+            .notice {
+                margin: 0;
+                font-size: 1rem;
+                color: white;
+                margin-top: 20px;
+            }
+
+
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                flex-direction: row;
+            }
+
+            .variable {
+                flex: 0 0 30%;
+                margin: 0 10px 20px 0;
+            }
+
+            .low {
+                color: green;
+            }
+
+            .moderate {
+                color: orange;
+            }
+
+            .high {
+                color: red;
+            }
+
+            .cvi-score {
+                position: relative;
+                font-size: 3rem;
+                font-weight: bold;
+                margin-bottom: 30px;
+                top: 20px;
+                color: white;
+
+            }
+
+            .cvi-text {
+                position: relative;
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+                margin-top: -25px;
+                color: white;
+
+            }
+
+            .variables-container {
+                margin-bottom: 30px;
+            }
+
+            .variable {
+                font-size: 1.2rem;
+                color: white;
+                margin-bottom: 20px;
+            }
+
+            .slider-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .slider-container label {
+                width: 200px;
+                text-align: left;
+                margin-right: 20px;
+            }
+
+            .slider {
+                appearance: none;
+                width: 100px;
+                height: 8px;
+                background: white;
+                outline: none;
+                margin-right: 20px;
+                pointer-events: none;
+            }
+
+            .slider::-webkit-slider-thumb {
+                appearance: none;
+                width: 10px;
+                height: 10px;
+                background: white;
+                border-radius: 50%;
+                pointer-events: none;
+            }
+
+            .slider-value {
+                font-size: 1rem;
+                width: 30px;
+                text-align: center;
+            }
+
+            /* Gradient for the slider */
+            .slider::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, green, yellow, red);
+                border-radius: 3px;
+            }
+
+            /* Color the slider based on the value */
+            #erosion::-webkit-slider-runnable-track,
+            #sea-level::-webkit-slider-runnable-track,
+            #tides::-webkit-slider-runnable-track,
+            #geomorphology::-webkit-slider-runnable-track #waves::-webkit-slider-runnable-track #slope::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, green, yellow, red);
+                border-radius: 3px;
+            }
+
+            #erosion::-moz-range-track,
+            #sea-level::-moz-range-track,
+            #tides::-moz-range-track,
+            #geomorphology::-moz-range-track #waves::-moz-range-track #slope::-moz-range-track {
+                background: linear-gradient(to right, green, yellow, red);
+                border-radius: 3px;
+            }
+
+            /* Map container */
+            #map {
+                width: 90%;
+                height: 200px;
+                margin: 20px auto;
+                border: 2px solid white;
+            }
+
+            .container {
+                position: relative;
+            }
+
+
+            .line {
+                position: absolute;
+                width: 2px;
+                background-color: white;
+                z-index: -1;
+            }
+        }
     </style>
 </head>
+
 <body>
+    <div class="navbar">
+        <a href="{{ url_for('index') }}" class="navbar-link">
+            CoastalRisk
+            <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right">
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('index', _anchor='mission') }}">mission</a>
+            <a href="{{ url_for('index', _anchor='philosophy') }}">philosophy</a>
+            <a href="{{ url_for('index', _anchor='contact') }}">contact</a>
+        </nav>
+    </div>
+    <div class="subheading" id="subheading"></div>
 
     <div class="container">
-       
+
         <div class="cvi-text">Overall Coastal Vulnerability Index in {{ address }}:</div>
-        <div class="cvi-score {{ 'low' if results['cvi'] == 'Low' else 'moderate' if results['cvi'] == 'Moderate' else 'high' }}">
+        <div
+            class="cvi-score {{ 'low' if results['cvi'] == 'Low' else 'moderate' if results['cvi'] == 'Moderate' else 'high' }}">
             {{ results['cvi'] }}
         </div>
 
 
         <div class="variables-container">
             <div class="row">
-            <div class="variable">
-                <label for="erosion">Erosion Levels</label>
-                <div class="slider-container">
-                    <input type="range" min="1" max="5" value="{{ erosion_value }}" class="slider" id="erosion" readonly>
+                <div class="variable">
+                    <label for="erosion">Erosion Levels</label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="{{ erosion_value }}" class="slider" id="erosion"
+                            readonly>
+                    </div>
+                    <span class="slider-value">{{ results['erosion'] }}</span>
+                    <div id="line1" class="line"></div>
                 </div>
-                <span class="slider-value">{{ results['erosion'] }}</span>
-                <div id="line1" class="line"></div>
-            </div>
-        
-        
-            <div class="variable">
-                <label for="sea-level">Sea Level Rise</label>
-                <div class="slider-container">
-                    <input type="range" min="1" max="5" value="{{ sea_level_value }}" class="slider" id="sea-level" readonly>
-                </div>
-                <span class="slider-value">{{ results['sea_level'] }}</span>
-                <div id="line2" class="line"></div>
-            </div>
-        
-        
-            <div class="variable">
-                <label for="tides">Tidal Risk</label>
-                <div class="slider-container">
-                    <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="tides" readonly>
-                </div>
-                <span class="slider-value">{{ results['tides'] }}</span>
-                <div id="line3" class="line"></div>
-            </div>
-        
-       
-            <div class="variable">
-                <label for="geomorphology">Geomorphology Risk</label>
-                <div class="slider-container">
-                    <input type="range" min="1" max="5" value="{{ geomorphology_value }}" class="slider" id="geomorphology" readonly>
-                </div>
-                <span class="slider-value">{{ results['geomorphology'] }}</span>
-                <div id="line4" class="line"></div>
-            </div>
 
-            <div class="variable">
-                <label for="waves">Wave Levels</label>
-                <div class="slider-container">
-                    <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="waves" readonly>
-                </div>
-                <span class="slider-value">{{ results['waves'] }}</span>
-                <div id="line5" class="line"></div>
-            </div>
 
-            <div class="variable">
-                <label for="slope">Coastal Slope Risk</label>
-                <div class="slider-container">
-                    <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="slope" readonly>
+                <div class="variable">
+                    <label for="sea-level">Sea Level Rise</label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="{{ sea_level_value }}" class="slider" id="sea-level"
+                            readonly>
+                    </div>
+                    <span class="slider-value">{{ results['sea_level'] }}</span>
+                    <div id="line2" class="line"></div>
                 </div>
-                <span class="slider-value">{{ results['slope'] }}</span>
-                <div id="line6" class="line"></div>
-            </div>
 
+
+                <div class="variable">
+                    <label for="tides">Tidal Risk</label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="tides"
+                            readonly>
+                    </div>
+                    <span class="slider-value">{{ results['tides'] }}</span>
+                    <div id="line3" class="line"></div>
+                </div>
+
+
+                <div class="variable">
+                    <label for="geomorphology">Geomorphology Risk</label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="{{ geomorphology_value }}" class="slider"
+                            id="geomorphology" readonly>
+                    </div>
+                    <span class="slider-value">{{ results['geomorphology'] }}</span>
+                    <div id="line4" class="line"></div>
+                </div>
+
+                <div class="variable">
+                    <label for="waves">Wave Levels</label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="waves"
+                            readonly>
+                    </div>
+                    <span class="slider-value">{{ results['waves'] }}</span>
+                    <div id="line5" class="line"></div>
+                </div>
+
+                <div class="variable">
+                    <label for="slope">Coastal Slope Risk</label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="{{ tides_value }}" class="slider" id="slope"
+                            readonly>
+                    </div>
+                    <span class="slider-value">{{ results['slope'] }}</span>
+                    <div id="line6" class="line"></div>
+                </div>
+
+            </div>
         </div>
-    </div>
 
 
-    <script>
-        
-        function mapValue(descriptiveValue) {
-            const valueMap = {
-                "Very Low": 1,
-                "Low": 2,
-                "Moderate": 3,
-                "High": 4,
-                "Very High": 5
-            };
-            return valueMap[descriptiveValue];
-        }
-    
-        
-        document.getElementById('erosion').value = mapValue("{{ results['erosion'] }}");
-        document.getElementById('sea-level').value = mapValue("{{ results['sea_level'] }}");
-        document.getElementById('tides').value = mapValue("{{ results['tides'] }}");
-        document.getElementById('geomorphology').value = mapValue("{{ results['geomorphology'] }}");
-        document.getElementById('waves').value = mapValue("{{ results['waves'] }}");
-        document.getElementById('slope').value = mapValue("{{ results['slope'] }}");
-    </script>
-        
+        <script>
+
+            function mapValue(descriptiveValue) {
+                const valueMap = {
+                    "Very Low": 1,
+                    "Low": 2,
+                    "Moderate": 3,
+                    "High": 4,
+                    "Very High": 5
+                };
+                return valueMap[descriptiveValue];
+            }
 
 
-    <div id="map"></div>
-        
-        
+            document.getElementById('erosion').value = mapValue("{{ results['erosion'] }}");
+            document.getElementById('sea-level').value = mapValue("{{ results['sea_level'] }}");
+            document.getElementById('tides').value = mapValue("{{ results['tides'] }}");
+            document.getElementById('geomorphology').value = mapValue("{{ results['geomorphology'] }}");
+            document.getElementById('waves').value = mapValue("{{ results['waves'] }}");
+            document.getElementById('slope').value = mapValue("{{ results['slope'] }}");
+        </script>
+
+
+
+        <div id="map"></div>
+
+
 
         <div class="map-key-container">
             <p class="map-key">
-                <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Red Marker" style="width: 15px; height: 15px; margin-right: 5px;">
+                <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Red Marker"
+                    style="width: 15px; height: 15px; margin-right: 5px;">
                 <span>Your Address</span>
-            
-            
-                <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="Blue Marker" style="width: 15px; height: 15px; margin-right: 5px;">
+
+
+                <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="Blue Marker"
+                    style="width: 15px; height: 15px; margin-right: 5px;">
                 <span>Coastal Risk Data Point</span>
-            
-             </p>
+
+            </p>
         </div>
 
         <div class="latlong-container">
@@ -643,13 +695,13 @@
                 <strong>Longitude:</strong> {{ longitude }}<br>
             </p>
         </div>
-        
+
 
         <a href="{{ url_for('index') }}" class="new-search-button">New Search</a>
 
     </div>
 
-    
+
     <script>
         function initMap() {
             const addressCoords = { lat: parseFloat("{{ latitude }}"), lng: parseFloat("{{ longitude }}") };
@@ -686,8 +738,7 @@
             });
         }
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
     </script>
 
 
@@ -697,4 +748,5 @@
     </div>
 
 </body>
+
 </html>
