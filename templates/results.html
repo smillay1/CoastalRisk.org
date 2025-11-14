@@ -8,13 +8,22 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
     <title>Coastal Vulnerability Index</title>
     <style>
+        :root {
+            --nav-h: 64px;
+            /* same navbar height everywhere */
+        }
+
+        html,
+        body {
+            margin: 0;
+        }
+
         body {
             font-family: Georgia, 'Times New Roman', Times, serif;
             text-align: center;
             overflow-y: auto;
-            /* margin-top: -20px;   <-- remove this */
             padding-top: var(--nav-h);
-            /* make room for the fixed navbar */
+            /* make room for fixed navbar */
             background-image: url("{{ url_for('static', filename='background.jpeg') }}");
             background-size: cover;
         }
@@ -25,14 +34,14 @@
             left: 0;
             right: 0;
             height: var(--nav-h);
-            /* bar is only this tall */
+            /* slim bar */
             background: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 24px;
-            /* vertical padding now controlled by height */
+            /* no vertical padding */
             z-index: 1000;
             font-size: 2rem;
             color: black;
@@ -58,11 +67,17 @@
             color: inherit;
             font-size: 1.1rem;
             font-weight: 3;
-            margin-right: 150px;
+            margin: 0;
+            /* no huge right margin */
         }
 
+        .wave-icon-right {
+            height: 28px;
+            width: 28px;
+            object-fit: contain;
+        }
 
-        /* For larger screens */
+        /* ---------- Larger screens ---------- */
         @media (min-width: 1150px) {
             #line1 {
                 left: 29vw;
@@ -117,7 +132,6 @@
                 transform-origin: top right;
                 color: white;
             }
-
 
             .new-search-button {
                 background-color: white;
@@ -175,18 +189,12 @@
                 white-space: nowrap;
             }
 
-
             .notice {
                 margin: 0;
                 font-size: 1rem;
                 color: white;
                 margin-top: 25px;
-
             }
-
-
-
-
 
             .row {
                 display: flex;
@@ -218,7 +226,6 @@
                 margin-bottom: 100px;
                 top: -60px;
                 color: white;
-
             }
 
             .cvi-text {
@@ -276,30 +283,11 @@
                 text-align: center;
             }
 
-            /* Gradient for the slider */
             .slider::-webkit-slider-runnable-track {
                 background: linear-gradient(to right, green, yellow, red);
                 border-radius: 3px;
             }
 
-            /* Color the slider based on the value */
-            #erosion::-webkit-slider-runnable-track,
-            #sea-level::-webkit-slider-runnable-track,
-            #tides::-webkit-slider-runnable-track,
-            #geomorphology::-webkit-slider-runnable-track #waves::-webkit-slider-runnable-track #slope::-webkit-slider-runnable-track {
-                background: linear-gradient(to right, green, yellow, red);
-                border-radius: 3px;
-            }
-
-            #erosion::-moz-range-track,
-            #sea-level::-moz-range-track,
-            #tides::-moz-range-track,
-            #geomorphology::-moz-range-track #waves::-moz-range-track #slope::-moz-range-track {
-                background: linear-gradient(to right, green, yellow, red);
-                border-radius: 3px;
-            }
-
-            /* Map container */
             #map {
                 width: 70%;
                 height: 400px;
@@ -309,11 +297,9 @@
                 border-color: white;
             }
 
-
             .container {
                 position: relative;
             }
-
 
             .line {
                 position: absolute;
@@ -321,32 +307,16 @@
                 background-color: white;
                 z-index: -1;
             }
-
-
         }
 
-        /* For smaller screens */
+        /* ---------- Smaller screens ---------- */
         @media (max-width: 1150px) {
-            #line1 {
-                display: none;
-            }
 
-            #line2 {
-                display: none;
-            }
-
-            #line3 {
-                display: none;
-            }
-
-            #line4 {
-                display: none;
-            }
-
-            #line5 {
-                display: none;
-            }
-
+            #line1,
+            #line2,
+            #line3,
+            #line4,
+            #line5,
             #line6 {
                 display: none;
             }
@@ -392,7 +362,6 @@
                 display: none;
             }
 
-
             .map-key {
                 margin: 0;
                 font-size: 1rem;
@@ -408,7 +377,6 @@
                 right: 15%;
                 gap: 15px;
                 white-space: nowrap;
-
             }
 
             .notice {
@@ -417,7 +385,6 @@
                 color: white;
                 margin-top: 20px;
             }
-
 
             .row {
                 display: flex;
@@ -451,7 +418,6 @@
                 margin-bottom: 30px;
                 top: 20px;
                 color: white;
-
             }
 
             .cvi-text {
@@ -460,7 +426,6 @@
                 margin-bottom: 20px;
                 margin-top: -25px;
                 color: white;
-
             }
 
             .variables-container {
@@ -510,36 +475,6 @@
                 text-align: center;
             }
 
-            .wave-icon-right {
-                height: 28px;
-                width: 28px;
-                object-fit: contain;
-            }
-
-            /* Gradient for the slider */
-            .slider::-webkit-slider-runnable-track {
-                background: linear-gradient(to right, green, yellow, red);
-                border-radius: 3px;
-            }
-
-            /* Color the slider based on the value */
-            #erosion::-webkit-slider-runnable-track,
-            #sea-level::-webkit-slider-runnable-track,
-            #tides::-webkit-slider-runnable-track,
-            #geomorphology::-webkit-slider-runnable-track #waves::-webkit-slider-runnable-track #slope::-webkit-slider-runnable-track {
-                background: linear-gradient(to right, green, yellow, red);
-                border-radius: 3px;
-            }
-
-            #erosion::-moz-range-track,
-            #sea-level::-moz-range-track,
-            #tides::-moz-range-track,
-            #geomorphology::-moz-range-track #waves::-moz-range-track #slope::-moz-range-track {
-                background: linear-gradient(to right, green, yellow, red);
-                border-radius: 3px;
-            }
-
-            /* Map container */
             #map {
                 width: 90%;
                 height: 200px;
@@ -551,59 +486,15 @@
                 position: relative;
             }
 
-
             .line {
                 position: absolute;
                 width: 2px;
                 background-color: white;
                 z-index: -1;
             }
-
-            :root {
-                --nav-h: 64px;
-            }
-
-            html,
-            body {
-                margin: 0;
-            }
-
-            body {
-                padding-top: var(--nav-h) !important;
-            }
-
-            .navbar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: var(--nav-h);
-                /* bar is only this tall */
-                background: white;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 24px;
-                /* vertical padding now controlled by height */
-                z-index: 1000;
-                font-size: 2rem;
-                color: black;
-                font-weight: 700;
-            }
-
-            .wave-icon-right {
-                height: 28px !important;
-                width: 28px !important;
-                object-fit: contain !important;
-            }
-
-            .nav-links a {
-                margin: 0 !important;
-            }
-
         }
     </style>
+
 </head>
 
 <body>
