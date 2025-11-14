@@ -465,9 +465,11 @@
             color: black;
         }
 
-        .fullpage.photo {
-            background: url("{{ url_for('static', filename='philosophy.jpg') }}") center / cover no-repeat;
-            color: black;
+        .fullpage.photo h2,
+        .fullpage.photo p {
+            color: #ffffff;
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+            /* optional, just for readability */
         }
 
         #mission .content {
@@ -630,23 +632,24 @@
                 </p>
                 <p>
                     We believe that decision-makers need clear, data-backed insights to navigate an era of rising sea
-                    levels
-                    and shifting coastlines.
+                    levels and shifting coastlines.
                 </p>
                 <p>
                     We believe that highly customized analysis is superior to generic, one-size-fits-all risk models.
                 </p>
-                We believe that proactive planning today is the key to long-term resilience.
+                <p>
+                    We believe that proactive planning today is the key to long-term resilience.
+                </p>
                 <p>
                     That’s why we provide highly specialized proprietary risk assessments: helping businesses and
-                    communities
-                    make informed decisions before disaster strikes.
+                    communities make informed decisions before disaster strikes.
                 </p>
                 <p>
                     All CoastalRisk research is independent, proprietary, and confidential.
                 </p>
             </div>
         </section>
+
 
 
         <script>
