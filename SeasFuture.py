@@ -130,21 +130,21 @@ def create_checkout_session():
                 'quantity': 1,
             }],
             mode='payment',
-            success_url='https://coastalrisk.org/index',
-            cancel_url='https://coastalrisk.org/premium',
+            success_url='https://coastalrisk.org/success',
+            cancel_url='https://coastalrisk.org/developers',
         )
         return jsonify({'url': checkout_session.url})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-@app.route("/premium")
-def premium():
-    return render_template("premium.html")
+@app.route("/developers")
+def developers():
+    return render_template("developers.html", year="2026")
 
-@app.route("/payment")
-def payment():
-     return render_template("payment.html")
+@app.route("/success")
+def success():
+    return render_template("success.html")
 
 
 def find_closest_feature(lng, lat):

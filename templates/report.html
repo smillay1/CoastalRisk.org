@@ -1,393 +1,783 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon" />
+  <title>CoastalRisk Report – {{ address }}</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coastal Risk Climate Report</title>
-    <style>
-        body {
-            background-color: #123262;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            margin: 0;
-            padding: 45px;
-        }
+  <style>
+    :root {
+      --nav-height: 72px;
+      --clr-bg: #020617;
+      --clr-surface: rgba(15, 23, 42, 0.96);
+      --clr-border: rgba(148, 163, 184, 0.3);
+      --clr-accent: #0ea5e9;
+      --clr-text-main: #f1f5f9;
+      --clr-text-muted: #94a3b8;
+      --clr-text-body: #cbd5f5;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.6);
+      --shadow-card: 0 10px 28px rgba(15, 23, 42, 0.5);
+      --transition-fast: 180ms ease-out;
+    }
 
-        .report-container {
-            background-color: #ffffff;
-            border: 2px solid black;
-            border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 100%;
-            max-width: 1200px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        h1, h2, h3, p {
-            color: black;
-            text-align: center;
-        }
+    * { box-sizing: border-box; }
 
-        .layer-section {
-            margin-bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-height);
+    }
 
-        .map-container {
-            width: 100%;
-            max-width: 800px;
-            height: 500px;
-            margin: 20px auto;
-            border: 3px solid #000;
-            border-radius: 15px;
-            box-sizing: border-box;
-            overflow: hidden; /* Ensure the image stays inside the container */
-        }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--clr-bg);
+      color: var(--clr-text-main);
+      min-height: 100vh;
+      padding-top: var(--nav-height);
+      position: relative;
+    }
 
-        .map-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures the image fills the container */
-        }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(15, 23, 42, 0.96) 0%,
+          rgba(15, 23, 42, 0.90) 40%,
+          rgba(15, 23, 42, 0.98) 100%),
+        url('{{ url_for("static", filename="background.jpeg") }}') center / cover no-repeat fixed;
+      z-index: -1;
+    }
 
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      z-index: 1000;
+    }
 
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            max-width: 300px;
-            height: 2px;
-            background: #000;
-            margin-top: 20px;
-            position: relative;
-        }
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #e5e7eb;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 5px;
-            background: #000;
-            cursor: pointer;
-            transform: rotate(90deg);
-        }
+    .brand-link span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.7);
+    }
 
-        input[type="range"]::-moz-range-thumb {
-            width: 10px;
-            height: 30px;
-            background: #000;
-            cursor: pointer;
-            transform: rotate(90deg);
-        }
+    .brand-link img { height: 28px; width: auto; }
 
-        .divider {
-            width: 100%;
-            height: 2px;
-            background-color: #123262;
-            margin: 40px 0;
-        }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.9rem;
+    }
 
-        .scale {
-            width: 100%;
-            max-width: 300px;
-            height: 20px;
-            background: linear-gradient(to right, white, darkblue);
-            margin-top: 10px;
-            border-radius: 15px;
-        }
+    .nav-links a {
+      color: #cbd5f5;
+      text-decoration: none;
+      text-transform: capitalize;
+      letter-spacing: 0.04em;
+      position: relative;
+      padding-bottom: 4px;
+    }
 
-        .scale-labels {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 300px;
-            margin-top: 5px;
-            color: black;
-        }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+      transition: width var(--transition-fast);
+    }
 
-        .vegetation-scale {
-            width: 100%;
-            max-width: 300px;
-            height: 20px;
-            background: linear-gradient(to right, white, green);
-            margin-top: 10px;
-            border-radius: 15px;
-        }
+    .nav-links a:hover::after { width: 100%; }
 
-        .vegetation-scale-labels {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 300px;
-            margin-top: 5px;
-            color: black;
-        }
+    /* ── Page layout ── */
+    main {
+      max-width: 1040px;
+      margin: 0 auto 80px;
+      padding: 24px 16px 40px;
+    }
 
-        .water-scale {
-            width: 100%;
-            max-width: 300px;
-            height: 20px;
-            background: linear-gradient(to right, white, lightblue, darkblue);
-            margin-top: 10px;
-            border-radius: 15px;
-        }
+    /* ── Cover header ── */
+    header.report-header {
+      position: relative;
+      background: url('{{ header_image_url }}') center / cover no-repeat;
+      min-height: 260px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      text-align: center;
+      color: #f9fafb;
+      box-shadow: var(--shadow-soft);
+    }
 
-        .water-scale-labels {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 300px;
-            margin-top: 5px;
-            color: black;
-        }
+    header.report-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+          rgba(15, 23, 42, 0.30) 0%,
+          rgba(15, 23, 42, 0.65) 40%,
+          rgba(15, 23, 42, 0.92) 100%);
+    }
 
-        .flood-risk-scale {
-            width: 100%;
-            max-width: 300px;
-            height: 20px;
-            background: linear-gradient(to right, darkgreen, lightgreen, yellow, orange, red);
-            margin-top: 10px;
-            border-radius: 15px;
-        }
+    .header-inner {
+      position: relative;
+      max-width: 700px;
+      padding: 24px 28px 28px;
+    }
 
-        .flood-risk-scale-labels {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 300px;
-            margin-top: 5px;
-            color: black;
-        }
+    .header-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #7dd3fc;
+      margin-bottom: 8px;
+    }
 
-        .slider-container {
-            border: 2px solid black;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-        }
+    header h1 {
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      margin: 0 0 6px;
+      color: #f9fafb;
+    }
 
-        @media (max-width: 768px) {
-            .map-container {
-                width: 90%;
-                height: 200px;
-            }
+    header p {
+      margin: 2px 0;
+      font-size: 0.9rem;
+      color: #dbeafe;
+    }
 
-            input[type="range"] {
-                max-width: 90%;
-            }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 18px;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: #e5e7eb;
+    }
 
-            .scale {
-                max-width: 90%;
-            }
+    /* ── Generic section ── */
+    .section {
+      margin: 0 auto 20px;
+      background: var(--clr-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 22px 24px 26px;
+      border: 1px solid var(--clr-border);
+    }
 
-            .scale-labels {
-                max-width: 90%;
-            }
+    .section-title {
+      font-size: 1.35rem;
+      margin: 0 0 6px;
+      color: var(--clr-text-main);
+    }
 
-            .vegetation-scale {
-                max-width: 90%;
-            }
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--clr-text-muted);
+      margin: 0 0 16px;
+    }
 
-            .vegetation-scale-labels {
-                max-width: 90%;
-            }
+    /* ── Intro ── */
+    .intro-paragraph {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: var(--clr-text-body);
+      margin: 0;
+    }
 
-            .water-scale {
-                max-width: 90%;
-            }
+    /* ── Risk snapshot cards ── */
+    .card-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
 
-            .water-scale-labels {
-                max-width: 90%;
-            }
+    .card-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
-            .flood-risk-scale {
-                max-width: 90%;
-            }
+    .risk-card {
+      flex: 1 1 0;
+      min-width: 180px;
+      background: rgba(14, 165, 233, 0.07);
+      border-radius: var(--radius-md);
+      padding: 14px 16px 16px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
 
-            .flood-risk-scale-labels {
-                max-width: 90%;
-            }
+    .risk-card h4 {
+      margin: 0 0 6px;
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: #7dd3fc;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
 
-            .slider-container {
-                max-width: 90%;
-            }
-        }
-    </style>
+    .risk-card p {
+      margin: 0;
+      font-size: 0.93rem;
+      color: var(--clr-text-body);
+      line-height: 1.5;
+    }
+
+    /* ── Sea-level rise ── */
+    .sea-level-intro {
+      font-size: 0.96rem;
+      color: var(--clr-text-body);
+      line-height: 1.75;
+      margin: 0 0 20px;
+    }
+
+    .sea-level-visuals {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin: 0 0 14px;
+    }
+
+    .image-year { text-align: center; font-size: 0.88rem; color: var(--clr-text-body); }
+
+    .image-year img {
+      width: 240px;
+      max-width: 100%;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      display: block;
+      margin: 0 auto 8px;
+      border: 1px solid var(--clr-border);
+    }
+
+    .sea-level-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 18px;
+      margin: 0 0 12px;
+      font-size: 0.88rem;
+      color: var(--clr-text-body);
+    }
+
+    .legend-item { display: flex; align-items: center; gap: 7px; }
+
+    .legend-dot { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+    .green-dot  { background-color: #22c55e; }
+    .blue-dot   { background-color: #38bdf8; }
+
+    .property-note {
+      font-size: 0.86rem;
+      color: var(--clr-text-muted);
+      padding-top: 10px;
+      border-top: 1px solid var(--clr-border);
+      margin: 10px 0 0;
+      line-height: 1.6;
+    }
+
+    /* ── Storm surge carousel ── */
+    .storm-intro {
+      font-size: 0.96rem;
+      color: var(--clr-text-body);
+      line-height: 1.75;
+      margin: 0 0 16px;
+    }
+
+    .carousel-container {
+      position: relative;
+      max-width: 520px;
+      margin: 0 auto 12px;
+      overflow: hidden;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--clr-border);
+    }
+
+    .carousel-slide {
+      display: none;
+      text-align: center;
+      background: rgba(15, 23, 42, 0.98);
+      padding-bottom: 12px;
+    }
+
+    .carousel-slide img { width: 100%; display: block; border-radius: var(--radius-md) var(--radius-md) 0 0; }
+
+    .carousel-slide p {
+      margin: 10px 12px 0;
+      font-weight: 500;
+      font-size: 0.88rem;
+      color: var(--clr-text-body);
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(15, 23, 42, 0.65);
+      color: #f9fafb;
+      font-size: 18px;
+      padding: 6px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      cursor: pointer;
+      z-index: 1;
+      border-radius: 999px;
+      transition: background var(--transition-fast);
+    }
+
+    .carousel-btn:hover { background: rgba(14, 165, 233, 0.5); }
+    .carousel-btn.prev  { left: 8px; }
+    .carousel-btn.next  { right: 8px; }
+
+    .storm-legend {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--clr-text-muted);
+      margin: 4px 0 10px;
+    }
+
+    .property-dot {
+      display: inline-block;
+      width: 9px; height: 9px;
+      background-color: #ef4444;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    /* ── Unity iframe ── */
+    .unity-title  { font-size: 1.25rem; font-weight: 600; margin: 0 0 6px; color: var(--clr-text-main); }
+    .unity-subtitle {
+      font-size: 0.92rem;
+      color: var(--clr-text-muted);
+      margin: 0 0 14px;
+      line-height: 1.6;
+    }
+
+    .unity-iframe-wrapper {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--clr-border);
+    }
+
+    .unity-iframe-wrapper iframe { width: 100%; height: 520px; border: none; display: block; }
+
+    /* ── FEMA flood zone ── */
+    .flooding-section { text-align: center; }
+
+    .risk-summary { font-size: 0.97rem; color: var(--clr-text-body); margin: 4px 0 12px; }
+
+    .flood-bar {
+      position: relative;
+      width: 80%;
+      max-width: 520px;
+      margin: 28px auto 14px;
+      font-size: 0.88rem;
+    }
+
+    .flood-label { display: inline-block; width: 50%; color: var(--clr-text-muted); font-size: 0.82rem; }
+    .flood-label.left  { text-align: left; }
+    .flood-label.right { text-align: right; }
+
+    .flood-line {
+      height: 4px;
+      background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+      margin: 20px 0 18px;
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .flood-indicator {
+      position: absolute;
+      top: -14px;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: #f9fafb;
+      transition: left 0.4s ease;
+    }
+
+    .flood-tick-container { position: relative; height: 22px; }
+
+    .flood-tick {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      font-size: 0.76rem;
+      color: var(--clr-text-body);
+      font-weight: 500;
+    }
+
+    .zone-label { font-weight: 600; font-size: 1.05rem; margin-top: 6px; color: var(--clr-text-main); }
+    .flood-note { font-size: 0.88rem; color: var(--clr-text-muted); margin-top: 6px; line-height: 1.6; }
+
+    /* ── Historic flood events ── */
+    .timeline-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      height: 110px;
+      margin: 28px auto 6px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 50%; left: 0;
+      height: 2px;
+      background: rgba(148, 163, 184, 0.4);
+      width: 100%;
+      transform: translateY(-50%);
+    }
+
+    .flood-event {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--clr-text-main);
+    }
+
+    .flood-event .icon { font-size: 22px; cursor: default; }
+
+    .flood-event .tooltip {
+      display: none;
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid var(--clr-border);
+      padding: 8px 10px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-card);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      z-index: 2;
+      color: var(--clr-text-body);
+    }
+
+    .flood-event:hover .tooltip { display: block; }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--clr-text-muted);
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 14px 16px 18px;
+      background: rgba(15, 23, 42, 0.95);
+      text-align: center;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .page-footer .email { color: #e0f2fe; }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .section { padding: 18px 16px 20px; border-radius: 14px; }
+      .card-row { flex-direction: column; }
+      .flood-bar { width: 100%; }
+      .navbar { padding: 0 16px; }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="report-container">
-        <header>
-            <h1>Coastal Risk Climate Report: [Client Name]</h1>
-            <div class="divider"></div>
-            <p style="text-align: left;"><strong>Address:</strong> [Property Address]</p>
-            <p style="text-align: left;"><strong>Date:</strong> [Report Date]</p>
-            <p style="text-align: left;"><strong>Prepared by:</strong> CoastalRisk</p>
-            <div class="divider"></div>
-        </header>
 
-        <section id="welcome-section">
-            <h2>Welcome to Your Climate Report</h2>
-            <div class="layer-section">
-                <ul style="text-align: left;">
-                    <li><strong>Overview:</strong>
-                        <ul style="margin-left: 20px; list-style-type: disc;">
-                            <li>Your location's risk of being flooded</li>
-                            <li>Your location's risk posed by erosion</li>
-                            <li>How your location's risk compares to others in your area</li>
-                            <li>Your location's overall Coastal Risk </li>
-                            <p></p>
-                        </ul>
-                    </li>
-                    <li><strong>Satellite Imagery:</strong>
-                        <ul style="margin-left: 20px; list-style-type: disc;">
-                            <li>Your area:</li>
-                                <ul><li>A map of your location's satellite view</li></ul>
-                            <li>Elevation in your area:</li>
-                                <ul><li>A map of the elevation surrounding your location</li></ul>
-                                <ul><li>Elevation is a key element in determining flood risk, typically lower elevations are more prone to coastal flooding</li></ul>
-                            <li>Vegetaion in your area:</li>
-                                <ul><li>A map of vegetation levels surrounding your location</li></ul>
-                                <ul><li>Higher levels of vegetation typically indicate higher resiliency against flooding</li></ul>
-                            <li>Typical water presence in your area:</li>
-                                <ul><li>A map showing water frequency in your area</li></ul>
-                                <ul><li>Higher water frequencies are indicators of consistent flood activity</li></ul>
-                            <li>Overall flood risk map:</li>
-                                <ul><li>Created compiling the previous variables and more</li></ul>
-                                <ul><li>Trained with artificial intelligence to capture your coastal flood risk</li></ul>
-                            <li>History of erosion in your area:</li>
-                                <ul><li>Created by using satellite snapshots from 1990, 2000, 2010 and 2010</li></ul>
-                                <ul><li>Snapshots are then layered over one another to measure erosion over the last 30 years</li></ul>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="{{ url_for('index') }}" class="brand-link">
+      <span>CoastalRisk</span>
+      <img src="{{ url_for('static', filename='favicon.png') }}" alt="CoastalRisk" />
+    </a>
+    <nav class="nav-links">
+      <a href="{{ url_for('index', _anchor='mission') }}">mission</a>
+      <a href="{{ url_for('index', _anchor='philosophy') }}">philosophy</a>
+      <a href="{{ url_for('developers') }}">developer reports</a>
+    </nav>
+  </header>
 
-                        </ul>
-                    </li>
-                    <p></p>
-                    <li><strong>Your Overall Risk:</strong>
-                        <ul style="margin-left: 20px; list-style-type: disc;">
-                            <li>Based on all data collected, your overall Coastal Risk score</li>
-                            <li>Based on all data collected, your overall Coastal Risk score</li>
-                            <strong><li>How your location's risk compares to locations in your surrounding area:</li></strong>
-                            <ul><li>Compare your location's risk to your neighbors' in your area</li></ul>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="divider"></div>
-        </section>
+  <!-- COVER -->
+  <header class="report-header">
+    <div class="header-inner">
+      <div class="header-eyebrow">CoastalRisk Vulnerability Assessment</div>
+      <h1>Coastal Risk Report</h1>
+      <p>Prepared for <strong>{{ client_name }}</strong></p>
+      <p>{{ address }}</p>
+      <div class="header-meta">
+        <span><strong>Date:</strong> {{ date }}</span>
+        <span><strong>Report Year:</strong> {{ year }}</span>
+      </div>
+    </div>
+  </header>
 
-        <section id="overview-section">
-            <h2>1. Overview</h2>
-            <div class="layer-section">
-                <!-- Overview content will be added here in the future -->
-            </div>
-            <div class="divider"></div>
-        </section>
+  <main>
 
-        <section id="property-from-space-section">
-            <h2>2. Your Property from Space</h2>
-            <div class="layer-section">
-                <label style="margin-top: 20px; font-weight: bold;">Your Area:</label>
-                <div id="satelliteMap" class="map-container">
-                    <img src="https://storage.googleapis.com/coastalrisk-storage/satellite.png" alt="Satellite View">
-                </div>
-            </div>
-        
-            <div class="layer-section">
-                <label style="margin-top: 20px; font-weight: bold;">Elevation in Your Area:</label>
-                <div id="elevationMap" class="map-container">
-                    <img src="https://storage.googleapis.com/coastalrisk-storage/elevation.png" alt="Elevation Map">
-                </div>
-                <div class="scale"></div>
-                <div class="scale-labels">
-                    <span>0m</span>
-                    <span>50m</span>
-                </div>
-            </div>
-        
-            <div class="layer-section">
-                <label style="margin-top: 20px; font-weight: bold;">Vegetation in Your Area:</label>
-                <div id="ndviMap" class="map-container">
-                    <img src="https://storage.googleapis.com/coastalrisk-storage/ndvi.png" alt="NDVI Map">
-                </div>
-                <div class="vegetation-scale"></div>
-                <div class="vegetation-scale-labels">
-                    <span>No Vegetation</span>
-                    <span>High Vegetation</span>
-                </div>
-            </div>
-        
-            <div class="layer-section">
-                <label style="margin-top: 20px; font-weight: bold;">Typical Water Presence in Your Area:</label>
-                <div id="waterMap" class="map-container">
-                    <img src="https://storage.googleapis.com/coastalrisk-storage/ndwi.png" alt="NDWI Map">
-                </div>
-                <div class="water-scale"></div>
-                <div class="water-scale-labels">
-                    <span>Low Frequency</span>
-                    <span>High Frequency</span>
-                </div>
-            </div>
-        
-            <div class="layer-section">
-                <label style="margin-top: 20px; font-weight: bold;">Overall Flood Risk Map:</label>
-                <div id="floodRiskMap" class="map-container">
-                    <img src="https://storage.googleapis.com/coastalrisk-storage/FloodRisk.png" alt="Flood Risk Map">
-                </div>
-                <div class="flood-risk-scale"></div>
-                <div class="flood-risk-scale-labels">
-                    <span>Low Risk</span>
-                    <span>High Risk</span>
-                </div>
-            </div>
-        
-            <div class="layer-section">
-                <label style="margin-top: 20px; font-weight: bold;">History of Erosion in Your Area:</label>
-                <div id="erosionMap" class="map-container">
-                    <img src="https://storage.googleapis.com/coastalrisk-storage/erosion.png" alt="Erosion History Map">
-                </div>
-            </div>
-            <div class="divider"></div>
-        </section>
-        
-
-            
-
-        <section id="overall-risk-section">
-            <h2>3. Your Overall Risk</h2>
-            <div class="layer-section">
-                <p style="text-align: left;">This section provides an overview of your overall flood and erosion risk levels. Based on our analysis, we have calculated your risk level using various data points, including elevation, vegetation, and water presence.</p>
-            </div>
-            <h3>3.1 How Your Risk Compares with Other Properties in Your Area</h3>
-            <div class="layer-section">
-                <p style="text-align: left;">Compared to other properties in your area, your risk level is [higher/lower/about the same]. This comparison helps you understand where your property stands in terms of vulnerability to coastal hazards.</p>
-            </div>
-            <div class="divider"></div>
-        </section>
-
-        <section id="recommendations-section">
-            <h2>4. Our Recommendations</h2>
-            <div class="layer-section">
-                <p style="text-align: left;">Based on your personal coastal risk level, we recommend the following actions to better protect your property from coastal climate hazards:</p>
-                <ul style="text-align: left;">
-                    <li>Consider elevating key structures to reduce flood risk.</li>
-                    <li>Invest in natural vegetation barriers to help absorb water.</li>
-                    <li>Stay informed about local flood warnings and evacuation procedures.</li>
-                </ul>
-            </div>
-            <div class="divider"></div>
-        </section>
+    <div style="text-align:center; font-size:0.74rem; color:var(--clr-text-muted); margin: 0 0 20px;">
+      CoastalRisk.org &nbsp;|&nbsp; © {{ year }} &nbsp;|&nbsp; Private client report — confidential
     </div>
 
+    <!-- INTRO -->
+    <section class="section">
+      <h2 class="section-title">What This Report Shows</h2>
+      <p class="section-subtitle">
+        A property-specific summary of coastal flooding, storm surge, and sea-level-rise exposure.
+      </p>
+      <p class="intro-paragraph">
+        This Coastal Risk Vulnerability Assessment evaluates the flooding and sea-level-rise threats to your property
+        using the latest FEMA flood zone data, historical storm records, storm surge models, and projected sea-level
+        rise through 2100. Each section provides maps, simulations, and risk levels to help you understand your
+        property's exposure and support future design, investment, and mitigation decisions.
+      </p>
+    </section>
 
-    
+    <!-- RISK SNAPSHOT -->
+    <section class="section">
+      <h2 class="section-title">Risk Snapshot</h2>
+      <p class="section-subtitle">High-level indicators that summarize your current and future coastal risk.</p>
+
+      <div class="card-grid">
+        <div class="card-row">
+          <div class="risk-card">
+            <h4>Overall Flood Risk</h4>
+            <p>{{ flood_risk }}</p>
+          </div>
+          <div class="risk-card">
+            <h4>Storm Surge Risk</h4>
+            <p>{{ surge_risk }}</p>
+          </div>
+          <div class="risk-card">
+            <h4>FEMA Zone</h4>
+            <p>{{ fema_zone_risk }}</p>
+          </div>
+        </div>
+        <div class="card-row">
+          <div class="risk-card">
+            <h4>Sea-Level Rise Risk</h4>
+            <p>{{ sea_level_rise_risk }}</p>
+          </div>
+          <div class="risk-card">
+            <h4>Historic Flooding Events</h4>
+            <p>{{ flood_event_count }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEA-LEVEL RISE -->
+    <section class="section">
+      <h2 class="section-title">Sea-Level Rise</h2>
+      <p class="section-subtitle">How projected sea-level rise changes flood extent over time.</p>
+
+      <p class="sea-level-intro">{{ sea_level_intro }}</p>
+
+      <div class="sea-level-visuals">
+        <div class="image-year">
+          <img src="{{ url_for('static', filename='SLR_2030.png') }}" alt="2030 Sea-Level Rise Projection">
+          <p>2030</p>
+        </div>
+        <div class="image-year">
+          <img src="{{ url_for('static', filename='SLR_2055.png') }}" alt="2055 Sea-Level Rise Projection">
+          <p>2055</p>
+        </div>
+        <div class="image-year">
+          <img src="{{ url_for('static', filename='SLR_2075.png') }}" alt="2075 Sea-Level Rise Projection">
+          <p>2075</p>
+        </div>
+      </div>
+
+      <div class="sea-level-legend">
+        <div class="legend-item"><span class="legend-dot green-dot"></span> Partial flooding of parcel</div>
+        <div class="legend-item"><span class="legend-dot blue-dot"></span> Full flooding of parcel footprint</div>
+      </div>
+
+      <p class="property-note">{{ property_note }}</p>
+    </section>
+
+    <!-- STORM SURGE -->
+    <section class="section">
+      <h2 class="section-title">Storm Surge</h2>
+      <p class="section-subtitle">Envelope of potential surge heights for different hurricane categories.</p>
+
+      <p class="storm-intro">{{ storm_surge_intro }}</p>
+
+      <div class="carousel-container">
+        <button class="carousel-btn prev" onclick="changeSlide(-1)" aria-label="Previous slide">❮</button>
+
+        <div class="carousel-slide">
+          <img src="{{ url_for('static', filename='surge1.png') }}" alt="Category 1 Hurricane Surge Map" />
+          <p>{{ cat1_surge }}</p>
+        </div>
+        <div class="carousel-slide">
+          <img src="{{ url_for('static', filename='surge2.png') }}" alt="Category 2 Hurricane Surge Map" />
+          <p>{{ cat2_surge }}</p>
+        </div>
+        <div class="carousel-slide">
+          <img src="{{ url_for('static', filename='surge3.png') }}" alt="Category 3 Hurricane Surge Map" />
+          <p>{{ cat3_surge }}</p>
+        </div>
+        <div class="carousel-slide">
+          <img src="{{ url_for('static', filename='surge4.png') }}" alt="Category 4 Hurricane Surge Map" />
+          <p>{{ cat4_surge }}</p>
+        </div>
+        <div class="carousel-slide">
+          <img src="{{ url_for('static', filename='surge5.png') }}" alt="Category 5 Hurricane Surge Map" />
+          <p>{{ cat5_surge }}</p>
+        </div>
+
+        <button class="carousel-btn next" onclick="changeSlide(1)" aria-label="Next slide">❯</button>
+      </div>
+
+      <div class="storm-legend">
+        <span class="property-dot"></span> Your property location in each scenario
+      </div>
+
+      <p class="property-note">{{ storm_surge_property_note }}</p>
+    </section>
+
+    <!-- INTERACTIVE SIMULATION -->
+    <section class="section">
+      <h2 class="unity-title">Interactive Storm Surge Simulation</h2>
+      <p class="unity-subtitle">
+        This reference model illustrates how increasing storm surge heights interact with a typical coastal residence.
+        Use it as a visual analog when interpreting your property's flood levels.
+      </p>
+      <div class="unity-iframe-wrapper">
+        <iframe src="{{ url_for('static', filename='HouseWebBuild/index.html') }}"
+          title="Storm Surge Simulation" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <!-- FEMA FLOOD ZONE -->
+    <section class="section flooding-section">
+      <h2 class="section-title">FEMA Flooding Risk</h2>
+      <p class="section-subtitle">
+        How FEMA classifies this parcel from lowest to highest regulatory flood risk.
+      </p>
+      <p class="risk-summary">Overall risk level: <strong>Zone {{ flood_zone }}</strong></p>
+
+      <div class="flood-bar">
+        <span class="flood-label left">Lowest risk (outside mapped floodplain)</span>
+        <span class="flood-label right">Highest risk (high-energy coastal flood zone)</span>
+
+        <div class="flood-line">
+          <div class="flood-indicator" id="floodIndicator">▲</div>
+        </div>
+
+        <div class="flood-tick-container">
+          <div class="flood-tick" style="left:0%">X</div>
+          <div class="flood-tick" style="left:15%">B</div>
+          <div class="flood-tick" style="left:30%">A</div>
+          <div class="flood-tick" style="left:50%">AE</div>
+          <div class="flood-tick" style="left:75%">V</div>
+          <div class="flood-tick" style="left:100%">VE</div>
+        </div>
+      </div>
+
+      <p class="zone-label">Zone {{ flood_zone }}</p>
+      <p class="flood-note">{{ flood_note }}</p>
+    </section>
+
+    <!-- HISTORIC FLOOD EVENTS -->
+    <section class="section">
+      <h2 class="section-title">Past Flooding Events</h2>
+      <p class="section-subtitle">
+        Selected historical flood events in the surrounding area, with indicative severity.
+      </p>
+
+      <div class="timeline-wrapper">
+        <div class="timeline-line"></div>
+
+        <div class="flood-event" style="left:66%">
+          <div class="icon">💧</div>
+          <div class="tooltip">
+            <strong>2017 Flooding</strong><br />
+            10 inches of rainfall<br />
+            $1.2M in local damages
+          </div>
+        </div>
+
+        <div class="flood-event" style="left:80%">
+          <div class="icon">💧</div>
+          <div class="tooltip">
+            <strong>2022 Flooding</strong><br />
+            Storm surge 5 ft<br />
+            Major basement flooding
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-labels">
+        <span>1995</span>
+        <span>2025</span>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page-footer">
+    CoastalRisk.org &nbsp;|&nbsp; Inquiries: <span class="email">info@CoastalRisk.org</span>
+  </footer>
+
+  <script>
+    let slideIndex = 0;
+
+    function changeSlide(n) { showSlide(slideIndex += n); }
+
+    function showSlide(n) {
+      const slides = document.getElementsByClassName("carousel-slide");
+      if (!slides.length) return;
+      if (n >= slides.length) slideIndex = 0;
+      if (n < 0) slideIndex = slides.length - 1;
+      for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+      slides[slideIndex].style.display = "block";
+    }
+
+    function positionFloodIndicator() {
+      const zone = "{{ flood_zone }}".toUpperCase();
+      const positions = { "X": 0, "B": 15, "A": 30, "AE": 50, "V": 75, "VE": 100 };
+      const indicator = document.getElementById("floodIndicator");
+      if (indicator) indicator.style.left = (positions[zone] ?? 0) + "%";
+    }
+
+    window.addEventListener("load", function () {
+      showSlide(slideIndex);
+      positionFloodIndicator();
+    });
+  </script>
 </body>
+
 </html>

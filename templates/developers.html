@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon" />
+  <title>Developer Reports – CoastalRisk</title>
+
+  <style>
+    :root {
+      --nav-height: 72px;
+      --clr-bg: #020617;
+      --clr-card: rgba(15, 23, 42, 0.92);
+      --clr-card-light: rgba(248, 250, 252, 0.98);
+      --clr-accent: #0ea5e9;
+      --clr-accent-soft: rgba(56, 189, 248, 0.15);
+      --clr-text-light: #e5e7eb;
+      --clr-muted: #94a3b8;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.5);
+      --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.25);
+      --transition: 180ms ease-out;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--clr-bg);
+      color: var(--clr-text-light);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg,
+        rgba(15,23,42,0.94) 0%,
+        rgba(15,23,42,0.82) 30%,
+        rgba(15,23,42,0.97) 100%),
+      url("{{ url_for('static', filename='background.jpeg') }}") center/cover no-repeat fixed;
+      z-index: -1;
+    }
+
+    /* ── NAVBAR ─────────────────────────────────────────────── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(15,23,42,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(148,163,184,0.2);
+      z-index: 1000;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #e5e7eb;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .brand-link span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.7);
+    }
+
+    .wave-icon { height: 32px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      color: #cbd5f5;
+      text-decoration: none;
+      text-transform: capitalize;
+      letter-spacing: 0.04em;
+      position: relative;
+      padding-bottom: 3px;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+      transition: width var(--transition);
+    }
+
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── LAYOUT ─────────────────────────────────────────────── */
+    main {
+      padding-top: var(--nav-height);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .section-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 80px 28px;
+    }
+
+    .section-wrap.alt { background: rgba(15,23,42,0.5); }
+    .section-wrap.dark { background: rgba(8,15,30,0.7); }
+
+    .inner { width: min(1080px, 100%); }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero-wrap { padding: 96px 28px 80px; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(15,118,110,0.18);
+      border: 1px solid rgba(45,212,191,0.4);
+      color: #a5f3fc;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: #f9fafb;
+      max-width: 720px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title span { color: var(--clr-accent); }
+
+    .hero-body {
+      font-size: 1.05rem;
+      color: #cbd5f5;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 36px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #0b1120;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+      box-shadow: 0 12px 30px rgba(56,189,248,0.45);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--clr-accent);
+      background: var(--clr-accent-soft);
+    }
+
+    /* ── WHY NOW ────────────────────────────────────────────── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 20px;
+    }
+
+    .why-card {
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: var(--radius-lg);
+      padding: 26px 24px 30px;
+    }
+
+    .why-stat {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--clr-accent);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .why-label {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+
+    .why-body {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      line-height: 1.65;
+    }
+
+    /* ── SECTION HEADERS ────────────────────────────────────── */
+    .section-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--clr-accent);
+      margin-bottom: 10px;
+    }
+
+    .section-heading {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #f9fafb;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      font-size: 0.98rem;
+      color: #94a3b8;
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ── SAMPLE REPORTS ─────────────────────────────────────── */
+    .samples-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 20px;
+    }
+
+    .sample-card {
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.3);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .sample-card:hover {
+      border-color: rgba(56,189,248,0.5);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .sample-card-header {
+      padding: 22px 22px 18px;
+      border-bottom: 1px solid rgba(148,163,184,0.15);
+      position: relative;
+    }
+
+    .sample-region-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #7dd3fc;
+      background: rgba(14,165,233,0.12);
+      border: 1px solid rgba(56,189,248,0.3);
+      border-radius: 999px;
+      padding: 3px 10px;
+      margin-bottom: 10px;
+    }
+
+    .sample-address {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .sample-overall {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sample-overall-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--clr-muted);
+    }
+
+    .risk-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1.5px solid;
+    }
+
+    .risk-pill.very-high { color: #fca5a5; background: rgba(127,29,29,0.25); border-color: rgba(248,113,113,0.5); }
+    .risk-pill.high      { color: #fcd34d; background: rgba(120,53,15,0.25); border-color: rgba(252,211,77,0.4); }
+    .risk-pill.moderate  { color: #86efac; background: rgba(20,83,45,0.2);  border-color: rgba(134,239,172,0.4); }
+
+    .sample-card-body {
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .sample-metric {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+
+    .sample-metric:last-of-type { border-bottom: none; }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--clr-muted);
+    }
+
+    .metric-value {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .sample-card-footer {
+      padding: 16px 22px;
+      border-top: 1px solid rgba(148,163,184,0.12);
+    }
+
+    .sample-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: all var(--transition);
+    }
+
+    .sample-btn.primary {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #0b1120;
+    }
+
+    .sample-btn.primary:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 8px 20px rgba(56,189,248,0.4);
+    }
+
+    .sample-btn.ghost {
+      border: 1px solid rgba(148,163,184,0.35);
+      color: #94a3b8;
+      background: transparent;
+    }
+
+    .sample-btn.ghost:hover {
+      border-color: rgba(56,189,248,0.45);
+      color: #7dd3fc;
+    }
+
+    .sample-note {
+      font-size: 0.7rem;
+      color: #475569;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ── REPORT SECTIONS ────────────────────────────────────── */
+    .report-sections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .rs-card {
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: 12px;
+      padding: 18px 18px 20px;
+      background: rgba(15,23,42,0.7);
+    }
+
+    .rs-num {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--clr-accent);
+      background: rgba(14,165,233,0.12);
+      border-radius: 4px;
+      padding: 2px 7px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .rs-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+    }
+
+    .rs-desc {
+      font-size: 0.78rem;
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    /* ── HOW IT WORKS ───────────────────────────────────────── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 20px;
+      position: relative;
+    }
+
+    .how-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 28px 24px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: var(--radius-lg);
+    }
+
+    .how-step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--clr-accent-soft);
+      border: 1.5px solid rgba(56,189,248,0.4);
+      color: var(--clr-accent);
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .how-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .how-body {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.65;
+    }
+
+    /* ── PRICING ────────────────────────────────────────────── */
+    .pricing-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .pricing-card {
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(56,189,248,0.45);
+      border-radius: var(--radius-lg);
+      padding: 34px 32px 38px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.1), transparent 60%);
+      pointer-events: none;
+    }
+
+    .pricing-card > * { position: relative; z-index: 1; }
+
+    .pricing-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #a5f3fc;
+      border: 1px solid rgba(45,212,191,0.4);
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 18px;
+    }
+
+    .pricing-card h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 6px;
+    }
+
+    .pricing-desc {
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .price-display {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .price-currency {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .price-amount {
+      font-size: 3.6rem;
+      font-weight: 800;
+      color: #f9fafb;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .price-unit {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .price-note {
+      font-size: 0.78rem;
+      color: #475569;
+      margin-bottom: 28px;
+    }
+
+    .pricing-divider {
+      border: none;
+      border-top: 1px solid rgba(148,163,184,0.15);
+      margin: 24px 0;
+    }
+
+    .pricing-includes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .pricing-include-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #cbd5f5;
+    }
+
+    .pi-check {
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(14,165,233,0.15);
+      border: 1px solid rgba(56,189,248,0.4);
+      color: var(--clr-accent);
+      font-size: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+      font-weight: 700;
+    }
+
+    .pricing-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #0b1120;
+      font-size: 0.98rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: filter var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+
+    .pricing-cta:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 14px 32px rgba(56,189,248,0.45);
+      transform: translateY(-1px);
+    }
+
+    .portfolio-card {
+      background: rgba(15,23,42,0.7);
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: var(--radius-lg);
+      padding: 28px 28px 32px;
+    }
+
+    .portfolio-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 10px;
+    }
+
+    .portfolio-card p {
+      font-size: 0.875rem;
+      color: #64748b;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .portfolio-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .portfolio-bullets li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .portfolio-bullets li::before {
+      content: "→";
+      color: var(--clr-accent);
+      font-size: 0.8rem;
+    }
+
+    .portfolio-email-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .portfolio-email-btn:hover {
+      border-color: rgba(56,189,248,0.5);
+      background: rgba(56,189,248,0.06);
+    }
+
+    /* ── CONTACT ────────────────────────────────────────────── */
+    .contact-card {
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(30,64,175,0.4));
+      border: 1px solid rgba(129,140,248,0.4);
+      border-radius: calc(var(--radius-lg) + 4px);
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center top, rgba(56,189,248,0.1), transparent 65%);
+      pointer-events: none;
+    }
+
+    .contact-card > * { position: relative; z-index: 1; }
+
+    .contact-card h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 12px;
+    }
+
+    .contact-card p {
+      font-size: 1rem;
+      color: #94a3b8;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    .contact-email-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(56,189,248,0.35);
+      border-radius: 999px;
+      padding: 14px 26px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #7dd3fc;
+      text-decoration: none;
+      transition: border-color var(--transition), background var(--transition);
+      margin-bottom: 16px;
+    }
+
+    .contact-email-display:hover {
+      border-color: rgba(56,189,248,0.65);
+      background: rgba(56,189,248,0.08);
+    }
+
+    .contact-sub {
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      width: 100%;
+      border-top: 1px solid rgba(148,163,184,0.15);
+      padding: 16px 28px 20px;
+      background: rgba(15,23,42,0.98);
+      color: #4b5563;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    footer span { color: #e0f2fe; font-weight: 500; }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .why-grid, .samples-grid, .how-grid, .report-sections-grid { grid-template-columns: 1fr; }
+      .pricing-wrap { grid-template-columns: 1fr; }
+      .contact-card { padding: 40px 24px; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-wrap { padding: 72px 20px 60px; }
+      .section-wrap { padding: 60px 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="{{ url_for('index') }}" class="brand-link">
+      <span>CoastalRisk</span>
+      <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave" class="wave-icon" />
+    </a>
+    <nav class="nav-links">
+      <a href="{{ url_for('index', _anchor='mission') }}">Mission</a>
+      <a href="{{ url_for('index', _anchor='philosophy') }}">Philosophy</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ── HERO ────────────────────────────────────────────── -->
+    <div class="section-wrap hero-wrap inner" style="max-width:1080px;width:100%;">
+      <div class="hero-eyebrow">For Real Estate Developers &amp; Investors</div>
+      <h1 class="hero-title">
+        Know your coastal exposure<br /><span>before you commit capital.</span>
+      </h1>
+      <p class="hero-body">
+        CoastalRisk delivers property-level coastal risk assessments — FEMA classification,
+        sea level rise projections, storm surge exposure, and historical flood data — in one
+        clear, defensible report. Built for development teams who can't afford surprises.
+      </p>
+      <div class="hero-ctas">
+        <a href="#samples" class="btn-primary">View Sample Reports</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <!-- ── WHY NOW ──────────────────────────────────────────── -->
+    <div class="section-wrap alt">
+      <div class="inner">
+        <div class="section-tag">The landscape is shifting</div>
+        <div class="section-heading">Coastal risk is no longer a footnote.</div>
+        <p class="section-sub">
+          Three forces are reshaping the economics of coastal real estate. Developers who
+          understand their exposure early move faster and underwrite smarter.
+        </p>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-stat">$40B+</div>
+            <div class="why-label">Annual global coastal flood losses</div>
+            <div class="why-body">
+              That figure is growing. Coastal flooding is the most economically destructive
+              natural hazard in the United States, with losses accelerating as sea levels rise
+              and storm intensities increase.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-stat">131%</div>
+            <div class="why-label">Average NFIP premium increase in high-risk zones</div>
+            <div class="why-body">
+              FEMA's Risk Rating 2.0 moved flood insurance premiums toward actuarial reality.
+              For Zone VE and AE properties, annual premiums are rising sharply — and are
+              expected to continue increasing with no cap for new policies.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-stat">12+</div>
+            <div class="why-label">Major insurers withdrawing from coastal markets</div>
+            <div class="why-body">
+              State Farm, Allstate, Farmers, and others have reduced or eliminated coastal
+              exposure in Florida, California, and Louisiana. Private market availability is
+              contracting precisely where development interest is highest.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SAMPLE REPORTS ────────────────────────────────────── -->
+    <div class="section-wrap" id="samples">
+      <div class="inner">
+        <div class="section-tag">Sample reports</div>
+        <div class="section-heading">Three coasts. Three risk profiles.</div>
+        <p class="section-sub">
+          Every CoastalRisk report is prepared for a specific parcel using current USGS, NOAA,
+          and FEMA data. Below are representative examples across the US coastline.
+        </p>
+
+        <div class="samples-grid">
+
+          <!-- East Coast: Sullivan's Island, SC -->
+          <div class="sample-card">
+            <div class="sample-card-header">
+              <div class="sample-region-badge">East Coast · South Carolina</div>
+              <div class="sample-address">2216 Atlantic Ave<br />Sullivan's Island, SC 29482</div>
+              <div class="sample-overall">
+                <span class="sample-overall-label">Overall Risk</span>
+                <span class="risk-pill very-high">Very High</span>
+              </div>
+            </div>
+            <div class="sample-card-body">
+              <div class="sample-metric">
+                <span class="metric-label">FEMA Flood Zone</span>
+                <span class="metric-value">Zone VE</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Base Flood Elevation</span>
+                <span class="metric-value">16 ft NAVD88</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Local SLR Rate</span>
+                <span class="metric-value">3.73 mm/yr</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Cat 3 Surge Depth</span>
+                <span class="metric-value">~10–12 ft</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">NFIP Claims (zip 29482)</span>
+                <span class="metric-value">847 · $38.4M paid</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Coastal Setting</span>
+                <span class="metric-value">Barrier Island</span>
+              </div>
+            </div>
+            <div class="sample-card-footer">
+              <a href="/RiskReport" target="_blank" class="sample-btn primary">View Full Sample Report →</a>
+              <div class="sample-note">Live report — all 9 sections included</div>
+            </div>
+          </div>
+
+          <!-- Gulf Coast: Galveston, TX -->
+          <div class="sample-card">
+            <div class="sample-card-header">
+              <div class="sample-region-badge">Gulf Coast · Texas</div>
+              <div class="sample-address">1800 Seawall Blvd<br />Galveston, TX 77550</div>
+              <div class="sample-overall">
+                <span class="sample-overall-label">Overall Risk</span>
+                <span class="risk-pill very-high">Very High</span>
+              </div>
+            </div>
+            <div class="sample-card-body">
+              <div class="sample-metric">
+                <span class="metric-label">FEMA Flood Zone</span>
+                <span class="metric-value">Zone VE</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Base Flood Elevation</span>
+                <span class="metric-value">14 ft NAVD88</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Local SLR Rate</span>
+                <span class="metric-value">6.41 mm/yr</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Cat 3 Surge Depth</span>
+                <span class="metric-value">~12–16 ft</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Historic Event</span>
+                <span class="metric-value">Ike (2008) · $29.5B</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Coastal Setting</span>
+                <span class="metric-value">Gulf Barrier Island</span>
+              </div>
+            </div>
+            <div class="sample-card-footer">
+              <a href="#contact" class="sample-btn ghost">Request This Report</a>
+              <div class="sample-note">Reports available for all US coastal addresses</div>
+            </div>
+          </div>
+
+          <!-- West Coast: Malibu, CA -->
+          <div class="sample-card">
+            <div class="sample-card-header">
+              <div class="sample-region-badge">West Coast · California</div>
+              <div class="sample-address">22000 Pacific Coast Hwy<br />Malibu, CA 90265</div>
+              <div class="sample-overall">
+                <span class="sample-overall-label">Overall Risk</span>
+                <span class="risk-pill high">High</span>
+              </div>
+            </div>
+            <div class="sample-card-body">
+              <div class="sample-metric">
+                <span class="metric-label">FEMA Flood Zone</span>
+                <span class="metric-value">Zone AE / VE</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Base Flood Elevation</span>
+                <span class="metric-value">12 ft NAVD88</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Local SLR Rate</span>
+                <span class="metric-value">2.16 mm/yr</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Primary Risk Driver</span>
+                <span class="metric-value">Wave action &amp; erosion</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Insurance Market</span>
+                <span class="metric-value">Major carriers withdrawn</span>
+              </div>
+              <div class="sample-metric">
+                <span class="metric-label">Coastal Setting</span>
+                <span class="metric-value">Exposed Bluff / Beach</span>
+              </div>
+            </div>
+            <div class="sample-card-footer">
+              <a href="#contact" class="sample-btn ghost">Request This Report</a>
+              <div class="sample-note">Reports available for all US coastal addresses</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WHAT'S IN A REPORT ────────────────────────────────── -->
+    <div class="section-wrap alt">
+      <div class="inner">
+        <div class="section-tag">Report structure</div>
+        <div class="section-heading">Nine sections. One complete picture.</div>
+        <p class="section-sub">
+          Each report synthesizes data from USGS, NOAA, FEMA, and OpenFEMA into a single
+          document with clear findings, visual data, and property-specific recommendations.
+        </p>
+        <div class="report-sections-grid">
+          <div class="rs-card">
+            <div class="rs-num">01</div>
+            <div class="rs-title">Executive Summary</div>
+            <div class="rs-desc">Key risk indicators at a glance and a professional narrative of overall exposure — built for decision-makers and lender packages.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">02</div>
+            <div class="rs-title">Location &amp; Coastal Context</div>
+            <div class="rs-desc">Property coordinates, distance to shoreline, coastal region description, and geomorphic setting.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">03</div>
+            <div class="rs-title">FEMA Flood Zone Classification</div>
+            <div class="rs-desc">Zone, Base Flood Elevation, SFHA status, mandatory insurance requirements, and CRS discount rating.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">04</div>
+            <div class="rs-title">Sea Level Rise Projections</div>
+            <div class="rs-desc">Observed local rate from NOAA tide gauge, Low/Intermediate/High NOAA scenarios through 2100, and satellite imagery overlays for 2030, 2055, and 2075.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">05</div>
+            <div class="rs-title">Storm Surge Exposure</div>
+            <div class="rs-desc">NOAA SLOSH MOM surge depth estimates for Category 1–5 hurricanes with visual simulations and property-specific analysis.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">06</div>
+            <div class="rs-title">Coastal Vulnerability Factors</div>
+            <div class="rs-desc">All six USGS CVI variables — erosion rate, sea level change, tidal range, wave height, coastal slope, and geomorphology — with interpretive notes.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">07</div>
+            <div class="rs-title">Historical Flood Record</div>
+            <div class="rs-desc">NFIP claims count and total payouts by zip code, named storm events with damage figures, and NOAA high tide flooding trends.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">08</div>
+            <div class="rs-title">Insurance &amp; Regulatory Implications</div>
+            <div class="rs-desc">Insurance requirements, premium estimates under Risk Rating 2.0, private market outlook, and state-specific disclosure obligations.</div>
+          </div>
+          <div class="rs-card">
+            <div class="rs-num">09</div>
+            <div class="rs-title">Mitigation Recommendations</div>
+            <div class="rs-desc">Property-specific, prioritized recommendations covering elevation, flood-proofing, insurance strategy, and regulatory compliance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HOW IT WORKS ───────────────────────────────────────── -->
+    <div class="section-wrap dark">
+      <div class="inner">
+        <div class="section-tag">The process</div>
+        <div class="section-heading">Simple. Fast. Thorough.</div>
+        <p class="section-sub">No platforms to navigate, no subscriptions. You send us a property address — we send back a complete report.</p>
+        <div class="how-grid">
+          <div class="how-card">
+            <div class="how-step-num">1</div>
+            <div class="how-title">Send us the property address</div>
+            <div class="how-body">
+              Email us at info@CoastalRisk.org with the property address and any specific concerns
+              or context. Portfolio inquiries and rush turnarounds are welcome.
+            </div>
+          </div>
+          <div class="how-card">
+            <div class="how-step-num">2</div>
+            <div class="how-title">We research and write the report</div>
+            <div class="how-body">
+              Our team pulls current USGS, NOAA, and FEMA data for the specific parcel, generates
+              custom flood and sea level rise imagery, and writes a property-specific analysis.
+            </div>
+          </div>
+          <div class="how-card">
+            <div class="how-step-num">3</div>
+            <div class="how-title">Report delivered within 48 hours</div>
+            <div class="how-body">
+              You receive a complete 9-section PDF and web report. Private, confidential,
+              and ready to attach to a lender package or share with your development team.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PRICING ────────────────────────────────────────────── -->
+    <div class="section-wrap">
+      <div class="inner">
+        <div class="section-tag">Pricing</div>
+        <div class="section-heading">Straightforward. No subscriptions.</div>
+        <p class="section-sub">One price per property. Contact us for portfolio volume pricing.</p>
+
+        <div class="pricing-wrap">
+          <div class="pricing-card">
+            <div class="pricing-badge">Single Property Report</div>
+            <h2>Full Coastal Risk Assessment</h2>
+            <p class="pricing-desc">Everything you need to understand a coastal property's long-term risk exposure — in one document, delivered in 48 hours.</p>
+
+            <div class="price-display">
+              <span class="price-currency">$</span>
+              <span class="price-amount">499</span>
+              <span class="price-unit">per property</span>
+            </div>
+            <p class="price-note">One-time fee · No subscription · Invoice available</p>
+
+            <hr class="pricing-divider" />
+
+            <div class="pricing-includes">
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>All 9 report sections — complete property risk picture</span></div>
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>Custom sea level rise satellite imagery (2030, 2055, 2075)</span></div>
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>NOAA SLOSH storm surge maps — Category 1–5</span></div>
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>Real NFIP claims data and named storm history</span></div>
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>Property-specific mitigation recommendations</span></div>
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>Delivered as web report + PDF — ready for lender packages</span></div>
+              <div class="pricing-include-item"><span class="pi-check">✓</span><span>48-hour turnaround · Private &amp; confidential</span></div>
+            </div>
+
+            <a href="mailto:info@CoastalRisk.org?subject=Report Request — [Property Address]&body=Hi CoastalRisk team,%0D%0A%0D%0AI'd like to order a coastal risk report for the following property:%0D%0A%0D%0AProperty Address: %0D%0ACompany / Name: %0D%0AAny specific questions or concerns: %0D%0A%0D%0AThank you." class="pricing-cta">
+              Request a Report →
+            </a>
+          </div>
+
+          <div class="portfolio-card">
+            <h3>Portfolio &amp; Volume Pricing</h3>
+            <p>
+              Working across multiple properties or a coastal portfolio? We offer volume
+              pricing for development teams running 3 or more reports — and can structure
+              an ongoing relationship for firms with active coastal pipelines.
+            </p>
+            <ul class="portfolio-bullets">
+              <li>Discounted per-report pricing for 3+ properties</li>
+              <li>Consistent analyst for continuity across a portfolio</li>
+              <li>Rush turnarounds available on request</li>
+              <li>Invoice-based billing — no card required</li>
+              <li>Can scope custom deliverables beyond the standard report</li>
+            </ul>
+            <a href="mailto:info@CoastalRisk.org?subject=Portfolio Pricing Inquiry&body=Hi CoastalRisk team,%0D%0A%0D%0AI'm interested in discussing portfolio pricing. Here's some context:%0D%0A%0D%0ACompany / Name: %0D%0ANumber of properties: %0D%0ACoastal markets of interest: %0D%0A%0D%0AThank you." class="portfolio-email-btn">
+              Contact us for portfolio pricing →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACT ────────────────────────────────────────────── -->
+    <div class="section-wrap alt" id="contact">
+      <div class="inner">
+        <div class="contact-card">
+          <div class="section-tag" style="margin-bottom:14px;">Get started</div>
+          <h2>Ready to see your risk clearly?</h2>
+          <p>
+            Send us the property address and we'll confirm availability, turnaround,
+            and any specific data questions within 24 hours.
+          </p>
+          <div>
+            <a href="mailto:info@CoastalRisk.org?subject=Coastal Risk Report Inquiry" class="contact-email-display">
+              ✉ info@CoastalRisk.org
+            </a>
+          </div>
+          <p class="contact-sub">We respond within 24 hours · All reports private and confidential</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    Inquiries? <span>info@CoastalRisk.org</span> &nbsp;·&nbsp; © {{ year }} CoastalRisk &nbsp;·&nbsp;
+    Data sourced from USGS, NOAA, and FEMA public datasets.
+  </footer>
+
+</body>
+</html>

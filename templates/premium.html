@@ -2,198 +2,554 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
-    <title>Order Complete Climate Report - CoastalRisk</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon" />
+    <title>Coastal Risk Report – CoastalRisk</title>
+
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            margin: 0;
-            padding: 45px;
-            background-image: url("{{ url_for('static', filename='background.jpeg') }}");
-            background-size: cover;
+        :root {
+            --nav-height: 72px;
+            --clr-bg: #020617;
+            --clr-card: rgba(15, 23, 42, 0.92);
+            --clr-card-light: rgba(248, 250, 252, 0.98);
+            --clr-accent: #0ea5e9;
+            --clr-accent-soft: rgba(56, 189, 248, 0.18);
+            --clr-text-main: #0f172a;
+            --clr-text-light: #e5e7eb;
+            --radius-lg: 18px;
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.45);
+            --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.25);
+            --transition-fast: 180ms ease-out;
         }
 
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--clr-bg);
+            color: var(--clr-text-light);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg,
+                rgba(15, 23, 42, 0.92) 0%,
+                rgba(15, 23, 42, 0.78) 35%,
+                rgba(15, 23, 42, 0.96) 100%),
+            url("{{ url_for('static', filename='background.jpeg') }}") center/cover no-repeat fixed;
+            z-index: -1;
+        }
+
+        /* Navbar */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+            top: 0; left: 0; right: 0;
+            height: var(--nav-height);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 24px;
+            padding: 0 24px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
             z-index: 1000;
-            font-size: 2rem;
-            color: black;
-            font-weight: 700;
         }
 
-        .navbar-link {
-            text-decoration: none;
-            color: inherit;
+        .brand-link {
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
+            color: #e5e7eb;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.95rem;
         }
+
+        .brand-link span {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .wave-icon-right { height: 32px; width: auto; }
 
         .nav-links {
             display: flex;
-            gap: 24px;
-            margin-left: auto;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.95rem;
         }
 
         .nav-links a {
+            color: #cbd5f5;
             text-decoration: none;
-            color: inherit;
-            font-size: 1.1rem;
-            font-weight: 3;
-            margin-right: 150px;
+            text-transform: capitalize;
+            letter-spacing: 0.04em;
+            position: relative;
+            padding-bottom: 4px;
         }
 
-        .title {
-            font-size: 2.5rem;
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: bold;
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            transition: width var(--transition-fast);
         }
 
-        .wave-icon-right {
-            height: 80px;
-            width: auto;
-            vertical-align: middle;
-        }
+        .nav-links a:hover::after { width: 100%; }
 
-        .panels-container {
+        /* Main layout */
+        main {
+            padding: calc(var(--nav-height) + 48px) 24px 90px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 80%;
-            max-width: 1500px;
-            margin-top: 5vh;
+            flex-direction: column;
+            align-items: center;
+            gap: 48px;
         }
 
-        .leftpanel,
-        .rightpanel {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 45%;
-            border: 2px solid black;
-            border-radius: 15px;
-            transition: box-shadow 0.3s ease;
-            text-align: left;
+        .page-inner {
+            width: min(1000px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
         }
 
-        .rightpanel:hover {
-            box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.3);
+        /* Hero text */
+        .page-hero {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto;
         }
 
-        h2 {
-            font-size: 2rem;
-            color: black;
-            margin-bottom: 20px;
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.18);
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            color: #a5f3fc;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            margin-bottom: 16px;
         }
 
-        .price {
-            font-size: 1.5rem;
-            color: black;
-            margin-bottom: 30px;
+        .page-hero h1 {
+            font-size: clamp(2rem, 4vw, 2.7rem);
+            color: #f9fafb;
+            margin: 0 0 14px;
+            line-height: 1.15;
         }
 
-        ul {
+        .page-hero p {
+            font-size: 1rem;
+            color: #cbd5f5;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Panels */
+        .panels {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* What's included */
+        .includes-card {
+            background: rgba(248, 250, 252, 0.98);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            box-shadow: var(--shadow-card);
+            padding: 28px 26px 32px;
+            color: var(--clr-text-main);
+        }
+
+        .includes-card .card-tag {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .includes-card h2 {
+            font-size: 1.2rem;
+            color: #0f172a;
+            margin: 0 0 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .includes-list {
             list-style: none;
             padding: 0;
-            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
 
-        li {
-            margin-bottom: 15px;
+        .includes-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.92rem;
+            color: #374151;
+            line-height: 1.5;
         }
 
-        button {
-            padding: 15px 30px;
+        .check-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.4);
+            color: #0ea5e9;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        /* Order card */
+        .order-card {
+            background: var(--clr-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(56, 189, 248, 0.55);
+            box-shadow: var(--shadow-soft);
+            padding: 28px 26px 32px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, var(--clr-accent-soft), transparent 60%);
+            pointer-events: none;
+        }
+
+        .order-card > * { position: relative; z-index: 1; }
+
+        .order-card .card-tag {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #9ca3af;
+        }
+
+        .order-card h2 {
             font-size: 1.2rem;
-            color: black;
-            background-color: white;
+            color: #f9fafb;
+            margin: 4px 0 0;
+            letter-spacing: 0.04em;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #f9fafb;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .price-currency {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .price-note {
+            font-size: 0.82rem;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        .divider {
             border: none;
+            border-top: 1px solid rgba(148, 163, 184, 0.18);
+            margin: 0;
+        }
+
+        .turnaround {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(14, 165, 233, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.25);
             border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.86rem;
+            color: #7dd3fc;
+        }
+
+        .turnaround-icon { font-size: 1rem; }
+
+        .order-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: #0b1120;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
             cursor: pointer;
-            transition: background-color 0.3s ease, border 0.3s ease;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
         }
 
-        button:hover {
-            background-color: black;
-            color: white;
-            border: 3px solid black;
-            border-radius: 10px;
+        .order-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.06);
+            box-shadow: 0 14px 30px rgba(56, 189, 248, 0.5);
         }
 
-        .order-button-container {
-            margin-top: 30px;
+        .order-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+            filter: none;
+            box-shadow: none;
+        }
+
+        .secure-note {
             text-align: center;
+            font-size: 0.78rem;
+            color: #6b7280;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 14px;
+            padding: 18px 16px 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: -0.01em;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        footer.inquiries {
+            width: 100%;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 14px 16px 18px;
+            background: rgba(15, 23, 42, 0.95);
+            color: #9ca3af;
+            font-size: 0.82rem;
+            text-align: center;
+        }
+
+        .inquiries .email {
+            font-weight: 500;
+            color: #e0f2fe;
+        }
+
+        @media (max-width: 780px) {
+            .panels {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .stats-bar {
+                grid-template-columns: minmax(0, 1fr);
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="navbar">
-        <a href="{{ url_for('index') }}" class="navbar-link">
-            CoastalRisk
-            <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right">
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="brand-link">
+            <span>CoastalRisk</span>
+            <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right" />
         </a>
         <nav class="nav-links">
             <a href="{{ url_for('index', _anchor='mission') }}">mission</a>
             <a href="{{ url_for('index', _anchor='philosophy') }}">philosophy</a>
-            <a href="{{ url_for('index', _anchor='contact') }}">contact</a>
         </nav>
-    </div>
-    <div class="subheading" id="subheading"></div>
+    </header>
 
+    <main>
+        <div class="page-inner">
 
+            <!-- Hero -->
+            <div class="page-hero">
+                <div class="eyebrow">Premium Report</div>
+                <h1>Know your risk before you build, buy, or bid.</h1>
+                <p>
+                    Flooding costs property owners worldwide roughly $40 billion annually.
+                    A CoastalRisk report gives you the full picture — sea level rise projections,
+                    storm surge exposure, FEMA flood zone classification, and historical flood events —
+                    specific to your property.
+                </p>
+            </div>
 
+            <!-- Panels -->
+            <div class="panels">
+                <!-- What's included -->
+                <div class="includes-card">
+                    <div class="card-tag">What's included</div>
+                    <h2>Full Coastal Risk Assessment</h2>
+                    <ul class="includes-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Detailed property-specific climate analysis delivered to your inbox within 48 hours</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Sea level rise projections for 2030, 2055, and 2075 with satellite imagery overlays</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Storm surge depth estimates for Category 1–5 hurricanes at your exact location</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>FEMA flood zone classification with plain-language explanation of what it means for your property</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Historical flood event timeline for your area with damage context</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Coastal Risk erosion and vulnerability scores from USGS data</span>
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            <span>Customized preparation recommendations to mitigate risk and protect your investment</span>
+                        </li>
+                    </ul>
+                </div>
 
+                <!-- Order card -->
+                <div class="order-card">
+                    <div>
+                        <div class="card-tag">One-time purchase</div>
+                        <h2>Coastal Risk Report</h2>
+                    </div>
 
-    <div class="title">Flooding costs property owners worldwide roughly $40 billion annually. Invest in a Climate Report
-        now to save money and be informed for the future.</div>
-    <div class="panels-container">
-        <div class="leftpanel">
-            <p class="price">- You pay: $39</p>
+                    <div>
+                        <div class="price-row">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">39</span>
+                        </div>
+                        <p class="price-note">Per property report — no subscription required</p>
+                    </div>
+
+                    <hr class="divider" />
+
+                    <div class="turnaround">
+                        <span class="turnaround-icon">⏱</span>
+                        Report delivered within 48 hours
+                    </div>
+
+                    <button class="order-btn" id="order-button">Order Your Report</button>
+
+                    <p class="secure-note">Secured by Stripe — no card data touches our servers</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value">$40B</div>
+                    <div class="stat-label">Annual global property losses from coastal flooding</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3–4 ft</div>
+                    <div class="stat-label">Projected US sea level rise by 2100 under intermediate scenarios</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">48 hrs</div>
+                    <div class="stat-label">Maximum turnaround from order to report delivery</div>
+                </div>
+            </div>
+
         </div>
-        <div class="rightpanel">
-            <h2>What's Included:</h2>
-            <ul>
-                <li>- A detailed climate analysis of your specific location delivered to your email inbox in 48 hours or
-                    less</li>
-                <li>- Advanced satellite imagery showcasing the environmental risks surrounding your location</li>
-                <li>- Coastal Risk flood hazard and erosion scores to measure how safe your location is from harm</li>
-                <li>- Customized property preparation recommendations for mitigating risks to help you save from future
-                    climate damage</li>
-            </ul>
-        </div>
-    </div>
-    <button id="order-button">Order Here</button>
+    </main>
+
+    <footer class="inquiries">
+        Inquiries? <span class="email">info@CoastalRisk.org</span>
+    </footer>
 
     <script>
-        document.getElementById("order-button").addEventListener("click", async () => {
-            const response = await fetch("/create-checkout-session", { method: "POST" });
-            const session = await response.json();
-            if (session.url) {
-                window.location.href = session.url;
-            } else {
-                alert("Error creating checkout session.");
+        const btn = document.getElementById("order-button");
+        btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            btn.textContent = "Redirecting to checkout…";
+            try {
+                const response = await fetch("/create-checkout-session", { method: "POST" });
+                const session = await response.json();
+                if (session.url) {
+                    window.location.href = session.url;
+                } else {
+                    alert("Something went wrong. Please try again or contact info@CoastalRisk.org.");
+                    btn.disabled = false;
+                    btn.textContent = "Order Your Report";
+                }
+            } catch (err) {
+                alert("Network error. Please try again.");
+                btn.disabled = false;
+                btn.textContent = "Order Your Report";
             }
         });
     </script>
-
 </body>
 
 </html>
