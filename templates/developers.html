@@ -132,7 +132,8 @@
     .inner { width: min(1080px, 100%); }
 
     /* ── HERO ───────────────────────────────────────────────── */
-    .hero-wrap { padding: 96px 28px 80px; }
+    .hero-wrap { padding: 80px 0 64px; }
+    .hero-wrap .inner { display: flex; flex-direction: column; align-items: flex-start; }
 
     .hero-eyebrow {
       display: inline-flex;
@@ -828,19 +829,21 @@
   <main>
 
     <!-- ── HERO ────────────────────────────────────────────── -->
-    <div class="section-wrap hero-wrap inner" style="max-width:1080px;width:100%;">
-      <div class="hero-eyebrow">For Real Estate Developers &amp; Investors</div>
-      <h1 class="hero-title">
-        Know your coastal exposure<br /><span>before you commit capital.</span>
-      </h1>
-      <p class="hero-body">
-        CoastalRisk delivers property-level coastal risk assessments — FEMA classification,
-        sea level rise projections, storm surge exposure, and historical flood data — in one
-        clear, defensible report. Built for development teams who can't afford surprises.
-      </p>
-      <div class="hero-ctas">
-        <a href="#samples" class="btn-primary">View Sample Reports</a>
-        <a href="#contact" class="btn-ghost">Get in Touch</a>
+    <div class="section-wrap hero-wrap">
+      <div class="inner">
+        <div class="hero-eyebrow">For Real Estate Developers &amp; Investors</div>
+        <h1 class="hero-title">
+          Know your coastal exposure<br /><span>before you commit capital.</span>
+        </h1>
+        <p class="hero-body">
+          CoastalRisk delivers property-level coastal risk assessments — FEMA classification,
+          sea level rise projections, storm surge exposure, and historical flood data — in one
+          clear, defensible report. Built for development teams who can't afford surprises.
+        </p>
+        <div class="hero-ctas">
+          <a href="#samples" class="btn-primary">View Sample Reports</a>
+          <a href="#contact" class="btn-ghost">Get in Touch</a>
+        </div>
       </div>
     </div>
 
