@@ -225,9 +225,30 @@
         }
 
         .card-dark {
-            background: var(--clr-card-dark);
+            background: rgba(2, 18, 48, 0.92);
             color: var(--clr-text-light);
-            border-color: rgba(148, 163, 184, 0.6);
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.15), var(--shadow-card);
+        }
+
+        .dev-cta-btn {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 12px 22px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: #0b1120;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            letter-spacing: 0.02em;
+            transition: filter 180ms ease-out, box-shadow 180ms ease-out;
+            align-self: flex-start;
+        }
+
+        .dev-cta-btn:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
         }
 
         .card h2 {
@@ -562,17 +583,10 @@
                             and development sites. We work with real estate developers to evaluate long-term
                             viability, exposure, and adaptation requirements.
                         </h3>
-                        <p style=”margin-top: 10px; color: #d1d5db;”>
-                            Starting at <strong style=”color: #f1f5f9;”>$499 per report</strong> — portfolio pricing
-                            available.
+                        <p style=”color: #d1d5db; margin: 0;”>
+                            Starting at <strong style=”color: #f1f5f9;”>$499 per report</strong> — portfolio pricing available.
                         </p>
-                        <a href=”/developers” style=” display: inline-block; margin-top: 18px; padding: 12px 24px;
-                            background: #0ea5e9; color: #0b1120; text-decoration: none; border-radius: 8px; font-weight:
-                            700; font-size: 0.95rem; transition: background 180ms ease-out; “
-                            onmouseover=”this.style.background='#0284c7' ” onmouseout=”this.style.background='#0ea5e9'
-                            ”>
-                            View developer reports →
-                        </a>
+                        <a href=”/developers” class=”dev-cta-btn”>View developer reports →</a>
                     </article>
 
                     <!-- Right “Free calculator” card -->
