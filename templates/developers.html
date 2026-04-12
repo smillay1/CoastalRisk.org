@@ -515,10 +515,7 @@
 
     /* ── PRICING ────────────────────────────────────────────── */
     .pricing-wrap {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 24px;
-      align-items: start;
+      max-width: 560px;
     }
 
     .pricing-card {
@@ -655,49 +652,6 @@
       filter: brightness(1.06);
       box-shadow: 0 14px 32px rgba(56,189,248,0.45);
       transform: translateY(-1px);
-    }
-
-    .portfolio-card {
-      background: rgba(15,23,42,0.7);
-      border: 1px solid rgba(148,163,184,0.2);
-      border-radius: var(--radius-lg);
-      padding: 28px 28px 32px;
-    }
-
-    .portfolio-card h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 10px;
-    }
-
-    .portfolio-card p {
-      font-size: 0.875rem;
-      color: #64748b;
-      line-height: 1.7;
-      margin-bottom: 20px;
-    }
-
-    .portfolio-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .portfolio-bullets li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      color: #94a3b8;
-    }
-
-    .portfolio-bullets li::before {
-      content: "→";
-      color: var(--clr-accent);
-      font-size: 0.8rem;
     }
 
     .portfolio-email-btn {
@@ -1101,7 +1055,7 @@
             <div class="how-title">Send us the property address</div>
             <div class="how-body">
               Email us at info@CoastalRisk.org with the property address and any specific concerns
-              or context. Portfolio inquiries and rush turnarounds are welcome.
+              or context. Rush turnarounds are available on request.
             </div>
           </div>
           <div class="how-card">
@@ -1129,7 +1083,7 @@
       <div class="inner">
         <div class="section-tag">Pricing</div>
         <div class="section-heading">Straightforward. No subscriptions.</div>
-        <p class="section-sub">One price per property. Contact us for portfolio volume pricing.</p>
+        <p class="section-sub">One flat fee per property. No subscription, no hidden costs.</p>
 
         <div class="pricing-wrap">
           <div class="pricing-card">
@@ -1161,24 +1115,6 @@
             </a>
           </div>
 
-          <div class="portfolio-card">
-            <h3>Portfolio &amp; Volume Pricing</h3>
-            <p>
-              Working across multiple properties or a coastal portfolio? We offer volume
-              pricing for development teams running 3 or more reports — and can structure
-              an ongoing relationship for firms with active coastal pipelines.
-            </p>
-            <ul class="portfolio-bullets">
-              <li>Discounted per-report pricing for 3+ properties</li>
-              <li>Consistent analyst for continuity across a portfolio</li>
-              <li>Rush turnarounds available on request</li>
-              <li>Invoice-based billing — no card required</li>
-              <li>Can scope custom deliverables beyond the standard report</li>
-            </ul>
-            <a href="mailto:info@CoastalRisk.org?subject=Portfolio Pricing Inquiry&body=Hi CoastalRisk team,%0D%0A%0D%0AI'm interested in discussing portfolio pricing. Here's some context:%0D%0A%0D%0ACompany / Name: %0D%0ANumber of properties: %0D%0ACoastal markets of interest: %0D%0A%0D%0AThank you." class="portfolio-email-btn">
-              Contact us for portfolio pricing →
-            </a>
-          </div>
         </div>
       </div>
     </div>
