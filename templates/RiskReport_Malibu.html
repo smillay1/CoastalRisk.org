@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoastalRisk Report — {{ address }}</title>
+
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────────── */
+    :root {
+      --clr-navy: #0f172a;
+      --clr-navy-mid: #1e293b;
+      --clr-navy-soft: #334155;
+      --clr-blue: #0ea5e9;
+      --clr-blue-light: #38bdf8;
+      --clr-blue-soft: #e0f2fe;
+      --clr-bg: #f1f5f9;
+      --clr-surface: #ffffff;
+      --clr-border: #e2e8f0;
+      --clr-text: #0f172a;
+      --clr-muted: #64748b;
+      --clr-low: #16a34a;
+      --clr-low-bg: #f0fdf4;
+      --clr-low-border: #bbf7d0;
+      --clr-mod: #d97706;
+      --clr-mod-bg: #fffbeb;
+      --clr-mod-border: #fde68a;
+      --clr-high: #dc2626;
+      --clr-high-bg: #fef2f2;
+      --clr-high-border: #fecaca;
+      --clr-vhigh: #7f1d1d;
+      --clr-vhigh-bg: #fef2f2;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, .08), 0 4px 16px rgba(15, 23, 42, .06);
+      --shadow-md: 0 4px 6px rgba(15, 23, 42, .07), 0 10px 28px rgba(15, 23, 42, .1);
+    }
+
+    /* ─── RESET & BASE ──────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--clr-bg);
+      color: var(--clr-text);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── COVER ─────────────────────────────────────────────── */
+    .cover {
+      background: linear-gradient(160deg, var(--clr-navy) 0%, #0c1e3c 60%, #0a2240 100%);
+      color: #f8fafc;
+      padding: 56px 56px 52px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: "";
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, .12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cover-inner {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .cover-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .cover-brand-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .cover-brand-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--clr-blue);
+    }
+
+    .cover-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--clr-blue-light);
+      border: 1px solid rgba(56, 189, 248, .35);
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 18px;
+    }
+
+    .cover h1 {
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #f8fafc;
+      margin-bottom: 10px;
+      max-width: 620px;
+    }
+
+    .cover-address {
+      font-size: 1.05rem;
+      color: #93c5fd;
+      margin-bottom: 40px;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(148, 163, 184, .2);
+    }
+
+    .cover-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .cover-meta-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #64748b;
+    }
+
+    .cover-meta-value {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .cover-confidential {
+      position: absolute;
+      top: 56px;
+      right: 56px;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(148, 163, 184, .6);
+      border: 1px solid rgba(148, 163, 184, .2);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
+
+    /* ─── DISCLAIMER BAR ────────────────────────────────────── */
+    .disclaimer-bar {
+      background: #fefce8;
+      border-bottom: 1px solid #fde68a;
+      padding: 9px 56px;
+      font-size: 0.73rem;
+      color: #92400e;
+      text-align: center;
+    }
+
+    /* ─── MAIN BODY ─────────────────────────────────────────── */
+    .report-body {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    /* ─── TABLE OF CONTENTS ─────────────────────────────────── */
+    .toc {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 28px;
+    }
+
+    .toc-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--clr-muted);
+      margin-bottom: 14px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 6px 20px;
+    }
+
+    .toc-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--clr-navy-mid);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 4px 0;
+      transition: color 120ms;
+    }
+
+    .toc-list li a:hover {
+      color: var(--clr-blue);
+    }
+
+    .toc-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--clr-blue);
+      background: var(--clr-blue-soft);
+      border-radius: 4px;
+      padding: 1px 6px;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* ─── SECTION WRAPPER ───────────────────────────────────── */
+    .section {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--clr-border);
+      background: #f8fafc;
+    }
+
+    .section-num {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--clr-blue);
+      background: var(--clr-blue-soft);
+      border-radius: 6px;
+      padding: 3px 8px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--clr-navy);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .section-body {
+      padding: 26px 28px 30px;
+    }
+
+    .section-intro {
+      font-size: 0.92rem;
+      color: var(--clr-muted);
+      margin-bottom: 20px;
+      max-width: 72ch;
+      line-height: 1.7;
+    }
+
+    /* ─── RISK BADGE ────────────────────────────────────────── */
+    .risk-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1.5px solid;
+    }
+
+    .risk-badge.very-low {
+      color: #0f766e;
+      background: #f0fdfa;
+      border-color: #99f6e4;
+    }
+
+    .risk-badge.low {
+      color: var(--clr-low);
+      background: var(--clr-low-bg);
+      border-color: var(--clr-low-border);
+    }
+
+    .risk-badge.moderate {
+      color: var(--clr-mod);
+      background: var(--clr-mod-bg);
+      border-color: var(--clr-mod-border);
+    }
+
+    .risk-badge.high {
+      color: var(--clr-high);
+      background: var(--clr-high-bg);
+      border-color: var(--clr-high-border);
+    }
+
+    .risk-badge.very-high {
+      color: var(--clr-vhigh);
+      background: var(--clr-vhigh-bg);
+      border-color: #fca5a5;
+      font-weight: 800;
+    }
+
+    /* ─── SECTION 1: EXECUTIVE SUMMARY ─────────────────────── */
+    .exec-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .kpi-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--clr-muted);
+    }
+
+    .kpi-value {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--clr-navy);
+      line-height: 1.1;
+    }
+
+    .kpi-sub {
+      font-size: 0.75rem;
+      color: var(--clr-muted);
+    }
+
+    .exec-narrative {
+      background: var(--clr-blue-soft);
+      border-left: 3px solid var(--clr-blue);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      font-size: 0.92rem;
+      color: #0c4a6e;
+      line-height: 1.75;
+    }
+
+    /* ─── SECTION 2: LOCATION & CONTEXT ────────────────────── */
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .location-data {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .data-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--clr-border);
+    }
+
+    .data-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .data-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--clr-muted);
+    }
+
+    .data-value {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--clr-navy);
+    }
+
+    .data-sub {
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      font-weight: 400;
+    }
+
+    .location-narrative {
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.75;
+    }
+
+    /* ─── SECTION 3: FEMA FLOOD ZONE ────────────────────────── */
+    .fema-top {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .fema-zone-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: var(--clr-high-bg);
+      border: 2px solid var(--clr-high-border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      min-width: 120px;
+    }
+
+    .fema-zone-badge.zone-x {
+      background: var(--clr-low-bg);
+      border-color: var(--clr-low-border);
+    }
+
+    .fema-zone-badge.zone-a {
+      background: var(--clr-mod-bg);
+      border-color: var(--clr-mod-border);
+    }
+
+    .fema-zone-badge.zone-ae {
+      background: var(--clr-mod-bg);
+      border-color: var(--clr-mod-border);
+    }
+
+    .fema-zone-badge.zone-v {
+      background: var(--clr-high-bg);
+      border-color: var(--clr-high-border);
+    }
+
+    .fema-zone-badge.zone-ve {
+      background: var(--clr-high-bg);
+      border-color: var(--clr-high-border);
+    }
+
+    .fema-zone-letter {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--clr-high);
+      line-height: 1;
+    }
+
+    .zone-x .fema-zone-letter {
+      color: var(--clr-low);
+    }
+
+    .zone-a .fema-zone-letter {
+      color: var(--clr-mod);
+    }
+
+    .zone-ae .fema-zone-letter {
+      color: var(--clr-mod);
+    }
+
+    .zone-v .fema-zone-letter {
+      color: var(--clr-high);
+    }
+
+    .zone-ve .fema-zone-letter {
+      color: var(--clr-vhigh);
+    }
+
+    .fema-zone-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--clr-muted);
+      font-weight: 600;
+    }
+
+    .fema-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fema-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+
+    .fema-detail-key {
+      color: var(--clr-muted);
+      min-width: 180px;
+      font-size: 0.82rem;
+    }
+
+    .fema-detail-val {
+      font-weight: 600;
+      color: var(--clr-navy);
+    }
+
+    .sfha-yes {
+      display: inline-block;
+      background: var(--clr-high-bg);
+      color: var(--clr-high);
+      border: 1px solid var(--clr-high-border);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .sfha-no {
+      display: inline-block;
+      background: var(--clr-low-bg);
+      color: var(--clr-low);
+      border: 1px solid var(--clr-low-border);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .flood-scale {
+      margin: 20px 0 6px;
+    }
+
+    .flood-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--clr-muted);
+      margin-bottom: 6px;
+    }
+
+    .flood-scale-bar {
+      position: relative;
+      height: 8px;
+      background: linear-gradient(90deg, #22c55e, #facc15 40%, #ef4444 70%, #7f1d1d);
+      border-radius: 999px;
+    }
+
+    .flood-scale-indicator {
+      position: absolute;
+      top: -5px;
+      transform: translateX(-50%);
+      width: 18px;
+      height: 18px;
+      background: white;
+      border: 3px solid var(--clr-navy);
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+      transition: left .4s ease;
+    }
+
+    .flood-scale-ticks {
+      position: relative;
+      height: 20px;
+      margin-top: 4px;
+    }
+
+    .flood-tick {
+      position: absolute;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--clr-navy-soft);
+    }
+
+    .fema-note {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-left: 3px solid var(--clr-blue);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      color: #374151;
+      line-height: 1.7;
+    }
+
+    /* ─── SECTION 4: SEA LEVEL RISE ─────────────────────────── */
+    .slr-gauge-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .slr-gauge-card {
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+
+    .slr-gauge-card .data-label {
+      margin-bottom: 6px;
+    }
+
+    .slr-rate-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--clr-navy);
+      letter-spacing: -0.02em;
+    }
+
+    .slr-rate-unit {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      font-weight: 400;
+    }
+
+    .slr-scenario-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin-bottom: 24px;
+    }
+
+    .slr-scenario-table th {
+      background: #f1f5f9;
+      color: var(--clr-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--clr-border);
+      font-weight: 600;
+    }
+
+    .slr-scenario-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--clr-border);
+      color: var(--clr-navy);
+    }
+
+    .slr-scenario-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .slr-scenario-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .scenario-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .scenario-low {
+      background: var(--clr-low-bg);
+      color: var(--clr-low);
+    }
+
+    .scenario-int {
+      background: var(--clr-mod-bg);
+      color: var(--clr-mod);
+    }
+
+    .scenario-high {
+      background: var(--clr-high-bg);
+      color: var(--clr-high);
+    }
+
+    .slr-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .slr-image-card {
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .slr-image-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .slr-image-label {
+      padding: 8px 12px;
+      background: #f8fafc;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--clr-navy);
+      text-align: center;
+      border-top: 1px solid var(--clr-border);
+    }
+
+    .slr-legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 12px 0 20px;
+      font-size: 0.82rem;
+      color: #374151;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .slr-property-note {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-left: 3px solid var(--clr-blue);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.875rem;
+      color: #374151;
+      line-height: 1.7;
+    }
+
+    /* ─── SECTION 5: STORM SURGE ────────────────────────────── */
+    .surge-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin-bottom: 24px;
+    }
+
+    .surge-table th {
+      background: #f1f5f9;
+      color: var(--clr-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--clr-border);
+      font-weight: 600;
+    }
+
+    .surge-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--clr-border);
+      color: var(--clr-navy);
+    }
+
+    .surge-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .surge-depth-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .surge-bar-track {
+      flex: 1;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .surge-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #fbbf24, #ef4444);
+    }
+
+    .surge-depth-label {
+      font-weight: 700;
+      min-width: 60px;
+      text-align: right;
+      font-size: 0.88rem;
+    }
+
+    .carousel-container {
+      position: relative;
+      max-width: 560px;
+      margin: 0 auto 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--clr-border);
+      box-shadow: var(--shadow);
+    }
+
+    .carousel-slide {
+      display: none;
+    }
+
+    .carousel-slide.active {
+      display: block;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      display: block;
+    }
+
+    .carousel-caption {
+      padding: 10px 14px;
+      background: #f8fafc;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--clr-navy);
+      text-align: center;
+      border-top: 1px solid var(--clr-border);
+    }
+
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .carousel-btn {
+      background: white;
+      border: 1px solid var(--clr-border);
+      border-radius: 999px;
+      width: 34px;
+      height: 34px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--clr-navy);
+      transition: background 120ms, border-color 120ms;
+      box-shadow: var(--shadow);
+    }
+
+    .carousel-btn:hover {
+      background: var(--clr-blue-soft);
+      border-color: var(--clr-blue);
+    }
+
+    .carousel-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--clr-border);
+      cursor: pointer;
+      transition: background 120ms;
+    }
+
+    .carousel-dot.active {
+      background: var(--clr-blue);
+    }
+
+    .surge-note {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-left: 3px solid #f59e0b;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.875rem;
+      color: #374151;
+      line-height: 1.7;
+    }
+
+    /* ─── SECTION 6: CVI FACTORS ────────────────────────────── */
+    .cvi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .cvi-card {
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .cvi-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .cvi-card-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--clr-navy);
+    }
+
+    .cvi-card-metric {
+      font-size: 0.78rem;
+      color: var(--clr-muted);
+      margin-bottom: 10px;
+    }
+
+    .cvi-card-note {
+      font-size: 0.82rem;
+      color: #4b5563;
+      line-height: 1.6;
+      padding-top: 10px;
+      border-top: 1px dashed var(--clr-border);
+    }
+
+    /* ─── SECTION 7: HISTORICAL FLOOD RECORD ───────────────── */
+    .flood-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .flood-stat-card {
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .flood-events-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+    }
+
+    .flood-events-table th {
+      background: #f1f5f9;
+      color: var(--clr-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--clr-border);
+      font-weight: 600;
+    }
+
+    .flood-events-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--clr-border);
+      color: var(--clr-navy);
+      vertical-align: top;
+    }
+
+    .flood-events-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .flood-events-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .event-name {
+      font-weight: 600;
+    }
+
+    .event-desc {
+      font-size: 0.82rem;
+      color: var(--clr-muted);
+      margin-top: 3px;
+    }
+
+    .htf-trend {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 48px;
+      margin: 16px 0 8px;
+    }
+
+    .htf-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .htf-bar {
+      width: 100%;
+      background: var(--clr-blue);
+      border-radius: 4px 4px 0 0;
+      opacity: 0.85;
+    }
+
+    .htf-year {
+      font-size: 0.65rem;
+      color: var(--clr-muted);
+      text-align: center;
+    }
+
+    .htf-label {
+      font-size: 0.72rem;
+      color: var(--clr-muted);
+      margin-top: 4px;
+    }
+
+    /* ─── SECTION 8: INSURANCE & REGULATORY ────────────────── */
+    .insurance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .insurance-card {
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .insurance-card-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--clr-muted);
+      margin-bottom: 10px;
+    }
+
+    .insurance-card-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--clr-navy);
+      margin-bottom: 4px;
+    }
+
+    .insurance-card-sub {
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      line-height: 1.5;
+    }
+
+    .regulatory-note {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-left: 3px solid var(--clr-navy-soft);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.875rem;
+      color: #374151;
+      line-height: 1.75;
+    }
+
+    /* ─── SECTION 9: MITIGATION RECOMMENDATIONS ─────────────── */
+    .recs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .rec-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 18px;
+      border: 1px solid var(--clr-border);
+      border-radius: 10px;
+    }
+
+    .rec-num {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--clr-blue-soft);
+      color: var(--clr-blue);
+      font-size: 0.82rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .rec-content {}
+
+    .rec-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--clr-navy);
+      margin-bottom: 5px;
+    }
+
+    .rec-desc {
+      font-size: 0.85rem;
+      color: #4b5563;
+      line-height: 1.65;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    .report-footer {
+      background: var(--clr-navy);
+      color: #64748b;
+      padding: 32px 56px;
+      font-size: 0.75rem;
+      line-height: 1.7;
+    }
+
+    .report-footer-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-brand {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .footer-section-title {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .footer-sources {
+      color: #475569;
+    }
+
+    .footer-sources li {
+      margin-bottom: 3px;
+    }
+
+    /* ─── PRINT ─────────────────────────────────────────────── */
+    @media print {
+      body {
+        background: white;
+        font-size: 13px;
+      }
+
+      .cover {
+        padding: 40px;
+      }
+
+      .report-body {
+        padding: 32px 24px;
+        gap: 24px;
+      }
+
+      .section {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+        break-inside: avoid;
+      }
+
+      .disclaimer-bar {
+        display: none;
+      }
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .cover {
+        padding: 32px 24px;
+      }
+
+      .cover-confidential {
+        display: none;
+      }
+
+      .report-body {
+        padding: 24px 16px;
+      }
+
+      .section-header,
+      .section-body {
+        padding: 16px 18px;
+      }
+
+      .fema-top {
+        grid-template-columns: 1fr;
+      }
+
+      .location-grid,
+      .slr-gauge-row,
+      .insurance-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .report-footer {
+        padding: 24px;
+      }
+
+      .report-footer-inner {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ COVER ═══════════════════════════════════════════════ -->
+  <header class="cover">
+    <div class="cover-confidential">Confidential</div>
+    <div class="cover-inner">
+      <div class="cover-brand">
+        <span class="cover-brand-name">CoastalRisk</span>
+        <div class="cover-brand-dot"></div>
+        <span class="cover-brand-name">Vulnerability Assessment</span>
+      </div>
+      <div class="cover-tag">Private Client Report</div>
+      <h1>Coastal Risk Report</h1>
+      <p class="cover-address">{{ address }}</p>
+      <div class="cover-meta-grid">
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Prepared for</span>
+          <span class="cover-meta-value">{{ client_name }}</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Report date</span>
+          <span class="cover-meta-value">{{ date }}</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Overall CVI Rating</span>
+          <span class="cover-meta-value">{{ overall_risk }}</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">FEMA Flood Zone</span>
+          <span class="cover-meta-value">Zone {{ flood_zone }}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ DISCLAIMER ══════════════════════════════════════════ -->
+  <div class="disclaimer-bar">
+    This report is prepared for informational purposes only and does not constitute professional engineering, legal, or
+    financial advice.
+    CoastalRisk is not liable for decisions made based on its contents. Data sourced from USGS, NOAA, and FEMA public
+    datasets.
+  </div>
+
+  <!-- ═══ BODY ════════════════════════════════════════════════ -->
+  <div class="report-body">
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#exec-summary"><span class="toc-num">01</span> Executive Summary</a></li>
+        <li><a href="#location"><span class="toc-num">02</span> Location &amp; Coastal Context</a></li>
+        <li><a href="#fema"><span class="toc-num">03</span> FEMA Flood Zone</a></li>
+        <li><a href="#slr"><span class="toc-num">04</span> Sea Level Rise Projections</a></li>
+        <li><a href="#surge"><span class="toc-num">05</span> Storm Surge Exposure</a></li>
+        <li><a href="#cvi"><span class="toc-num">06</span> Coastal Vulnerability Factors</a></li>
+        <li><a href="#history"><span class="toc-num">07</span> Historical Flood Record</a></li>
+        <li><a href="#insurance"><span class="toc-num">08</span> Insurance &amp; Regulatory</a></li>
+        <li><a href="#mitigation"><span class="toc-num">09</span> Mitigation Recommendations</a></li>
+      </ul>
+    </div>
+
+    <!-- ─── 01: EXECUTIVE SUMMARY ──────────────────────────── -->
+    <div class="section" id="exec-summary">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <span class="section-title">Executive Summary</span>
+      </div>
+      <div class="section-body">
+        <div class="exec-kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Overall Risk Rating</span>
+            <span class="kpi-value">{{ overall_risk }}</span>
+            <span class="kpi-sub">Coastal Vulnerability Index</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">FEMA Flood Zone</span>
+            <span class="kpi-value">Zone {{ flood_zone }}</span>
+            <span class="kpi-sub">{{ sfha_label }}</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Local SLR Rate</span>
+            <span class="kpi-value">{{ slr_rate_local }} <span
+                style="font-size:1rem;font-weight:500;color:#64748b;">mm/yr</span></span>
+            <span class="kpi-sub">Observed at {{ slr_tide_gauge }}</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Cat 3 Surge Depth</span>
+            <span class="kpi-value">{{ cat3_surge }} <span
+                style="font-size:1rem;font-weight:500;color:#64748b;">ft</span></span>
+            <span class="kpi-sub">NOAA SLOSH MOM estimate</span>
+          </div>
+        </div>
+        <div class="exec-narrative">{{ exec_summary }}</div>
+      </div>
+    </div>
+
+    <!-- ─── 02: LOCATION & CONTEXT ─────────────────────────── -->
+    <div class="section" id="location">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <span class="section-title">Location &amp; Coastal Context</span>
+      </div>
+      <div class="section-body">
+        <div class="location-grid">
+          <div class="location-data">
+            <div class="data-row">
+              <span class="data-label">Property Address</span>
+              <span class="data-value">{{ address }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Coordinates</span>
+              <span class="data-value">{{ latitude }}° N, {{ longitude }}° W</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Distance to Shoreline</span>
+              <span class="data-value">{{ distance_to_shore }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Coastal Region</span>
+              <span class="data-value">{{ coastal_region }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Geomorphic Setting</span>
+              <span class="data-value">{{ geomorphology_type }}</span>
+              <span class="data-sub">{{ geomorphology_rating }} vulnerability</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Nearest Tide Gauge</span>
+              <span class="data-value">{{ slr_tide_gauge }}</span>
+            </div>
+          </div>
+          <div class="location-narrative">
+            <p>{{ location_context }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 03: FEMA FLOOD ZONE ────────────────────────────── -->
+    <div class="section" id="fema">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <span class="section-title">FEMA Flood Zone Classification</span>
+      </div>
+      <div class="section-body">
+        <div class="fema-top">
+          <div class="fema-zone-badge zone-{{ flood_zone | lower }}">
+            <span class="fema-zone-letter">{{ flood_zone }}</span>
+            <span class="fema-zone-tag">FEMA Zone</span>
+          </div>
+          <div class="fema-details">
+            <div class="fema-detail-row">
+              <span class="fema-detail-key">Special Flood Hazard Area (SFHA)</span>
+              {% if sfha %}<span class="sfha-yes">Yes — High Risk</span>{% else %}<span class="sfha-no">No</span>{%
+              endif %}
+            </div>
+            <div class="fema-detail-row">
+              <span class="fema-detail-key">Base Flood Elevation (BFE)</span>
+              <span class="fema-detail-val">{{ base_flood_elevation }}</span>
+            </div>
+            <div class="fema-detail-row">
+              <span class="fema-detail-key">Mandatory Flood Insurance</span>
+              <span class="fema-detail-val">{{ "Yes — required for federally-backed mortgages" if mandatory_insurance
+                else "Not required" }}</span>
+            </div>
+            <div class="fema-detail-row">
+              <span class="fema-detail-key">NFIP Community</span>
+              <span class="fema-detail-val">{{ nfip_community_name }}</span>
+            </div>
+            <div class="fema-detail-row">
+              <span class="fema-detail-key">Community Rating System (CRS)</span>
+              <span class="fema-detail-val">{{ nfip_crs_rating }}</span>
+            </div>
+            <div class="fema-detail-row">
+              <span class="fema-detail-key">Annual Flood Chance</span>
+              <span class="fema-detail-val">{{ annual_flood_chance }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flood-scale">
+          <div class="flood-scale-labels">
+            <span>Lowest risk</span>
+            <span>Highest risk</span>
+          </div>
+          <div class="flood-scale-bar">
+            <div class="flood-scale-indicator" id="floodIndicator"></div>
+          </div>
+          <div class="flood-scale-ticks">
+            <div class="flood-tick" style="left:0%">X</div>
+            <div class="flood-tick" style="left:17%">B</div>
+            <div class="flood-tick" style="left:34%">A</div>
+            <div class="flood-tick" style="left:51%">AE</div>
+            <div class="flood-tick" style="left:68%">V</div>
+            <div class="flood-tick" style="left:100%">VE</div>
+          </div>
+        </div>
+
+        <div class="fema-note">{{ fema_note }}</div>
+      </div>
+    </div>
+
+    <!-- ─── 04: SEA LEVEL RISE ─────────────────────────────── -->
+    <div class="section" id="slr">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <span class="section-title">Sea Level Rise Projections</span>
+      </div>
+      <div class="section-body">
+        <p class="section-intro">{{ sea_level_intro }}</p>
+
+        <div class="slr-gauge-row">
+          <div class="slr-gauge-card">
+            <div class="data-label">Observed Local Rate — {{ slr_tide_gauge }}</div>
+            <div style="margin-top:8px;">
+              <span class="slr-rate-value">{{ slr_rate_local }}</span>
+              <span class="slr-rate-unit"> mm/year</span>
+            </div>
+            <div style="font-size:0.8rem;color:#64748b;margin-top:4px;">{{ slr_gauge_period }}</div>
+          </div>
+          <div class="slr-gauge-card">
+            <div class="data-label">NOAA Intermediate Projection — 2050</div>
+            <div style="margin-top:8px;">
+              <span class="slr-rate-value">+{{ slr_intermediate_2050 }}</span>
+              <span class="slr-rate-unit"> ft above 2000 baseline</span>
+            </div>
+            <div style="font-size:0.8rem;color:#64748b;margin-top:4px;">Relative to current mean higher high water</div>
+          </div>
+        </div>
+
+        <table class="slr-scenario-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>2030</th>
+              <th>2050</th>
+              <th>2075</th>
+              <th>2100</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="scenario-pill scenario-low">Low</span></td>
+              <td>+{{ slr_low_2030 }} ft</td>
+              <td>+{{ slr_low_2050 }} ft</td>
+              <td>+{{ slr_low_2075 }} ft</td>
+              <td>+{{ slr_low_2100 }} ft</td>
+              <td style="font-size:0.8rem;color:#64748b;">Assumes rapid emissions reduction</td>
+            </tr>
+            <tr>
+              <td><span class="scenario-pill scenario-int">Intermediate</span></td>
+              <td>+{{ slr_intermediate_2030 }} ft</td>
+              <td>+{{ slr_intermediate_2050 }} ft</td>
+              <td>+{{ slr_intermediate_2075 }} ft</td>
+              <td>+{{ slr_intermediate_2100 }} ft</td>
+              <td style="font-size:0.8rem;color:#64748b;">NOAA planning benchmark scenario</td>
+            </tr>
+            <tr>
+              <td><span class="scenario-pill scenario-high">High</span></td>
+              <td>+{{ slr_high_2030 }} ft</td>
+              <td>+{{ slr_high_2050 }} ft</td>
+              <td>+{{ slr_high_2075 }} ft</td>
+              <td>+{{ slr_high_2100 }} ft</td>
+              <td style="font-size:0.8rem;color:#64748b;">Assumes accelerated ice sheet loss</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="slr-images">
+          <div class="slr-image-card">
+            <img src="{{ url_for('static', filename='SLR_2030.png') }}" alt="Sea Level Rise 2030" />
+            <div class="slr-image-label">2030 Projection</div>
+          </div>
+          <div class="slr-image-card">
+            <img src="{{ url_for('static', filename='SLR_2055.png') }}" alt="Sea Level Rise 2055" />
+            <div class="slr-image-label">2055 Projection</div>
+          </div>
+          <div class="slr-image-card">
+            <img src="{{ url_for('static', filename='SLR_2075.png') }}" alt="Sea Level Rise 2075" />
+            <div class="slr-image-label">2075 Projection</div>
+          </div>
+        </div>
+
+        <div class="slr-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#22c55e;"></div>
+            <span>Partial parcel inundation</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#38bdf8;"></div>
+            <span>Full parcel footprint inundation</span>
+          </div>
+        </div>
+
+        <div class="slr-property-note">{{ property_note }}</div>
+      </div>
+    </div>
+
+    <!-- ─── 05: STORM SURGE ────────────────────────────────── -->
+    <div class="section" id="surge">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <span class="section-title">Coastal Storm &amp; Wave Hazard</span>
+      </div>
+      <div class="section-body">
+        <p class="section-intro">{{ storm_surge_intro }}</p>
+
+        <table class="surge-table" style="margin-bottom:24px;">
+          <thead>
+            <tr>
+              <th>Storm Intensity</th>
+              <th>Approx. Return Period</th>
+              <th>Total Coastal Water Level</th>
+              <th>Relative Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Moderate Winter Storm</strong></td>
+              <td style="color:#64748b;">~5-year return</td>
+              <td><strong>{{ cat1_surge }} ft above MHHW</strong></td>
+              <td>
+                <div class="surge-depth-bar">
+                  <div class="surge-bar-track">
+                    <div class="surge-bar-fill" style="width:{{ (cat1_surge / cat5_surge * 100)|int }}%"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Strong El Niño Event</strong></td>
+              <td style="color:#64748b;">~10-year return</td>
+              <td><strong>{{ cat2_surge }} ft above MHHW</strong></td>
+              <td>
+                <div class="surge-depth-bar">
+                  <div class="surge-bar-track">
+                    <div class="surge-bar-fill" style="width:{{ (cat2_surge / cat5_surge * 100)|int }}%"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Severe El Niño Event</strong></td>
+              <td style="color:#64748b;">~25-year return</td>
+              <td><strong>{{ cat3_surge }} ft above MHHW</strong></td>
+              <td>
+                <div class="surge-depth-bar">
+                  <div class="surge-bar-track">
+                    <div class="surge-bar-fill" style="width:{{ (cat3_surge / cat5_surge * 100)|int }}%"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Extreme El Niño / King Tide</strong></td>
+              <td style="color:#64748b;">~50-year return</td>
+              <td><strong>{{ cat4_surge }} ft above MHHW</strong></td>
+              <td>
+                <div class="surge-depth-bar">
+                  <div class="surge-bar-track">
+                    <div class="surge-bar-fill" style="width:{{ (cat4_surge / cat5_surge * 100)|int }}%"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Design Storm Event</strong></td>
+              <td style="color:#64748b;">~100-year return</td>
+              <td><strong>{{ cat5_surge }} ft above MHHW</strong></td>
+              <td>
+                <div class="surge-depth-bar">
+                  <div class="surge-bar-track">
+                    <div class="surge-bar-fill" style="width:100%"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="carousel-container">
+          {% for i in range(1, 6) %}
+          <div class="carousel-slide {% if i == 1 %}active{% endif %}">
+            <img src="{{ url_for('static', filename='surge' ~ i ~ '.png') }}" alt="Category {{ i }} Storm Surge" />
+            <div class="carousel-caption">Storm Intensity Level {{ i }} — Estimated {{ [cat1_surge, cat2_surge, cat3_surge, cat4_surge, cat5_surge][i-1] }} ft above MHHW at this location</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="carousel-nav">
+          <button class="carousel-btn" id="prevBtn" onclick="changeSlide(-1)">&#8592;</button>
+          <div class="carousel-dots" id="carouselDots"></div>
+          <button class="carousel-btn" id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+        </div>
+
+        <div class="surge-note">{{ storm_surge_property_note }}</div>
+      </div>
+    </div>
+
+    <!-- ─── 06: COASTAL VULNERABILITY FACTORS ─────────────── -->
+    <div class="section" id="cvi">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <span class="section-title">Coastal Vulnerability Factors</span>
+      </div>
+      <div class="section-body">
+        <p class="section-intro">
+          The USGS Coastal Vulnerability Index (CVI) quantifies relative coastal vulnerability using six physical
+          variables.
+          Each factor is rated Very Low to Very High based on observed conditions along this coastal segment.
+        </p>
+        <div class="cvi-grid">
+
+          <div class="cvi-card">
+            <div class="cvi-card-header">
+              <span class="cvi-card-name">Erosion Rate</span>
+              <span class="risk-badge {{ erosion_rating | lower | replace(' ', '-') }}">{{ erosion_rating }}</span>
+            </div>
+            <div class="cvi-card-metric">{{ erosion_rate }}</div>
+            <div class="cvi-card-note">{{ erosion_note }}</div>
+          </div>
+
+          <div class="cvi-card">
+            <div class="cvi-card-header">
+              <span class="cvi-card-name">Sea Level Change Rate</span>
+              <span class="risk-badge {{ sea_level_rating | lower | replace(' ', '-') }}">{{ sea_level_rating }}</span>
+            </div>
+            <div class="cvi-card-metric">{{ sea_level_rate }}</div>
+            <div class="cvi-card-note">{{ sea_level_note }}</div>
+          </div>
+
+          <div class="cvi-card">
+            <div class="cvi-card-header">
+              <span class="cvi-card-name">Tidal Range</span>
+              <span class="risk-badge {{ tidal_rating | lower | replace(' ', '-') }}">{{ tidal_rating }}</span>
+            </div>
+            <div class="cvi-card-metric">{{ tidal_range }}</div>
+            <div class="cvi-card-note">{{ tidal_note }}</div>
+          </div>
+
+          <div class="cvi-card">
+            <div class="cvi-card-header">
+              <span class="cvi-card-name">Wave Height</span>
+              <span class="risk-badge {{ wave_rating | lower | replace(' ', '-') }}">{{ wave_rating }}</span>
+            </div>
+            <div class="cvi-card-metric">{{ wave_height }}</div>
+            <div class="cvi-card-note">{{ wave_note }}</div>
+          </div>
+
+          <div class="cvi-card">
+            <div class="cvi-card-header">
+              <span class="cvi-card-name">Coastal Slope</span>
+              <span class="risk-badge {{ slope_rating | lower | replace(' ', '-') }}">{{ slope_rating }}</span>
+            </div>
+            <div class="cvi-card-metric">{{ slope_pct }}</div>
+            <div class="cvi-card-note">{{ slope_note }}</div>
+          </div>
+
+          <div class="cvi-card">
+            <div class="cvi-card-header">
+              <span class="cvi-card-name">Geomorphology</span>
+              <span class="risk-badge {{ geomorphology_rating | lower | replace(' ', '-') }}">{{ geomorphology_rating
+                }}</span>
+            </div>
+            <div class="cvi-card-metric">{{ geomorphology_type }}</div>
+            <div class="cvi-card-note">{{ geomorphology_note }}</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 07: HISTORICAL FLOOD RECORD ───────────────────── -->
+    <div class="section" id="history">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <span class="section-title">Historical Flood Record</span>
+      </div>
+      <div class="section-body">
+        <div class="flood-stats-grid">
+          <div class="flood-stat-card">
+            <div class="data-label">NFIP Claims — {{ nfip_zip }}</div>
+            <div class="kpi-value" style="font-size:1.5rem;margin:6px 0 2px;">{{ nfip_claims_count }}</div>
+            <div class="kpi-sub">Claims filed since 1978</div>
+          </div>
+          <div class="flood-stat-card">
+            <div class="data-label">Total NFIP Payouts</div>
+            <div class="kpi-value" style="font-size:1.5rem;margin:6px 0 2px;">{{ nfip_claims_total }}</div>
+            <div class="kpi-sub">Paid to policyholders in this zip code</div>
+          </div>
+          <div class="flood-stat-card">
+            <div class="data-label">High Tide Flooding Days</div>
+            <div class="kpi-value" style="font-size:1.5rem;margin:6px 0 2px;">{{ htf_days_current }} <span
+                style="font-size:1rem;font-weight:500;color:#64748b;">days/yr</span></div>
+            <div class="kpi-sub">Current observed at {{ slr_tide_gauge }}</div>
+          </div>
+          <div class="flood-stat-card">
+            <div class="data-label">Projected HTF Days — 2050</div>
+            <div class="kpi-value" style="font-size:1.5rem;margin:6px 0 2px;">{{ htf_days_2050 }} <span
+                style="font-size:1rem;font-weight:500;color:#64748b;">days/yr</span></div>
+            <div class="kpi-sub">NOAA intermediate scenario</div>
+          </div>
+        </div>
+
+        <table class="flood-events-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Event</th>
+              <th>Type</th>
+              <th>Estimated Damage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in flood_events %}
+            <tr>
+              <td style="font-weight:700;white-space:nowrap;">{{ event.year }}</td>
+              <td>
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-desc">{{ event.description }}</div>
+              </td>
+              <td><span class="risk-badge moderate">{{ event.type }}</span></td>
+              <td style="font-weight:600;">{{ event.damage }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="slr-property-note">{{ flood_history_note }}</div>
+      </div>
+    </div>
+
+    <!-- ─── 08: INSURANCE & REGULATORY ────────────────────── -->
+    <div class="section" id="insurance">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <span class="section-title">Insurance &amp; Regulatory Implications</span>
+      </div>
+      <div class="section-body">
+        <div class="insurance-grid">
+          <div class="insurance-card">
+            <div class="insurance-card-title">Flood Insurance Requirement</div>
+            <div class="insurance-card-value">{{ insurance_requirement }}</div>
+            <div class="insurance-card-sub">{{ insurance_requirement_detail }}</div>
+          </div>
+          <div class="insurance-card">
+            <div class="insurance-card-title">NFIP Annual Premium (est.)</div>
+            <div class="insurance-card-value">{{ estimated_nfip_premium }}</div>
+            <div class="insurance-card-sub">{{ nfip_premium_note }}</div>
+          </div>
+          <div class="insurance-card">
+            <div class="insurance-card-title">Private Market Outlook</div>
+            <div class="insurance-card-value">{{ private_market_status }}</div>
+            <div class="insurance-card-sub">{{ private_market_note }}</div>
+          </div>
+          <div class="insurance-card">
+            <div class="insurance-card-title">State Disclosure Requirement</div>
+            <div class="insurance-card-value">{{ state_disclosure }}</div>
+            <div class="insurance-card-sub">{{ state_disclosure_detail }}</div>
+          </div>
+        </div>
+        <div class="regulatory-note">{{ regulatory_note }}</div>
+      </div>
+    </div>
+
+    <!-- ─── 09: MITIGATION RECOMMENDATIONS ───────────────── -->
+    <div class="section" id="mitigation">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <span class="section-title">Risk Mitigation Recommendations</span>
+      </div>
+      <div class="section-body">
+        <p class="section-intro">
+          The following recommendations are tailored to this property's specific risk profile. They are ordered by
+          priority and estimated cost-effectiveness for long-term resilience.
+        </p>
+        <div class="recs-list">
+          {% for rec in recommendations %}
+          <div class="rec-item">
+            <div class="rec-num">{{ loop.index }}</div>
+            <div class="rec-content">
+              <div class="rec-title">{{ rec.title }}</div>
+              <div class="rec-desc">{{ rec.description }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /report-body -->
+
+  <!-- ═══ FOOTER ══════════════════════════════════════════════ -->
+  <footer class="report-footer">
+    <div class="report-footer-inner">
+      <div>
+        <div class="footer-brand">CoastalRisk · Private &amp; Confidential</div>
+        <p>This report was prepared exclusively for {{ client_name }} and may not be shared or reproduced
+          without written consent from CoastalRisk. All findings are based on publicly available data and
+          do not constitute professional engineering or legal advice.</p>
+        <p style="margin-top:8px;">Questions? <a href="mailto:info@CoastalRisk.org"
+            style="color:#94a3b8;">info@CoastalRisk.org</a></p>
+      </div>
+      <div>
+        <div class="footer-section-title">Data Sources</div>
+        <ul class="footer-sources" style="list-style:none;padding:0;">
+          <li>· USGS National Assessment of Shoreline Change (CVI Data)</li>
+          <li>· FEMA National Flood Hazard Layer (NFHL)</li>
+          <li>· NOAA CO-OPS Tides &amp; Currents — Sea Level Trends</li>
+          <li>· NOAA Interagency Sea Level Rise Scenarios (2022)</li>
+          <li>· NOAA NHC SLOSH MOM Storm Surge Envelopes</li>
+          <li>· OpenFEMA — NFIP Redacted Claims Dataset</li>
+          <li>· NOAA NCEI Storm Events Database</li>
+          <li>· NOAA High Tide Flooding Annual Outlook</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── FEMA zone indicator ──────────────────────────────────
+    (function () {
+      const positions = { X: 0, B: 17, A: 34, AE: 51, V: 68, VE: 100 };
+      const zone = "{{ flood_zone }}".toUpperCase();
+      const el = document.getElementById("floodIndicator");
+      if (el) el.style.left = (positions[zone] ?? 0) + "%";
+    })();
+
+    // ── Storm surge carousel ─────────────────────────────────
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".carousel-slide");
+    const dotsContainer = document.getElementById("carouselDots");
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement("div");
+      dot.className = "carousel-dot" + (i === 0 ? " active" : "");
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    });
+
+    function goToSlide(n) {
+      slides[slideIndex].classList.remove("active");
+      document.querySelectorAll(".carousel-dot")[slideIndex].classList.remove("active");
+      slideIndex = (n + slides.length) % slides.length;
+      slides[slideIndex].classList.add("active");
+      document.querySelectorAll(".carousel-dot")[slideIndex].classList.add("active");
+    }
+
+    function changeSlide(dir) { goToSlide(slideIndex + dir); }
+  </script>
+
+</body>
+
+</html>
