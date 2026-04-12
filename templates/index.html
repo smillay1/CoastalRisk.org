@@ -130,11 +130,11 @@
 
         /* Main layout */
         main {
-            padding: calc(var(--nav-height) + 24px) 24px 80px;
+            padding: calc(var(--nav-height) + 48px) 32px 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 72px;
+            gap: 96px;
         }
 
         .page-inner {
@@ -144,12 +144,12 @@
         /* Hero section */
         .hero {
             display: grid;
-            gap: 32px;
+            gap: 48px;
             align-items: center;
         }
 
         .hero-copy {
-            max-width: 560px;
+            max-width: 580px;
             color: var(--clr-text-light);
         }
 
@@ -210,12 +210,12 @@
         .hero-panels {
             display: grid;
             grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-            gap: 18px;
+            gap: 24px;
         }
 
         .card {
             border-radius: var(--radius-lg);
-            padding: 20px 20px 22px;
+            padding: 30px 28px 34px;
             box-shadow: var(--shadow-card);
             border: 1px solid rgba(148, 163, 184, 0.35);
             background: var(--clr-card);
@@ -419,25 +419,25 @@
         /* Sections */
         section.section {
             border-radius: calc(var(--radius-lg) + 4px);
-            padding: 28px 22px 30px;
+            padding: 48px 44px 52px;
             background: rgba(248, 250, 252, 0.98);
             border: 1px solid rgba(148, 163, 184, 0.35);
             box-shadow: var(--shadow-card);
         }
 
         section.section h2 {
-            margin: 0 0 8px;
-            font-size: 1.4rem;
+            margin: 0 0 12px;
+            font-size: 1.5rem;
             letter-spacing: 0.06em;
             text-transform: uppercase;
             color: #0f172a;
         }
 
         section.section .lead {
-            font-size: 0.98rem;
+            font-size: 1.02rem;
             font-weight: 600;
             color: #111827;
-            margin: 6px 0 16px;
+            margin: 8px 0 22px;
         }
 
         section.section .copy {
@@ -499,11 +499,16 @@
         /* Responsiveness */
         @media (max-width: 880px) {
             main {
-                padding: calc(var(--nav-height) + 16px) 16px 60px;
+                padding: calc(var(--nav-height) + 28px) 18px 80px;
+                gap: 64px;
+            }
+
+            section.section {
+                padding: 32px 24px 36px;
             }
 
             .hero {
-                gap: 26px;
+                gap: 32px;
             }
 
             .hero-panels {
