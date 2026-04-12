@@ -134,7 +134,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 96px;
+            gap: 0;
         }
 
         .page-inner {
@@ -211,6 +211,7 @@
             display: grid;
             grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
             gap: 24px;
+            margin-bottom: 80px;
         }
 
         .card {
@@ -418,60 +419,89 @@
 
         /* Sections */
         section.section {
-            border-radius: calc(var(--radius-lg) + 4px);
-            padding: 48px 44px 52px;
-            background: rgba(248, 250, 252, 0.98);
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            box-shadow: var(--shadow-card);
+            padding: 64px 0 72px;
+            border-top: 1px solid rgba(148, 163, 184, 0.18);
+            background: transparent;
+            position: relative;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .section-tag::before {
+            content: "";
+            display: block;
+            width: 28px;
+            height: 1.5px;
+            background: linear-gradient(90deg, #38bdf8, transparent);
         }
 
         section.section h2 {
-            margin: 0 0 12px;
-            font-size: 1.5rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: #0f172a;
+            margin: 0 0 18px;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            color: #f1f5f9;
+            max-width: 640px;
         }
 
         section.section .lead {
-            font-size: 1.02rem;
-            font-weight: 600;
-            color: #111827;
-            margin: 8px 0 22px;
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: #94a3b8;
+            margin: 0 0 32px;
+            max-width: 560px;
+            line-height: 1.7;
         }
 
         section.section .copy {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: #374151;
-            max-width: 70ch;
+            font-size: 0.97rem;
+            line-height: 1.85;
+            color: #94a3b8;
+            max-width: 68ch;
         }
 
         section.section .copy p {
-            margin: 0 0 12px;
+            margin: 0 0 16px;
         }
 
-        /* Dark section variant */
+        section.section .copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Philosophy gets a subtle left-border treatment to differentiate */
         section.section-dark {
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(30, 64, 175, 0.96));
-            border-color: rgba(129, 140, 248, 0.7);
-            color: #e5e7eb;
+            background: transparent;
+            border-color: rgba(148, 163, 184, 0.18);
         }
 
         section.section-dark h2 {
-            color: #e5e7eb;
+            color: #e2e8f0;
+        }
+
+        section.section-dark .section-tag {
+            color: #818cf8;
+        }
+
+        section.section-dark .section-tag::before {
+            background: linear-gradient(90deg, #818cf8, transparent);
         }
 
         section.section-dark .lead {
-            color: #e0e7ff;
+            color: #94a3b8;
         }
 
         section.section-dark .copy {
-            color: #e5e7eb;
-        }
-
-        section.section-dark .copy p {
-            margin-bottom: 10px;
+            color: #64748b;
         }
 
         /* Footer */
@@ -625,50 +655,45 @@
 
             <!-- MISSION -->
             <section id="mission" class="section">
-                <h2>Mission</h2>
+                <div class="section-tag">Mission</div>
+                <h2>Turn complex coastal climate data into clear, defensible guidance.</h2>
                 <p class="lead">
-                    Turn complex coastal climate data into clear, defensible guidance.
+                    Climate conditions are worsening. Sea levels are rising, storms are intensifying,
+                    and flood zones are expanding — often faster than existing maps reflect.
                 </p>
                 <div class="copy">
                     <p>
-                        Climate conditions are worsening: sea levels are rising, storms are intensifying,
-                        and flood zones are expanding.
+                        At CoastalRisk, we cut through that uncertainty with property-level reports that detail
+                        the exact risks facing a specific parcel. Using NOAA sea level projections, FEMA flood
+                        classification, USGS coastal vulnerability data, and historical claims records, we help
+                        developers and investors move beyond outdated maps and generic risk scores.
                     </p>
                     <p>
-                        At CoastalRisk, we provide climate reports that cut through uncertainty, detailing the
-                        exact risks posed to coastal properties. Using satellite data, predictive flood modeling,
-                        and impact analysis, we help developers and investors move beyond outdated maps and guesswork.
-                    </p>
-                    <p>
-                        Our goal is to help you protect assets, avoid financial disasters, and build with confidence
-                        in an era of rising climate threats.
+                        Our goal is straightforward: give decision-makers the precise, sourced intelligence they
+                        need to protect assets, price risk accurately, and build with confidence in an era of
+                        accelerating coastal change.
                     </p>
                 </div>
             </section>
 
             <!-- PHILOSOPHY -->
             <section id="philosophy" class="section section-dark">
-                <h2>Philosophy</h2>
+                <div class="section-tag">Philosophy</div>
+                <h2>Precise, confidential intelligence for those who cannot afford surprises.</h2>
                 <p class="lead">
-                    Precise, confidential risk intelligence for decision-makers who cannot afford surprises.
+                    Generic risk scores don’t hold up in a boardroom or a lender package.
+                    Every shoreline, every parcel, and every project has unique vulnerabilities.
                 </p>
                 <div class="copy">
                     <p>
-                        We serve a select group of clients who require precise and actionable intelligence on coastal
-                        risks.
-                        We believe that decision-makers need clear, data-backed insights to navigate an era of rising
-                        sea
-                        levels and shifting coastlines.
+                        We serve developers and investors who require precise, actionable intelligence on coastal
+                        exposure — not aggregated statistics, but property-specific findings grounded in the
+                        best available federal data sources.
                     </p>
                     <p>
-                        Highly customized analysis is superior to generic, one-size-fits-all risk models. Every
-                        shoreline,
-                        every parcel, and every project has unique vulnerabilities.
-                    </p>
-                    <p>
-                        Proactive planning today is the key to long-term resilience. That’s why we provide specialized,
-                        proprietary risk assessments to help businesses and communities make informed decisions
-                        before disaster strikes.
+                        Proactive analysis is cheaper than a surprise. A well-documented risk profile informs
+                        construction decisions, supports insurance negotiations, and protects long-term asset value
+                        in markets where climate factors are increasingly material to financing and resale.
                     </p>
                     <p>
                         All CoastalRisk research is independent, proprietary, and confidential.
