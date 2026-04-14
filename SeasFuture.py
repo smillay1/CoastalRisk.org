@@ -150,6 +150,10 @@ def create_checkout_session():
 def developers():
     return render_template("developers.html", year="2026")
 
+@app.route("/methodology")
+def methodology():
+    return render_template("methodology.html")
+
 @app.route("/RiskReport")
 def risk_report():
     return render_template("RiskReport.html",

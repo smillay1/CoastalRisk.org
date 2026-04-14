@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="How CoastalRisk builds its reports — data sources, synthesis process, and transparency about what our analysis does and does not cover." />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon" />
+    <title>Methodology — CoastalRisk</title>
+
+    <style>
+        :root {
+            --nav-height: 72px;
+            --clr-bg: #020617;
+            --clr-accent: #0ea5e9;
+            --clr-accent-soft: rgba(56, 189, 248, 0.25);
+            --clr-text-main: #0f172a;
+            --clr-text-light: #e5e7eb;
+            --radius-lg: 18px;
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.35);
+            --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.25);
+            --transition-fast: 180ms ease-out;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--clr-text-main);
+            background: var(--clr-bg);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg,
+                rgba(15, 23, 42, 0.90) 0%,
+                rgba(15, 23, 42, 0.75) 35%,
+                rgba(15, 23, 42, 0.92) 100%),
+            url("{{ url_for('static', filename='background.jpeg') }}") center/cover no-repeat fixed;
+            z-index: -1;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+            z-index: 1000;
+        }
+
+        .brand-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #e5e7eb;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+        }
+
+        .brand-link span {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .wave-icon-right { height: 32px; width: auto; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            color: #cbd5f5;
+            text-decoration: none;
+            text-transform: capitalize;
+            letter-spacing: 0.04em;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: #38bdf8; }
+        .nav-links a.active::after { width: 100%; }
+
+        /* ── Layout ── */
+        main {
+            padding: calc(var(--nav-height) + 64px) 32px 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-inner { width: min(820px, 100%); }
+
+        /* ── Page hero ── */
+        .page-hero {
+            margin-bottom: 72px;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.75rem;
+            color: #a5f3fc;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            display: block;
+            width: 28px;
+            height: 1.5px;
+            background: linear-gradient(90deg, #38bdf8, transparent);
+        }
+
+        .page-hero h1 {
+            font-size: clamp(2rem, 3.8vw, 2.9rem);
+            line-height: 1.1;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0 0 18px;
+        }
+
+        .page-hero .lead {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            line-height: 1.75;
+            max-width: 620px;
+            margin: 0;
+        }
+
+        /* ── Section structure ── */
+        .section {
+            padding: 56px 0 64px;
+            border-top: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .section-tag::before {
+            content: "";
+            display: block;
+            width: 28px;
+            height: 1.5px;
+            background: linear-gradient(90deg, #38bdf8, transparent);
+        }
+
+        .section-tag.violet { color: #818cf8; }
+        .section-tag.violet::before { background: linear-gradient(90deg, #818cf8, transparent); }
+
+        .section-tag.teal { color: #2dd4bf; }
+        .section-tag.teal::before { background: linear-gradient(90deg, #2dd4bf, transparent); }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 2.6vw, 2rem);
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0 0 16px;
+            line-height: 1.2;
+        }
+
+        .section .lead {
+            font-size: 1rem;
+            color: #94a3b8;
+            line-height: 1.75;
+            margin: 0 0 36px;
+            max-width: 620px;
+        }
+
+        /* ── Prose ── */
+        .prose {
+            font-size: 0.97rem;
+            line-height: 1.85;
+            color: #94a3b8;
+        }
+
+        .prose p { margin: 0 0 18px; }
+        .prose p:last-child { margin-bottom: 0; }
+
+        /* ── Source cards ── */
+        .source-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .source-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 14px;
+            padding: 22px 22px 24px;
+            transition: border-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .source-card:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .source-badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            margin-bottom: 10px;
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .source-badge.fema {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .source-badge.noaa {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .source-badge.usgs {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .source-badge.openfema {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+            border-color: rgba(167, 139, 250, 0.3);
+        }
+
+        .source-card h3 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 8px;
+            line-height: 1.3;
+        }
+
+        .source-card p {
+            font-size: 0.86rem;
+            color: #64748b;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        /* ── Process steps ── */
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 0 20px;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 23px;
+            top: 48px;
+            bottom: -1px;
+            width: 1.5px;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.4), rgba(56, 189, 248, 0.05));
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.12);
+            border: 1.5px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-body {
+            padding: 12px 0 40px;
+        }
+
+        .step-body h3 {
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 6px;
+        }
+
+        .step-body p {
+            font-size: 0.88rem;
+            color: #64748b;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ── Limitations block ── */
+        .limits-box {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 14px;
+            padding: 28px 28px 30px;
+            margin-bottom: 24px;
+        }
+
+        .limits-box h3 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #f87171;
+            margin: 0 0 16px;
+        }
+
+        .limits-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .limits-list li {
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            gap: 0 10px;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .limits-list li::before {
+            content: "✕";
+            color: rgba(239, 68, 68, 0.6);
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
+        /* ── Disclaimer ── */
+        .disclaimer-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 14px;
+            padding: 24px 26px;
+        }
+
+        .disclaimer-box p {
+            font-size: 0.83rem;
+            color: #475569;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ── Footer ── */
+        footer.inquiries {
+            width: 100%;
+            border-top: 1px solid rgba(148, 163, 184, 0.35);
+            padding: 14px 16px 18px;
+            background: rgba(15, 23, 42, 0.95);
+            color: #9ca3af;
+            font-size: 0.82rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .inquiries-inner {
+            width: min(1120px, 100%);
+            text-align: center;
+        }
+
+        .inquiries .email {
+            font-weight: 500;
+            color: #e0f2fe;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 680px) {
+            main { padding: calc(var(--nav-height) + 36px) 18px 80px; }
+            .source-grid { grid-template-columns: 1fr; }
+            .step-body { padding-bottom: 28px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="brand-link">
+            <span>CoastalRisk</span>
+            <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right" />
+        </a>
+        <nav class="nav-links">
+            <a href="/">home</a>
+            <a href="/developers">developers</a>
+            <a href="/methodology" class="active">methodology</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-inner">
+
+            <!-- PAGE HERO -->
+            <div class="page-hero">
+                <div class="eyebrow">How reports are built</div>
+                <h1>Federal data, rigorously synthesized.</h1>
+                <p class="lead">
+                    Every CoastalRisk report draws exclusively from authoritative public-sector datasets —
+                    FEMA, NOAA, USGS, and OpenFEMA. This page explains exactly what those sources are,
+                    how we use them, and where our analysis has limits.
+                </p>
+            </div>
+
+            <!-- DATA SOURCES -->
+            <section class="section" id="sources">
+                <div class="section-tag">Data sources</div>
+                <h2>Four federal programs. No proprietary models.</h2>
+                <p class="lead">
+                    We don't build our own flood models or issue original climate projections.
+                    We synthesize what federal agencies have already produced — and make it legible at the parcel level.
+                </p>
+
+                <div class="source-grid">
+                    <div class="source-card">
+                        <span class="source-badge fema">FEMA</span>
+                        <h3>National Flood Insurance Program — Flood Map Service Center</h3>
+                        <p>
+                            FEMA's National Flood Hazard Layer (NFHL) is the authoritative source for flood zone
+                            designations in the United States. We pull each property's Special Flood Hazard Area
+                            (SFHA) status, flood zone classification (AE, VE, X, etc.), and Base Flood Elevation
+                            directly from FEMA's publically accessible NFHL API.
+                        </p>
+                    </div>
+
+                    <div class="source-card">
+                        <span class="source-badge noaa">NOAA CO-OPS</span>
+                        <h3>NOAA Tides &amp; Currents — Sea Level Rise Projections</h3>
+                        <p>
+                            NOAA's Center for Operational Oceanographic Products and Services (CO-OPS) operates the
+                            national tide gauge network. We use gauge-specific relative sea level rise rates and
+                            the NOAA 2022 Interagency Sea Level Rise Technical Report projections (Intermediate
+                            scenario) to produce 2050, 2075, and 2100 outlooks tied to the nearest active gauge.
+                        </p>
+                    </div>
+
+                    <div class="source-card">
+                        <span class="source-badge usgs">USGS</span>
+                        <h3>USGS Coastal Vulnerability Index</h3>
+                        <p>
+                            The U.S. Geological Survey Coastal Vulnerability Index (CVI) quantifies physical
+                            susceptibility to sea level rise along the U.S. shoreline using six variables:
+                            geomorphology, shoreline change rate, coastal slope, relative sea level change, mean
+                            tidal range, and mean wave height. We use it to contextualize physical exposure independent
+                            of flood zone classification.
+                        </p>
+                    </div>
+
+                    <div class="source-card">
+                        <span class="source-badge openfema">OpenFEMA</span>
+                        <h3>OpenFEMA — NFIP Claims &amp; Policy Data</h3>
+                        <p>
+                            OpenFEMA's public NFIP dataset contains decades of claims history by county and community.
+                            We use this to quantify historical flood loss — total claim counts and total paid losses —
+                            providing an actuarial ground-truth that reflects realized flood damage rather than
+                            modeled probability alone.
+                        </p>
+                    </div>
+
+                    <div class="source-card" style="grid-column: 1 / -1;">
+                        <span class="source-badge noaa">NOAA SLOSH</span>
+                        <h3>NOAA SLOSH Model — Storm Surge Maximum of Maximums (MOM)</h3>
+                        <p>
+                            For Atlantic and Gulf Coast properties, storm surge exposure is drawn from NOAA's Sea,
+                            Lake, and Overland Surges from Hurricanes (SLOSH) model. The Maximum of Maximums (MOM)
+                            dataset represents the worst-case surge depth for each hurricane category across thousands
+                            of modeled storm tracks — it is the same dataset used by NWS forecasters and emergency
+                            managers for evacuation planning. For Pacific Coast properties, we reference NOAA tide
+                            gauge records and published return-period analyses for El Niño-driven coastal water levels
+                            in lieu of hurricane surge data.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SYNTHESIS PROCESS -->
+            <section class="section" id="process">
+                <div class="section-tag violet">Synthesis process</div>
+                <h2>From raw data to parcel-level findings.</h2>
+                <p class="lead">
+                    Pulling data is the easy part. What requires judgment is translating overlapping
+                    federal datasets — each with different geographies, update schedules, and methodologies —
+                    into findings that are coherent at the scale of a single property.
+                </p>
+
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-body">
+                            <h3>Address geocoding &amp; coastal proximity check</h3>
+                            <p>
+                                The property address is geocoded and checked against a coastal boundary layer
+                                to confirm it falls within ~20 miles of tidal water. Addresses that fall outside
+                                this boundary are not eligible for a CoastalRisk report.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-body">
+                            <h3>Flood zone classification</h3>
+                            <p>
+                                The parcel's centroid coordinates are queried against FEMA's National Flood Hazard
+                                Layer. We record the flood zone designation, SFHA status, Base Flood Elevation
+                                (where available), NFIP community ID, and current CRS discount class. Effective
+                                map dates are noted so the client understands how recently the area was studied.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-body">
+                            <h3>Tide gauge selection &amp; sea level rise projection</h3>
+                            <p>
+                                We identify the nearest active NOAA CO-OPS tide gauge with an adequate period of
+                                record and extract its relative sea level rise trend (mm/yr). This local rate —
+                                which captures both global ocean rise and local land subsidence or uplift — is
+                                combined with the NOAA 2022 Intermediate scenario to produce three forward projections:
+                                2050, 2075, and 2100.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-body">
+                            <h3>Storm surge or coastal water level exposure</h3>
+                            <p>
+                                For Atlantic and Gulf Coast properties, we extract SLOSH MOM surge depths by hurricane
+                                category from NOAA's publicly available dataset for the relevant storm surge basin.
+                                Surge depths are reported as approximate inundation above ground, not absolute
+                                elevation. For Pacific Coast properties, we reference published return-period analyses
+                                and historical tide gauge records to characterize coastal water level hazard by
+                                event frequency.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-body">
+                            <h3>Claims history &amp; insurance market context</h3>
+                            <p>
+                                OpenFEMA NFIP data is queried at the community level to report historical claim
+                                counts and total paid losses. We also summarize the current private flood insurance
+                                market conditions for the state and community, including any known carrier withdrawals
+                                or legislative developments affecting availability and pricing.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-body">
+                            <h3>Report assembly &amp; quality review</h3>
+                            <p>
+                                All findings are assembled into a structured nine-section report. Data points are
+                                cross-referenced for internal consistency — for example, flood zone classifications
+                                are checked against SLR projections to ensure timeline coherence. Notable findings
+                                or data gaps are flagged explicitly rather than omitted.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WHAT WE DON'T DO -->
+            <section class="section" id="limits">
+                <div class="section-tag teal">Scope &amp; limitations</div>
+                <h2>What a CoastalRisk report is not.</h2>
+                <p class="lead">
+                    Being explicit about scope is not a weakness — it's what separates a useful analytical
+                    tool from a misleading one. The following are outside the scope of every report we produce.
+                </p>
+
+                <div class="limits-box">
+                    <h3>Outside scope</h3>
+                    <ul class="limits-list">
+                        <li>Licensed engineering assessments, structural evaluations, or site surveys of any kind</li>
+                        <li>Legal advice, regulatory compliance opinions, or permitting guidance</li>
+                        <li>Insurance recommendations or coverage determinations</li>
+                        <li>Original flood modeling or proprietary climate projections beyond published federal datasets</li>
+                        <li>Property valuation or investment recommendations</li>
+                        <li>Certification of any kind for lender, regulatory, or governmental submission</li>
+                        <li>Assessments of inland flooding unrelated to coastal storm surge or tidal inundation</li>
+                    </ul>
+                </div>
+
+                <div class="prose">
+                    <p>
+                        FEMA flood maps are the official basis for NFIP flood insurance requirements, but they
+                        have known limitations: many were last studied decades ago, do not account for sea level
+                        rise, and can underestimate risk in areas with significant erosion or subsidence.
+                        CoastalRisk contextualizes FEMA designations against current sea level trends precisely
+                        because the maps alone are insufficient — but neither source is a substitute for a
+                        site-specific engineering study when one is warranted.
+                    </p>
+                    <p>
+                        All data used in CoastalRisk reports is publicly available from the federal agencies
+                        cited. Clients are encouraged to verify findings independently and consult licensed
+                        professionals before making development, financing, or investment decisions.
+                    </p>
+                </div>
+            </section>
+
+            <!-- UPDATE CADENCE -->
+            <section class="section" id="updates">
+                <div class="section-tag">Data currency</div>
+                <h2>How current is the data?</h2>
+                <div class="prose">
+                    <p>
+                        FEMA flood zone data is pulled live at the time of report generation via the FEMA NFHL API.
+                        NOAA sea level projections reflect the 2022 Interagency Sea Level Rise Technical Report,
+                        the current federal standard. NOAA tide gauge trend data is updated continuously by CO-OPS
+                        and reflects the most recent available analysis at the time of report generation.
+                        OpenFEMA claims data is updated periodically by FEMA and typically lags by several months
+                        to one year.
+                    </p>
+                    <p>
+                        Because federal flood maps are amended through FEMA's Letter of Map Amendment (LOMA) and
+                        Letter of Map Revision (LOMR) processes, a property's official flood zone designation can
+                        change. CoastalRisk reports reflect data current as of the generation date and do not
+                        automatically update if a LOMA or LOMR is issued afterward.
+                    </p>
+                </div>
+            </section>
+
+            <!-- DISCLAIMER -->
+            <section class="section" id="disclaimer" style="padding-bottom: 0;">
+                <div class="disclaimer-box">
+                    <p>
+                        CoastalRisk reports synthesize publicly available data from FEMA, NOAA, USGS, and OpenFEMA
+                        for informational purposes only. They do not constitute licensed engineering assessments,
+                        legal advice, or insurance guidance. Flood zone classifications, risk projections, and all
+                        data should be independently verified before any development, investment, or financing
+                        decision. CoastalRisk is not liable for decisions made on the basis of information
+                        contained in its reports.
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="inquiries">
+        <div class="inquiries-inner">
+            Inquiries? <span class="email">info@CoastalRisk.org</span>
+        </div>
+    </footer>
+</body>
+
+</html>
