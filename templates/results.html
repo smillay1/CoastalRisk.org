@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon" />
-    <title>Coastal Vulnerability Index</title>
+    <title>Risk Snapshot — CoastalRisk</title>
 
     <style>
         :root {
@@ -589,9 +589,9 @@
             <img src="{{ url_for('static', filename='favicon.png') }}" alt="Wave Icon" class="wave-icon-right" />
         </a>
         <nav class="nav-links">
-            <a href="{{ url_for('index', _anchor='mission') }}">mission</a>
-            <a href="{{ url_for('index', _anchor='philosophy') }}">philosophy</a>
-            <a href="{{ url_for('index', _anchor='contact') }}">contact</a>
+            <a href="{{ url_for('index') }}">home</a>
+            <a href="/developers">developers</a>
+            <a href="/methodology">methodology</a>
         </nav>
     </div>
 
