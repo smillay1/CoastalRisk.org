@@ -509,10 +509,10 @@ def risk_report_fmb():
         slr_img_2050        = "slr_florida_2050.png",
         slr_img_2075        = "slr_florida_2075.png",
         surge_imgs          = ["ftmyerscat1.png", "ftmyerscat2.png", "ftmyerscat3.png", "ftmyerscat4.png", "ftmyerscat5.png"],
-        cat1_surge          = 3,
-        cat2_surge          = 7,
-        cat3_surge          = 12,
-        cat4_surge          = 16,
+        cat1_surge          = 6,
+        cat2_surge          = 10,
+        cat3_surge          = 14,
+        cat4_surge          = 18,
         cat5_surge          = 20,
         storm_surge_intro   = (
             "Estero Island is one of the most surge-exposed locations on the Gulf of Mexico coast. "
