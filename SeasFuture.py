@@ -245,6 +245,10 @@ def risk_report():
             "regular tidal inundation. Development decisions should incorporate freeboard above current BFE "
             "to account for this trajectory."
         ),
+        slr_img_2030        = "SLR_2030.png",
+        slr_img_2050        = "SLR_2055.png",
+        slr_img_2075        = "SLR_2075.png",
+        surge_imgs          = ["surge1.png", "surge2.png", "surge3.png", "surge4.png", "surge5.png"],
         cat1_surge          = 2,
         cat2_surge          = 6,
         cat3_surge          = 10,
@@ -501,6 +505,10 @@ def risk_report_fmb():
             "and sea level rise compound. Development decisions should target finished floor elevations "
             "significantly above current BFE minimums."
         ),
+        slr_img_2030        = "slr_florida_2030.png",
+        slr_img_2050        = "slr_florida_2050.png",
+        slr_img_2075        = "slr_florida_2075.png",
+        surge_imgs          = ["ftmyerscat1.png", "ftmyerscat2.png", "ftmyerscat3.png", "ftmyerscat4.png", "ftmyerscat5.png"],
         cat1_surge          = 3,
         cat2_surge          = 7,
         cat3_surge          = 12,
@@ -773,6 +781,9 @@ def risk_report_malibu():
             "consider both the structural and regulatory implications of a shrinking beach buffer "
             "under California Coastal Commission jurisdiction."
         ),
+        slr_img_2030        = "slr_malibu_2030.png",
+        slr_img_2050        = "slr_malibu_2050.png",
+        slr_img_2075        = "slr_malibu_2075.png",
         cat1_surge          = 2,
         cat2_surge          = 3,
         cat3_surge          = 5,

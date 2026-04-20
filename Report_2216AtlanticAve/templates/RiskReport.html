@@ -1518,15 +1518,15 @@
 
         <div class="slr-images">
           <div class="slr-image-card">
-            <img src="{{ url_for('static', filename='SLR_2030.png') }}" alt="Sea Level Rise 2030" />
+            <img src="{{ url_for('static', filename=slr_img_2030) }}" alt="Sea Level Rise 2030" />
             <div class="slr-image-label">2030 Projection</div>
           </div>
           <div class="slr-image-card">
-            <img src="{{ url_for('static', filename='SLR_2055.png') }}" alt="Sea Level Rise 2055" />
-            <div class="slr-image-label">2055 Projection</div>
+            <img src="{{ url_for('static', filename=slr_img_2050) }}" alt="Sea Level Rise 2050" />
+            <div class="slr-image-label">2050 Projection</div>
           </div>
           <div class="slr-image-card">
-            <img src="{{ url_for('static', filename='SLR_2075.png') }}" alt="Sea Level Rise 2075" />
+            <img src="{{ url_for('static', filename=slr_img_2075) }}" alt="Sea Level Rise 2075" />
             <div class="slr-image-label">2075 Projection</div>
           </div>
         </div>
@@ -1629,11 +1629,11 @@
         </table>
 
         <div class="carousel-container">
-          {% for i in range(1, 6) %}
-          <div class="carousel-slide {% if i == 1 %}active{% endif %}">
-            <img src="{{ url_for('static', filename='surge' ~ i ~ '.png') }}" alt="Category {{ i }} Storm Surge" />
-            <div class="carousel-caption">Category {{ i }} Storm Surge — Estimated {{ [cat1_surge, cat2_surge,
-              cat3_surge, cat4_surge, cat5_surge][i-1] }} ft depth at this location</div>
+          {% for img in surge_imgs %}
+          <div class="carousel-slide {% if loop.first %}active{% endif %}">
+            <img src="{{ url_for('static', filename=img) }}" alt="Category {{ loop.index }} Storm Surge" />
+            <div class="carousel-caption">Category {{ loop.index }} Storm Surge — Estimated {{ [cat1_surge, cat2_surge,
+              cat3_surge, cat4_surge, cat5_surge][loop.index0] }} ft depth at this location</div>
           </div>
           {% endfor %}
         </div>

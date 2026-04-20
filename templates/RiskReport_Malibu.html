@@ -1518,15 +1518,15 @@
 
         <div class="slr-images">
           <div class="slr-image-card">
-            <img src="{{ url_for('static', filename='SLR_2030.png') }}" alt="Sea Level Rise 2030" />
+            <img src="{{ url_for('static', filename=slr_img_2030) }}" alt="Sea Level Rise 2030" />
             <div class="slr-image-label">2030 Projection</div>
           </div>
           <div class="slr-image-card">
-            <img src="{{ url_for('static', filename='SLR_2055.png') }}" alt="Sea Level Rise 2055" />
-            <div class="slr-image-label">2055 Projection</div>
+            <img src="{{ url_for('static', filename=slr_img_2050) }}" alt="Sea Level Rise 2050" />
+            <div class="slr-image-label">2050 Projection</div>
           </div>
           <div class="slr-image-card">
-            <img src="{{ url_for('static', filename='SLR_2075.png') }}" alt="Sea Level Rise 2075" />
+            <img src="{{ url_for('static', filename=slr_img_2075) }}" alt="Sea Level Rise 2075" />
             <div class="slr-image-label">2075 Projection</div>
           </div>
         </div>
@@ -1628,19 +1628,8 @@
           </tbody>
         </table>
 
-        <div class="carousel-container">
-          {% for i in range(1, 6) %}
-          <div class="carousel-slide {% if i == 1 %}active{% endif %}">
-            <img src="{{ url_for('static', filename='surge' ~ i ~ '.png') }}" alt="Category {{ i }} Storm Surge" />
-            <div class="carousel-caption">Storm Intensity Level {{ i }} — Estimated {{ [cat1_surge, cat2_surge, cat3_surge, cat4_surge, cat5_surge][i-1] }} ft above MHHW at this location</div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div class="carousel-nav">
-          <button class="carousel-btn" id="prevBtn" onclick="changeSlide(-1)">&#8592;</button>
-          <div class="carousel-dots" id="carouselDots"></div>
-          <button class="carousel-btn" id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+        <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(148,163,184,0.2);border-radius:12px;padding:20px 24px;color:#64748b;font-size:0.88rem;line-height:1.6;">
+          NOAA SLOSH storm surge mapping is not available for Pacific Coast locations. Coastal water level hazard for this property is characterized in the table above using historical El Niño event records and NOAA tide gauge return-period analysis.
         </div>
 
         <div class="surge-note">{{ storm_surge_property_note }}</div>
