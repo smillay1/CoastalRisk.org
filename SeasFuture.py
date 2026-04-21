@@ -1115,8 +1115,8 @@ def risk_report_southern_shores():
             "width, and drainage following flood events is slow due to the limited gradient."
         ),
         nfip_zip            = "27949",
-        nfip_claims_count   = "1,240",
-        nfip_claims_total   = "$52.1M",
+        nfip_claims_count   = "3,506",
+        nfip_claims_total   = "$32.9M",
         htf_days_current    = "4",
         htf_days_2050       = "25–65",
         flood_events        = [
@@ -1137,8 +1137,8 @@ def risk_report_southern_shores():
              "damage": "$4.1B (national)"},
         ],
         flood_history_note  = (
-            "NFIP claims data for zip code 27949 (Southern Shores) reflects over 1,200 paid claims "
-            "totaling approximately $52.1 million since program inception — consistent with the Outer "
+            "NFIP claims data for zip code 27949 (Southern Shores) reflects 3,506 paid claims "
+            "totaling $32.9 million since program inception — consistent with the Outer "
             "Banks' repeated exposure to Atlantic tropical and extratropical systems. High tide flooding "
             "at the Duck gauge currently occurs approximately 4 days per year; under the NOAA intermediate "
             "sea level rise scenario, this is projected to rise to 25–65 days annually by 2050, representing "
