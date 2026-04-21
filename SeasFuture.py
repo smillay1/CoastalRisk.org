@@ -410,7 +410,7 @@ def risk_report():
         ],
     )
 
-@app.route("/RiskReport/FortMyersBeach")
+@app.route("/RiskReport/1000EsteroBlvd")
 def risk_report_fmb():
     return render_template("RiskReport.html",
         client_name         = "Sample Report — CoastalRisk",
@@ -680,7 +680,7 @@ def risk_report_fmb():
     )
 
 
-@app.route("/RiskReport/Malibu")
+@app.route("/RiskReport/22000PacificCoastHwy")
 def risk_report_malibu():
     return render_template("RiskReport_Malibu.html",
         client_name         = "Sample Report — CoastalRisk",
@@ -956,7 +956,7 @@ def risk_report_malibu():
     )
 
 
-@app.route("/RiskReport/SouthernShores")
+@app.route("/RiskReport/223OceanBlvd")
 def risk_report_southern_shores():
     return render_template("RiskReport.html",
         client_name         = "Sandmark Custom Homes — Complimentary Analysis",
