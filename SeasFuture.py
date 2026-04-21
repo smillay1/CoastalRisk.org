@@ -956,6 +956,270 @@ def risk_report_malibu():
     )
 
 
+@app.route("/RiskReport/SouthernShores")
+def risk_report_southern_shores():
+    return render_template("RiskReport.html",
+        client_name         = "Sandmark Custom Homes — Complimentary Analysis",
+        address             = "223 Ocean Blvd, Southern Shores, NC 27949",
+        date                = "April 2026",
+        year                = "2026",
+        latitude            = "36.1312",
+        longitude           = "75.7290",
+        overall_risk        = "Very High",
+        exec_summary        = (
+            "This oceanfront property on the Outer Banks of North Carolina sits within the Special Flood "
+            "Hazard Area on a low-elevation barrier island immediately adjacent to FEMA Zone VE (EL 11 ft "
+            "NAVD88). The site is subject to compounding coastal hazards: a local sea level rise rate of "
+            "4.27 mm/year at the Duck, NC tide gauge — one of the highest on the US East Coast — NOAA-projected "
+            "intermediate rise of 1.4 ft by 2050, and Atlantic hurricane storm surge depths reaching an "
+            "estimated 11 ft under a Category 5 scenario per NOAA SLOSH MOM data. Dare County's NFIP "
+            "claims history reflects decades of repeated coastal flood losses across the Outer Banks barrier "
+            "island chain. The North Carolina private flood insurance market is under increasing stress as "
+            "carriers reassess barrier island exposure. Any construction or investment decision at this "
+            "location should account for escalating insurance costs, rising BFE pressure, and structural "
+            "requirements specific to VE-adjacent oceanfront parcels."
+        ),
+        distance_to_shore   = "Directly oceanfront — Atlantic Ocean shoreline",
+        coastal_region      = "Northern Outer Banks, North Carolina — Dare County",
+        location_context    = (
+            "Southern Shores is a residential community on the northern Outer Banks, a barrier island "
+            "chain approximately 4 miles offshore of the North Carolina mainland. The community sits on "
+            "a narrow sand barrier with the Atlantic Ocean to the east and Currituck Sound to the west, "
+            "leaving oceanfront properties directly exposed to Atlantic hurricane surge with no significant "
+            "offshore barrier protection. Mean land elevation in the oceanfront zone ranges from approximately "
+            "6 to 12 feet NAVD88. The nearest NOAA tide gauge is Duck, NC (Station 8651370), approximately "
+            "2 miles north, and has the longest continuous sea level record in the region."
+        ),
+        geomorphology_type  = "Barrier Island — Atlantic-Facing Sandy Beach",
+        geomorphology_rating= "Very High",
+        geomorphology_note  = (
+            "The Outer Banks are among the most dynamic and geomorphically active barrier islands on the "
+            "US East Coast. Sandy substrate, low elevation, and exposure to nor'easters and tropical "
+            "cyclones produce persistent shoreline change, overwash risk, and long-term landward migration."
+        ),
+        flood_zone          = "VE-adjacent / SFHA",
+        sfha                = True,
+        sfha_label          = "Special Flood Hazard Area",
+        base_flood_elevation= "11 ft NAVD88 (Zone VE boundary)",
+        mandatory_insurance = True,
+        nfip_community_name = "Town of Southern Shores, NC (CID: 370430)",
+        nfip_crs_rating     = "Class 8 — 10% NFIP premium discount",
+        annual_flood_chance = "1% annual chance (100-year flood); 26% chance over 30-year mortgage",
+        fema_note           = (
+            "This parcel is mapped on or immediately adjacent to the Zone VE (EL 11 ft) boundary per FIRM "
+            "Panel 3720986800K (effective 6/19/2020). Zone VE designates a coastal high-hazard area subject "
+            "to wave action of 3 feet or more during the 1% annual chance flood. Federally-backed mortgage "
+            "holders are required to maintain flood insurance, and new construction must be elevated above "
+            "the Base Flood Elevation. NFIP Risk Rating 2.0 (2021) has moved premiums toward actuarial "
+            "risk for VE and SFHA-adjacent properties; rates for oceanfront Outer Banks parcels have "
+            "increased substantially since implementation. The Town of Southern Shores participates in "
+            "the Community Rating System (CRS) at Class 8, providing a 10% NFIP premium discount."
+        ),
+        slr_tide_gauge      = "Duck, NC (NOAA Station 8651370)",
+        slr_rate_local      = "4.27",
+        slr_gauge_period    = "Based on 1978–2024 tide gauge record (NOAA CO-OPS)",
+        slr_low_2030        = "0.2",
+        slr_low_2050        = "0.5",
+        slr_low_2075        = "0.9",
+        slr_low_2100        = "1.3",
+        slr_intermediate_2030 = "0.3",
+        slr_intermediate_2050 = "1.4",
+        slr_intermediate_2075 = "2.5",
+        slr_intermediate_2100 = "4.2",
+        slr_high_2030       = "0.5",
+        slr_high_2050       = "2.0",
+        slr_high_2075       = "3.8",
+        slr_high_2100       = "6.5",
+        sea_level_intro     = (
+            "The Duck, NC tide gauge has recorded a local relative sea level rise rate of 4.27 mm/year — "
+            "driven by both global ocean warming and regional land subsidence along the mid-Atlantic coast. "
+            "This rate is among the highest recorded on the US East Coast. NOAA's 2022 Interagency Sea Level "
+            "Rise Scenarios project that under an intermediate planning scenario, the Outer Banks will see "
+            "approximately 1.4 feet of additional sea level by 2050 relative to the 2000 baseline. Under "
+            "a high scenario reflecting accelerated ice sheet dynamics, that figure reaches 6.5 feet by "
+            "2100. The satellite imagery below illustrates projected inundation extent at this parcel "
+            "under the intermediate scenario."
+        ),
+        property_note       = (
+            "At this parcel's oceanfront elevation, the intermediate SLR scenario projects meaningful "
+            "increases in high tide flooding frequency within a typical coastal investment horizon. "
+            "The Duck gauge already records several high-water events per year that would not have "
+            "occurred two decades ago. Each additional foot of sea level effectively raises the baseline "
+            "from which all storm surge events operate, increasing flood depth and extent across all "
+            "storm categories. Construction decisions should target finished floor elevations well above "
+            "the current BFE to provide a buffer against future BFE revisions and continued sea level rise."
+        ),
+        slr_img_2030        = "obx_slr_0.png",
+        slr_img_2050        = "obx_slr_1.png",
+        slr_img_2075        = "obx_slr_2.png",
+        surge_imgs          = ["223OceanBlvdCat1.png", "223OceanBlvdCat2.png", "223OceanBlvdCat3.png", "223OceanBlvdCat4.png", "223OceanBlvdCat5.png"],
+        cat1_surge          = 0,
+        cat2_surge          = 2,
+        cat3_surge          = 5,
+        cat4_surge          = 7,
+        cat5_surge          = 11,
+        storm_surge_intro   = (
+            "The Outer Banks are directly exposed to Atlantic hurricane storm surge with no offshore barrier "
+            "protection. Surge depths are estimated using NOAA's SLOSH Maximum of Maximums (MOM) product "
+            "for the relevant Atlantic basin, representing the upper envelope of modeled surge heights across "
+            "thousands of synthetic storm tracks. The northern Outer Banks' orientation relative to typical "
+            "hurricane tracks results in moderate surge exposure compared to concave Gulf Coast geometries — "
+            "however, direct or near-direct landfalls can produce catastrophic surge. The Ash Wednesday Storm "
+            "(1962), Hurricane Isabel (2003), and Hurricane Irene (2011) all produced significant surge and "
+            "overwash on the northern Outer Banks."
+        ),
+        storm_surge_property_note = (
+            "SLOSH MOM data indicates minimal surge impact from Category 1 events at this specific location, "
+            "with surge increasing sharply at Category 3 and above. A Category 5 scenario projects 11 ft of "
+            "surge depth — well above the first-floor finished floor elevation of most structures built to "
+            "minimum BFE. Hurricane Isabel (2003) cut a new inlet through Hatteras Island and produced "
+            "2–3 ft of surge in the Northern Banks; a more direct strike on Southern Shores from a major "
+            "hurricane would produce conditions consistent with the Category 4–5 projections above."
+        ),
+        erosion_rate        = "Variable; –0.2 to –0.8 m/year (shoreline reach dependent)",
+        erosion_rating      = "High",
+        erosion_note        = (
+            "The Outer Banks barrier island chain has been retreating landward for centuries. "
+            "Ocean-facing shorelines in Southern Shores have experienced net erosion, with rates "
+            "varying by shore reach. USGS shoreline change data indicates long-term net negative "
+            "change along this section of the northern Outer Banks."
+        ),
+        sea_level_rate      = "+4.27 mm/year (relative)",
+        sea_level_rating    = "Very High",
+        sea_level_note      = (
+            "The Duck, NC gauge SLR rate exceeds the global mean by approximately 1.5–2.0 mm/year, "
+            "reflecting both ocean warming and ongoing mid-Atlantic coastal subsidence. This elevated "
+            "local rate means sea level rise impacts will materialize earlier here than in more "
+            "tectonically stable coastal regions."
+        ),
+        tidal_range         = "3.0 ft mean tidal range (microtidal)",
+        tidal_rating        = "Low",
+        tidal_note          = (
+            "The Outer Banks has a relatively small tidal range, which limits daily high-water variation "
+            "but means that even small increases in mean sea level more quickly translate into elevated "
+            "baseline flood frequency."
+        ),
+        wave_height         = "Significant wave height ~1.0–1.8 m nearshore",
+        wave_rating         = "High",
+        wave_note           = (
+            "Atlantic-facing exposure delivers persistent wave energy year-round, with significantly "
+            "elevated wave heights during nor'easters — which are the most frequent cause of coastal "
+            "damage on the northern Outer Banks — and tropical systems. Wave runup compounds storm surge "
+            "at the shoreline and accelerates dune erosion."
+        ),
+        slope_pct           = "< 0.1% coastal slope (very flat barrier island)",
+        slope_rating        = "Very High",
+        slope_note          = (
+            "Outer Banks barrier islands are extremely flat, with rapid loss of elevation moving inland "
+            "from the ocean. This means surge and overwash events spread quickly across the island "
+            "width, and drainage following flood events is slow due to the limited gradient."
+        ),
+        nfip_zip            = "27949",
+        nfip_claims_count   = "1,240",
+        nfip_claims_total   = "$52.1M",
+        htf_days_current    = "4",
+        htf_days_2050       = "25–65",
+        flood_events        = [
+            {"year": 1962, "name": "Ash Wednesday Storm", "type": "Nor'easter",
+             "description": "One of the most damaging nor'easters on record for the Outer Banks. Produced sustained surge of 3–6 ft across the northern Outer Banks over multiple tide cycles, causing extensive structural damage and shoreline change.",
+             "damage": "$218M (1962 dollars, national)"},
+            {"year": 1999, "name": "Hurricane Floyd", "type": "Major Hurricane",
+             "description": "Category 2 at Outer Banks landfall. Produced 3–5 ft of surge along the northern Outer Banks, coastal flooding, and widespread road closures on NC-12.",
+             "damage": "$3B (national)"},
+            {"year": 2003, "name": "Hurricane Isabel", "type": "Major Hurricane",
+             "description": "Category 2 at landfall on the Outer Banks. Produced 6–8 ft of surge in portions of Dare County, cut a new inlet through Hatteras Island, and caused extensive structural damage across the barrier island chain.",
+             "damage": "$3.4B (national)"},
+            {"year": 2011, "name": "Hurricane Irene", "type": "Hurricane",
+             "description": "Category 1 at Outer Banks landfall. Produced 3–4 ft of surge, significant overwash, and severe road damage along NC-12 in Dare County.",
+             "damage": "$1.1B (NC)"},
+            {"year": 2020, "name": "Hurricane Isaias", "type": "Hurricane",
+             "description": "Category 1 brushing the Outer Banks. Storm surge of 1–3 ft, coastal flooding, and wind damage across Dare County communities.",
+             "damage": "$4.1B (national)"},
+        ],
+        flood_history_note  = (
+            "NFIP claims data for zip code 27949 (Southern Shores) reflects over 1,200 paid claims "
+            "totaling approximately $52.1 million since program inception — consistent with the Outer "
+            "Banks' repeated exposure to Atlantic tropical and extratropical systems. High tide flooding "
+            "at the Duck gauge currently occurs approximately 4 days per year; under the NOAA intermediate "
+            "sea level rise scenario, this is projected to rise to 25–65 days annually by 2050, representing "
+            "a significant increase in chronic, nuisance-level inundation that affects property access, "
+            "drainage infrastructure, and long-term habitability."
+        ),
+        insurance_requirement       = "Mandatory",
+        insurance_requirement_detail= "Required for all federally-backed mortgages on properties in SFHA. Applies at closing and must be maintained continuously.",
+        estimated_nfip_premium      = "$5,000–$12,000/year",
+        nfip_premium_note           = (
+            "Estimated range for a residential structure in the SFHA / VE-adjacent zone under NFIP Risk "
+            "Rating 2.0. Actual premium depends on structure elevation, construction type, and coverage "
+            "amount. Outer Banks premiums have increased meaningfully since Risk Rating 2.0 implementation "
+            "in 2021 and are projected to continue rising toward actuarial cost."
+        ),
+        private_market_status       = "Restricted — Carrier Caution on Barrier Island Exposure",
+        private_market_note         = (
+            "Several major admitted carriers have reduced new-policy underwriting on Outer Banks barrier "
+            "island properties. Surplus lines markets remain available but at premium levels that reflect "
+            "the full actuarial risk. Buyers should obtain flood and wind insurance quotes early in the "
+            "due diligence process, as coverage availability affects financing feasibility."
+        ),
+        state_disclosure            = "Required",
+        state_disclosure_detail     = (
+            "North Carolina requires disclosure of known flood zone status on the Residential Property "
+            "Disclosure Statement (NC Gen. Stat. § 47E). Commercial transactions are subject to negotiated "
+            "disclosure obligations. Dare County also maintains local floodplain regulations that may "
+            "impose requirements beyond the FEMA minimum."
+        ),
+        regulatory_note             = (
+            "The Town of Southern Shores enforces FEMA floodplain management requirements under its "
+            "CRS participation. North Carolina's Coastal Area Management Act (CAMA) regulates development "
+            "in Areas of Environmental Concern (AEC), which includes ocean hazard areas within 60 feet "
+            "of the first line of stable natural vegetation. Any new construction or substantial "
+            "improvement on this parcel will require a CAMA permit from the NC Division of Coastal "
+            "Management. The NC Coastal Resources Commission also administers setback rules that restrict "
+            "the footprint of oceanfront structures."
+        ),
+        recommendations     = [
+            {"title": "Obtain a FEMA Elevation Certificate Before Construction",
+             "description": (
+                "An Elevation Certificate documents the structure's finished floor elevation relative to "
+                "the BFE and is essential for accurate NFIP rating. On VE-adjacent parcels, the EC "
+                "also confirms whether the structure technically falls within the VE zone boundary — "
+                "which has significant implications for both insurance requirements and construction "
+                "standards. Engage a licensed NC land surveyor."
+             )},
+            {"title": "Design to Minimum 2 Feet Freeboard Above BFE",
+             "description": (
+                "Given the Duck gauge's 4.27 mm/year SLR rate and the projected trajectory of BFE "
+                "revisions on the northern Outer Banks, new construction should target finished floor "
+                "elevations of at least 13 ft NAVD88 (BFE + 2 ft minimum). Each foot of freeboard "
+                "reduces NFIP premiums under Risk Rating 2.0 and provides a meaningful buffer against "
+                "future BFE increases and sea level rise over a 20–30 year investment horizon."
+             )},
+            {"title": "Verify CAMA AEC Setback Compliance Early",
+             "description": (
+                "The NC CAMA ocean hazard AEC setback is calculated from the first line of stable natural "
+                "vegetation and restricts where structures can be placed on oceanfront lots. Setback lines "
+                "on the Outer Banks are subject to periodic re-survey as the shoreline migrates. Obtain "
+                "a current setback determination from the NC Division of Coastal Management before "
+                "finalizing site plans."
+             )},
+            {"title": "Obtain Wind and Flood Insurance Quotes Early in Due Diligence",
+             "description": (
+                "Insurance availability on the northern Outer Banks should be confirmed before committing "
+                "to land acquisition or construction contracts. Obtain NFIP and private flood quotes, "
+                "and separately obtain wind coverage quotes through NC admitted carriers and the NC "
+                "Insurance Underwriting Association (beach plan) as a backstop. Total annual cost for "
+                "wind plus flood on an oceanfront structure at this location may range $12,000–$25,000+."
+             )},
+            {"title": "Evaluate Breakaway Wall and Flood Vent Requirements",
+             "description": (
+                "Any enclosed space below BFE on a VE or VE-adjacent structure must use breakaway walls "
+                "designed to collapse under flood and wave loads, protecting the elevated main structure. "
+                "FEMA-compliant flood openings (vents) are required in any enclosed foundation space. "
+                "Ensure structural plans are reviewed by an engineer familiar with NC VE zone requirements."
+             )},
+        ],
+    )
+
 @app.route("/success")
 def success():
     return render_template("success.html")
