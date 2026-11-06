@@ -1,356 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.png" type="image/x-icon">
-    <title>CoastalRisk</title>
-    <style>
-        body {
-            transform: scale(0.75);
-            display: flex;
-            flex-direction: column; 
-            justify-content: flex-start;
-            align-items: center;
-            background-color: #e0f7fa;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            margin: 0;
-            padding: 45px;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sam Millay</title>
+<meta name="description" content="Sam Millay: software for the ocean. Lyonesse, Leif, CoastalRisk, and research in remote sensing and fluid simulation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F7FAFA;
+    --shoal: #CCE3EC;
+    --contour: #8AAFC0;
+    --ink: #16232D;
+    --muted: #55656F;
+    --magenta: #A3206E;
+    --wide: 72rem;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Spectral", Georgia, serif;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+  a { color: inherit; }
+  a:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; }
+  img, video { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-        .title-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  /* Compact header over a faint depth chart */
+  .top {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 0 3rem;
+    border-bottom: 1px solid var(--contour);
+  }
+  .chart { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55; }
+  .chart .shoal { fill: var(--shoal); fill-rule: evenodd; }
+  .chart path:not(.shoal) { fill: none; stroke: var(--contour); }
+  .chart .c-shallow { stroke-width: 1.4; }
+  .chart .c-mid { stroke-width: 0.9; }
+  .chart .c-deep { stroke-width: 0.6; stroke-dasharray: 6 5; }
+  .chart .soundings { display: none; }
+  .top-inner { position: relative; max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem; }
+  h1 {
+    margin: 0;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(2.75rem, 8vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+  }
+  .tag { margin: 1rem 0 0; font-size: 1.2rem; }
+  .links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+  .links a { color: var(--magenta); text-underline-offset: 0.18em; }
 
-        .title {
-            font-size: 5rem;
-            color: #004d40;
-            margin: 0 10px;
-        }
+  main { max-width: var(--wide); margin: 0 auto; padding: 3.5rem 1.5rem 1rem; }
+  h2 { margin: 0 0 1.25rem; font-weight: 400; font-style: italic; font-size: 1.6rem; letter-spacing: 0.03em; }
+  section + section { margin-top: 4.5rem; }
 
-        .wave-icon-left, .wave-icon-right {
-            height: 40px; 
-            width: auto;
-            vertical-align: middle; 
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 0 10px; 
-        }
-
-        .wave-icon {
-          width: 50px;
-          height: auto;
-        }
-
-
-        .subheading {
-            font-size: 1.5rem;
-            color: #00796b;
-            margin-bottom: 30px;
-            height: 40px;
-        }
-
-        .panels-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; 
-            width: 100%;
-            max-width: 1500px;
-        }
-
-        .main-panel {
-            background-color: white;
-            padding: 20px;
-            border-radius: 1px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 60%;
-            margin-right: 20px;
-            flex-grow: 0; 
-        }
-
-        .side-panel {
-            background-color: white;
-            padding: 20px;
-            border-radius: 1px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 30%;
-            flex-grow: 1; 
-        }
-
-
-        h2 {
-            text-align: center;  
-            margin: 0 auto;  
-            font-size: 1.8rem;
-            color: #004d40;
-            margin-bottom: 20px;
-        }
-
-
-        input[type="text"] {
-            padding: 10px;
-            font-size: 1rem;
-            width: 100%;
-            border-radius: 1px;
-            border: 1px solid black;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #00796b;
-            border: none;
-            border-radius: 1px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #e0f7fa;
-            color: #00796b;
-            border: 1px solid #00796b;
-        }
-
-        .form-container {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 5px;
-    }
-
-        #address {
-        flex: 1;
-        margin-right: 10px;
-        }
-
-        .note {
-            font-size: 1rem;
-            color: black;
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        .resources ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .help {
-            color: #00796b;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .resources li {
-            margin-bottom: 10px;
-        }
-
-        .resources a {
-            color: #00796b;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .resources a:hover {
-            text-decoration: underline;
-        }
-
-        .donation-container {
-            display: flex; 
-            justify-content: flex-start; 
-            align-items: center; 
-            width: 40%; 
-            padding-left: 0;
-            padding-top: 0; 
-            margin-top: -260px;
-            margin-right: 200px;
-        }
-
-        .donation-message {
-            margin-right: 10px; 
-        }
+  /* Work grid: the first project spans the full width */
+  .work { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.75rem; }
+  .work .lead { grid-column: 1 / -1; }
+  .shot { margin: 0; }
+  .frame {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--shoal);
+    border: 1px solid var(--contour);
+    overflow: hidden;
+  }
+  .lead .frame { aspect-ratio: 21 / 9; }
+  .frame.dark { background: #0B1116; }
+  .frame.contain { background: #EEEFF0; }
+  .frame.contain img { object-fit: contain; padding: 1.25rem; }
+  .frame.white { background: #fff; }
+  .frame.white img { padding: 0.75rem; }
+  .project + .project, .project + .pair { margin-top: 4rem; }
+  .work .wide2 { grid-column: span 1; }
+  @media (min-width: 701px) {
+    .project .work:has(.wide2) { grid-template-columns: 2fr 1fr; }
+    .project .work:has(.wide2) .frame { aspect-ratio: auto; height: 26rem; }
+  }
+  .caption {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    margin: 0.75rem 0 0;
+  }
+  .project .work { gap: 1rem; }
+  a.name { color: var(--magenta); text-underline-offset: 0.18em; }
+  a.frame-link { display: block; text-decoration: none; }
+  a.frame-link:hover .frame { border-color: var(--ink); }
+  .shot figcaption {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    margin-top: 0.6rem;
+  }
+  .name { font-weight: 600; }
+  .what { color: var(--muted); font-style: italic; }
+  .year { color: var(--muted); font-variant-numeric: oldstyle-nums; white-space: nowrap; }
 
 
-        .donate-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #00796b;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
+  footer {
+    max-width: var(--wide); margin: 4rem auto 0; padding: 2rem 1.5rem 3.5rem;
+    border-top: 1px solid var(--contour); color: var(--muted);
+  }
 
-        .donate-button:hover {
-            background-color: white;
-            color: #00796b;
-            border: 1px solid #00796b;
-            
-        }
-
-
-
-    </style>
+  @media (max-width: 700px) {
+    .top { padding-top: 3.5rem; }
+    .work { grid-template-columns: 1fr; }
+    .lead .frame { aspect-ratio: 16 / 10; }
+  }
+</style>
 </head>
 <body>
 
+<header class="top">
+  <svg class="chart" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="shoal" d="M877,0 L897,0 L918,0 L938,0 L958,0 L978,0 L998,0 L1018,0 L1039,0 L1059,0 L1079,0 L1099,0 L1119,0 L1139,0 L1160,0 L1180,0 L1200,0 L1200,20 L1200,41 L1200,61 L1200,81 L1200,101 L1200,122 L1200,142 L1200,162 L1200,182 L1200,203 L1200,223 L1200,243 L1200,263 L1190,264 L1180,262 L1160,257 L1146,253 L1129,249 L1109,245 L1099,243 L1079,239 L1059,233 L1049,228 L1039,220 L1029,203 L1025,192 L1020,172 L1018,162 L1009,142 L1003,132 L994,122 L982,111 L968,102 L958,96 L948,91 L929,81 L918,74 L908,67 L897,57 L887,43 L881,30 L877,19 L873,0Z M1190,535 L1200,537 L1200,557 L1200,577 L1200,597 L1200,618 L1200,638 L1190,640 L1180,636 L1168,628 L1157,618 L1150,607 L1142,587 L1146,567 L1153,557 L1165,547 L1180,539 L1190,535Z"/><path class="c-shallow" d="M906,0 L909,10 L917,30 L924,41 L935,51 L948,60 L958,65 L970,71 L988,79 L998,83 L1015,91 L1029,99 L1039,108 L1049,121 L1054,132 L1059,148 L1062,162 L1069,182 L1075,192 L1085,203 L1099,210 L1109,214 L1129,220 L1141,223 L1160,227 L1180,231 L1191,233"/><path class="c-shallow" d="M885,0 L887,12 L894,30 L899,41 L908,52 L918,62 L930,71 L948,81 L958,86 L968,91 L986,101 L998,110 L1008,120 L1018,132 L1023,142 L1029,155 L1033,172 L1039,191 L1044,203 L1051,213 L1065,223 L1079,228 L1095,233 L1109,236 L1129,240 L1140,243 L1160,247 L1180,252 L1190,254"/><path class="c-shallow" d="M1200,543 L1187,547 L1171,557 L1162,567 L1158,577 L1160,593 L1167,608 L1178,618 L1190,625 L1200,629"/><path class="c-mid" d="M858,0 L863,20 L867,31 L877,51 L885,61 L895,71 L908,80 L918,86 L928,91 L948,101 L958,107 L968,113 L979,122 L989,132 L998,146 L1005,162 L1008,173 L1012,192 L1018,213 L1022,223 L1031,233 L1049,242 L1059,245 L1079,248 L1099,252 L1109,253 L1129,258 L1150,263 L1160,266 L1180,272 L1190,274"/><path class="c-mid" d="M1200,524 L1190,527 L1170,534 L1160,538 L1147,547 L1136,557 L1129,571 L1128,587 L1131,597 L1139,615 L1149,628 L1160,638 L1170,645 L1180,650 L1200,658"/><path class="c-mid" d="M52,0 L62,10 L81,17 L101,17 L117,10 L128,0"/><path class="c-mid" d="M673,0 L682,10 L695,20 L706,26 L716,31 L736,38 L747,41 L766,43 L787,43 L807,43 L826,51 L837,60 L847,69 L857,78 L867,85 L878,91 L897,100 L908,104 L926,111 L938,117 L948,123 L960,132 L970,142 L978,154 L985,172 L988,187 L990,203 L993,223 L998,242 L1006,253 L1018,261 L1029,263 L1049,265 L1069,265 L1089,266 L1109,269 L1128,273 L1139,277 L1159,284 L1170,287 L1189,294 L1200,296"/><path class="c-mid" d="M1200,510 L1180,514 L1169,516 L1150,524 L1139,528 L1123,537 L1110,547 L1102,557 L1099,567 L1099,580 L1104,597 L1109,609 L1119,626 L1127,638 L1136,648 L1146,658 L1159,668 L1170,674 L1183,678 L1200,683"/><path class="c-mid" d="M968,394 L958,396 L944,405 L935,415 L928,431 L925,446 L924,466 L927,486 L931,496 L938,507 L958,516 L978,514 L995,506 L1005,496 L1011,486 L1015,466 L1015,446 L1009,425 L1003,415 L994,405 L978,396 L968,394"/><path class="c-mid" d="M12,0 L20,10 L32,20 L48,30 L61,35 L81,39 L101,39 L121,34 L131,30 L148,20 L161,10 L168,0"/><path class="c-mid" d="M519,0 L521,20 L515,41 L512,51 L511,71 L514,86 L524,98 L534,101 L545,101 L564,91 L575,81 L582,71 L589,61 L596,51 L605,40 L623,30 L635,29 L647,30 L666,35 L681,41 L696,46 L707,51 L726,58 L736,62 L756,70 L766,75 L778,81 L792,91 L804,101 L815,111 L827,118 L847,121 L857,122 L877,123 L897,126 L918,131 L928,136 L938,142 L949,152 L958,164 L965,182 L967,203 L968,223 L968,233 L969,253 L971,273 L976,294 L982,304 L998,305 L1008,301 L1025,294 L1039,290 L1059,285 L1069,283 L1089,283 L1099,284 L1119,288 L1138,294 L1150,299 L1161,304 L1180,312 L1190,315"/><path class="c-mid" d="M1200,496 L1190,497 L1170,501 L1150,506 L1139,509 L1119,514 L1109,516 L1089,520 L1069,520 L1059,513 L1052,496 L1049,479 L1047,466 L1044,446 L1039,425 L1035,415 L1029,399 L1020,385 L1014,375 L1007,365 L998,352 L988,337 L978,327 L958,333 L948,338 L938,344 L920,354 L908,362 L897,368 L887,376 L878,395 L881,415 L884,435 L887,456 L889,466 L891,486 L894,506 L897,525 L901,537 L908,549 L918,557 L938,559 L952,557 L968,554 L988,549 L1003,547 L1018,544 L1039,545 L1049,550 L1059,564 L1066,577 L1071,587 L1079,601 L1089,618 L1095,628 L1101,638 L1109,652 L1119,668 L1127,678 L1136,689 L1150,697 L1160,700 L1180,703 L1200,706"/><path class="c-mid" d="M746,199 L736,205 L726,216 L719,233 L722,253 L728,263 L746,273 L758,263 L766,244 L769,233 L771,213 L766,199 L746,199"/><path class="c-mid" d="M436,0 L453,10 L462,20 L468,30 L474,51 L475,61 L479,81 L484,99 L490,111 L500,122 L514,129 L534,129 L555,123 L565,118 L575,111 L586,101 L597,91 L607,81 L619,71 L635,62 L645,59 L666,59 L676,61 L696,67 L707,71 L726,80 L736,87 L746,95 L756,107 L762,122 L758,142 L751,152 L740,162 L729,172 L718,182 L708,192 L700,203 L694,213 L686,233 L684,243 L683,263 L686,279 L692,294 L697,304 L706,318 L715,334 L721,344 L726,355 L736,372 L745,385 L755,395 L766,404 L776,409 L793,415 L807,421 L817,425 L832,435 L842,446 L848,456 L856,476 L859,486 L862,506 L863,527 L863,547 L862,567 L864,587 L867,599 L877,610 L897,612 L912,608 L928,601 L938,596 L957,587 L968,583 L988,579 L1008,579 L1029,585 L1039,591 L1049,600 L1059,612 L1069,626 L1076,638 L1082,648 L1089,666 L1092,678 L1093,699 L1089,714 L1081,729 L1075,739 L1069,750 L1065,770 L1066,790"/><path class="c-mid" d="M0,31 L20,39 L30,44 L49,51 L61,53 L81,56 L101,55 L121,52 L131,49 L151,42 L161,37 L174,30 L190,20 L202,12 L212,2"/><path class="c-mid" d="M1200,482 L1180,485 L1170,487 L1150,490 L1129,492 L1109,491 L1095,486 L1083,476 L1076,466 L1069,446 L1066,435 L1061,415 L1058,405 L1050,385 L1045,375 L1039,356 L1037,344 L1039,331 L1049,316 L1059,309 L1074,304 L1089,302 L1108,304 L1119,307 L1137,314 L1150,321 L1160,326 L1177,334 L1190,339"/><path class="c-mid" d="M1107,800 L1111,790 L1118,770 L1122,759 L1129,747 L1139,738 L1160,730 L1170,728 L1190,727"/><path class="c-mid" d="M857,160 L877,154 L897,154 L918,160 L928,167 L938,182 L941,192 L944,213 L943,233 L940,253 L938,263 L930,284 L924,294 L914,304 L899,314 L887,319 L867,322 L847,320 L832,314 L818,304 L809,294 L804,284 L800,263 L802,243 L807,223 L810,213 L817,199 L827,183 L837,173 L847,166 L857,160"/><path class="c-mid" d="M0,54 L20,60 L30,63 L50,67 L71,70 L91,70 L111,69 L131,65 L149,61 L161,57 L179,51 L192,45 L203,41 L222,33 L232,29 L252,24 L272,22 L292,24 L313,28 L326,30 L343,34 L363,38 L378,41 L393,44 L413,50 L424,56 L434,65 L443,81 L447,91 L453,111 L457,122 L464,133 L474,143 L489,152 L504,155 L524,153 L534,151 L555,143 L565,138 L575,132 L590,122 L602,111 L614,101 L625,93 L635,87 L654,81 L666,80 L676,82 L696,88 L706,94 L716,102 L726,120 L726,129 L722,142 L715,152 L706,163 L696,175 L686,188 L677,203 L671,213 L666,224 L658,243 L654,253 L649,273 L649,294 L655,309 L666,323 L675,334 L682,344 L689,354 L696,365 L706,385 L711,395 L716,408 L723,425 L727,435 L736,453 L746,461 L766,464 L779,466 L797,471 L807,478 L817,490 L823,506 L826,527 L824,547 L821,567 L818,587 L820,608 L827,626 L836,638 L847,647 L857,652 L877,657 L897,655 L912,648 L928,638 L938,631 L948,624 L958,618 L978,609 L988,607 L1005,608 L1018,612 L1029,618 L1040,628 L1049,638 L1059,658 L1061,668 L1059,689 L1056,699 L1049,712 L1041,729 L1037,739 L1035,759 L1036,780 L1039,799"/><path class="c-mid" d="M1200,466 L1180,469 L1160,471 L1139,471 L1119,466 L1109,460 L1099,448 L1094,435 L1089,420 L1086,405 L1080,385 L1077,375 L1074,354 L1079,340 L1089,332 L1109,332 L1119,335 L1139,344 L1150,350 L1161,354 L1180,361 L1193,365"/><path class="c-mid" d="M1139,800 L1141,790 L1150,773 L1160,761 L1170,754 L1185,749 L1200,749"/><path class="c-mid" d="M877,190 L897,192 L908,200 L913,213 L914,233 L909,253 L904,263 L896,273 L880,284 L867,286 L851,284 L838,273 L833,263 L831,243 L837,225 L845,213 L854,203 L867,194 L877,190"/><path class="c-mid" d="M504,359 L494,366 L486,385 L490,405 L494,415 L504,435 L511,446 L516,456 L524,468 L534,482 L545,493 L555,502 L565,509 L585,516 L595,517 L601,506 L595,496 L585,483 L575,466 L570,456 L565,444 L557,425 L554,415 L548,395 L545,382 L535,365 L524,358 L504,359"/><path class="c-mid" d="M666,516 L655,522 L655,529 L671,537 L686,538 L696,536 L708,527 L706,509 L686,510 L666,516"/><path class="c-mid" d="M0,73 L20,77 L40,81 L50,83 L71,84 L91,85 L111,84 L131,81 L141,80 L161,76 L182,71 L192,68 L212,62 L222,60 L242,55 L262,53 L282,55 L303,59 L313,62 L333,68 L343,72 L361,81 L373,91 L380,101 L383,112 L384,132 L393,148 L403,156 L413,163 L428,172 L444,181 L454,186 L474,190 L494,188 L514,182 L524,178 L538,172 L555,164 L565,158 L575,152 L591,142 L605,132 L615,125 L625,118 L636,111 L655,105 L676,108 L686,114 L693,132 L686,152 L679,162 L673,172 L666,183 L655,201 L649,213 L643,223 L635,237 L625,252 L617,263 L607,273 L595,284 L585,290 L570,294 L555,296 L534,296 L514,295 L494,296 L474,300 L464,304 L447,314 L434,322 L424,327 L403,332 L390,334 L373,337 L355,344 L343,352 L333,363 L328,375 L331,395 L339,405 L353,413 L363,416 L383,418 L403,419 L424,420 L440,425 L454,433 L464,441 L474,452 L484,465 L492,476 L498,486 L505,496 L514,510 L524,524 L534,535 L545,542 L555,548 L575,555 L585,558 L605,562 L625,567 L635,569 L655,573 L675,577 L686,579 L706,582 L726,584 L743,587 L756,592 L766,600 L776,612 L787,627 L795,638 L804,648 L815,658 L827,667 L837,673 L849,678 L867,684 L887,687 L908,685 L927,678 L938,672 L948,665 L958,657 L972,648 L988,643 L1008,646 L1018,656 L1023,668 L1020,689 L1016,699 L1010,719 L1008,729 L1008,746 L1010,759 L1014,780 L1017,800"/><path class="c-mid" d="M1200,443 L1190,446 L1170,447 L1154,446 L1139,439 L1129,426 L1127,415 L1129,403 L1139,393 L1160,390 L1180,392 L1195,395"/><path class="c-mid" d="M615,352 L635,353 L645,357 L656,365 L666,375 L676,391 L681,405 L683,425 L677,446 L669,456 L655,463 L635,464 L617,456 L607,446 L600,435 L595,423 L591,405 L591,385 L595,372 L605,358 L615,352"/><path class="c-mid" d="M0,90 L10,92 L30,96 L50,98 L71,99 L91,99 L111,99 L131,98 L151,97 L171,97 L192,96 L212,97 L232,99 L242,105 L246,122 L245,142 L250,162 L255,172 L262,183 L272,193 L285,203 L303,212 L313,216 L333,222 L343,224 L363,228 L376,233 L387,243 L388,263 L381,273 L369,284 L356,294 L343,304 L333,313 L323,323 L313,333 L303,344 L296,354 L291,365 L289,385 L292,396 L303,411 L313,421 L323,429 L333,435 L353,443 L366,446 L383,447 L403,449 L424,453 L434,457 L449,466 L460,476 L468,486 L475,496 L484,513 L491,527 L496,537 L504,550 L514,561 L525,567 L545,573 L565,577 L575,578 L595,582 L615,585 L626,587 L645,592 L666,597 L676,599 L696,605 L706,608 L726,617 L736,622 L746,629 L756,638 L767,648 L777,658 L789,668 L802,678 L817,687 L827,692 L841,699 L857,705 L870,709 L887,713 L908,717 L928,718 L938,719 L958,726 L968,735 L977,749 L982,759 L988,776 L993,790"/><path class="c-mid" d="M625,151 L640,152 L641,172 L635,186 L627,203 L620,213 L613,223 L603,233 L588,243 L575,248 L555,250 L536,243 L529,233 L534,213 L543,203 L554,192 L565,185 L575,178 L585,171 L601,162 L615,155 L625,151"/><path class="c-deep" d="M0,108 L20,111 L30,113 L50,115 L71,115 L91,116 L111,116 L131,117 L151,120 L161,123 L182,131 L192,139 L202,151 L209,162 L216,172 L224,182 L232,192 L242,203 L252,213 L264,223 L276,233 L288,243 L297,253 L303,263 L305,284 L301,294 L292,309 L282,322 L272,334 L263,344 L255,354 L251,365 L252,381 L258,395 L265,405 L274,415 L284,425 L295,435 L307,446 L322,456 L333,461 L345,466 L363,470 L383,473 L401,476 L413,479 L427,486 L439,496 L447,506 L454,524 L456,537 L454,557 L451,567 L445,587 L450,608 L464,613 L484,609 L494,606 L514,601 L534,598 L545,597 L565,597 L577,597 L595,599 L615,602 L635,607 L645,609 L666,616 L676,620 L695,628 L706,634 L716,640 L726,648 L737,658 L747,668 L758,678 L772,689 L787,697 L797,702 L813,709 L827,714 L839,719 L857,726 L867,730 L887,738 L897,742 L914,749 L928,756 L938,762 L948,770 L958,782 L967,800"/><path class="c-deep" d="M703,800 L705,780 L696,763 L686,759 L676,760 L660,770 L652,780 L650,800"/><path class="c-deep" d="M0,137 L20,141 L30,142 L50,145 L71,146 L91,148 L111,151 L121,153 L141,162 L151,168 L161,176 L171,185 L182,196 L192,208 L202,219 L212,232 L220,243 L227,253 L232,265 L232,278 L222,292 L212,298 L199,304 L182,312 L171,321 L169,334 L171,346 L182,364 L190,375 L199,385 L209,395 L219,405 L231,415 L242,425 L252,435 L262,445 L272,455 L282,466 L292,476 L301,486 L310,496 L320,506 L330,516 L340,527 L347,537 L353,553 L356,567 L361,587 L365,597 L372,618 L376,628 L382,648 L385,658 L393,678 L402,689 L413,693 L434,693 L447,689 L464,681 L474,674 L484,667 L495,658 L508,648 L524,638 L534,633 L548,628 L565,624 L585,623 L605,625 L619,628 L635,633 L647,638 L663,648 L674,658 L681,668 L683,689 L676,700 L666,711 L655,719 L644,729 L633,739 L624,749 L615,764 L609,780 L608,800"/><path class="c-deep" d="M749,800 L755,780 L758,770 L766,755 L776,747 L797,743 L817,745 L831,749 L847,756 L857,761 L871,770 L883,780 L892,790 L899,800"/><path class="c-deep" d="M0,175 L16,182 L30,190 L40,197 L50,206 L59,223 L57,243 L56,263 L61,277 L71,292 L80,304 L90,314 L100,324 L109,334 L118,344 L127,354 L136,365 L146,375 L156,385 L167,395 L179,405 L191,415 L202,424 L212,432 L222,441 L232,451 L242,463 L251,476 L257,486 L262,500 L265,516 L265,537 L262,556 L261,567 L262,581 L269,597 L278,608 L290,618 L303,627 L313,636 L322,648 L327,658 L333,678 L335,689 L342,709 L350,719 L363,728 L373,731 L393,734 L413,733 L434,729 L444,727 L464,721 L474,717 L489,709 L504,699 L514,689 L524,680 L534,671 L545,664 L555,658 L575,653 L595,653 L611,658 L624,668 L628,678 L625,694 L616,709 L608,719 L599,729 L591,739 L584,749 L577,770 L575,790"/><path class="c-deep" d="M0,305 L20,314 L30,319 L40,325 L55,334 L68,344 L80,354 L91,364 L101,374 L111,385 L121,395 L130,405 L141,415 L151,425 L161,433 L171,442 L182,451 L192,461 L202,474 L208,486 L211,506 L205,527 L199,537 L191,547 L182,557 L171,575 L170,587 L173,597 L182,615 L190,628 L199,638 L208,648 L219,658 L231,668 L242,678 L252,687 L262,698 L270,709 L278,719 L284,729 L292,740 L303,753 L313,763 L323,770 L343,777 L363,778 L383,775 L403,770 L413,768 L434,764 L454,761 L474,760 L494,762 L511,770 L519,780 L525,790"/><path class="c-deep" d="M0,349 L16,354 L30,362 L40,368 L50,376 L61,386 L71,399 L81,415 L85,425 L88,446 L81,466 L71,476 L61,486 L51,496 L44,506 L41,527 L45,547 L50,562 L56,577 L61,589 L67,608 L71,619 L73,638 L68,648 L53,658 L40,666 L30,675 L22,689 L20,699 L20,719 L21,729 L25,749 L30,770 L32,780 L36,800"/><path class="c-deep" d="M141,800 L144,780 L146,759 L149,739 L151,726 L161,712 L182,711 L202,717 L212,723 L222,729 L233,739 L243,749 L252,761 L262,777 L268,790"/><g class="soundings"><text x="240" y="90">18</text><text x="680" y="110">16</text><text x="430" y="140">15</text><text x="630" y="290">15</text><text x="260" y="210">19</text><text x="460" y="260">17</text><text x="680" y="430">16</text><text x="260" y="370">19</text><text x="160" y="260">25</text><text x="530" y="80">9</text><text x="1030" y="240">6</text><text x="160" y="430">30</text><text x="840" y="270">14</text><text x="560" y="380">15</text><text x="910" y="170">13</text><text x="400" y="410">16</text><text x="1070" y="430">13</text><text x="60" y="190">26</text><text x="370" y="40">14</text><text x="980" y="340">10</text><text x="60" y="60">13</text><text x="850" y="390">10</text></g></svg>
+  <div class="top-inner">
+    <h1>Sam Millay</h1>
+    <p class="tag">Software for the ocean. CS at Middlebury, marine robotics at Jaia.</p>
+    <ul class="links">
+      <li><a href="mailto:smillay55@gmail.com">Email</a></li>
+      <li><a href="https://github.com/smillay1">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/sam-millay">LinkedIn</a></li>
+      <li><a href="resume.pdf">Resume</a></li>
+    </ul>
+  </div>
+</header>
 
-    <div class="title-container">
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="width: 200px; height: auto;" class="wave-icon left-wave">
-        <div class="title">CoastalRisk</div>
-        <img src="{{ url_for('static', filename='newwaves.png') }}" alt="Wave Icon" style="width: 200px; height: auto;" class="wave-icon right-wave">
+<main>
+  <section aria-labelledby="built">
+    <h2 id="built">Things I've built</h2>
+
+    <div class="project">
+      <div class="work">
+        <figure class="shot lead">
+          <div class="frame dark"><video src="media/reef.mp4" poster="media/reef-poster.jpg" autoplay muted loop playsinline aria-label="3D model of a restored coral reef transect at Looe Key, Florida, rotating"></video></div>
+        </figure>
+        <figure class="shot">
+          <div class="frame"><img src="media/lyonesse-app.jpg" alt="Lyonesse comparing a restored reef transect with outplanted coral removed" loading="lazy"></div>
+        </figure>
+        <figure class="shot">
+          <div class="frame dark"><video src="media/inlet.mp4" poster="media/inlet-poster.jpg" autoplay muted loop playsinline aria-label="3D seabed change model of Oregon Inlet, North Carolina"></video></div>
+        </figure>
+      </div>
+      <p class="caption"><span><span class="name">Lyonesse</span> <span class="what">seafloor survey data, in 3D</span></span><span class="year">2026</span></p>
     </div>
-    
-    <div class="subheading" id="subheading"></div>
 
-    <script>
-        const subheadingText = "The oceans are rising. Find out how it will affect you.";
-        let i = 0;
+    <div class="project">
+      <div class="work">
+        <figure class="shot wide2">
+          <a class="frame-link" href="https://leifkey.com"><div class="frame"><img src="media/leif-key.jpg" alt="The Leif USB-C key plugged into a laptop" loading="lazy"></div></a>
+        </figure>
+        <figure class="shot">
+          <div class="frame contain"><img src="media/leif-panel.jpg" alt="Leif menu bar panel during a focus session" loading="lazy"></div>
+        </figure>
+      </div>
+      <p class="caption"><span><a class="name" href="https://leifkey.com">Leif</a> <span class="what">a hardware key for focus on Mac and iPhone</span></span><span class="year">2026</span></p>
+    </div>
 
-        function typeWriter() {
-            if (i < subheadingText.length) {
-                document.getElementById("subheading").innerHTML += subheadingText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50); 
-            }
-        }
+    <div class="work pair">
+      <figure class="shot">
+        <div class="frame"><img src="media/coastalrisk.jpg" alt="CoastalRisk flood risk map of a coastal neighborhood" loading="lazy"></div>
+        <figcaption><span><span class="name">CoastalRisk</span> <span class="what">shoreline risk reports</span></span><span class="year">2024</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="frame contain white"><img src="media/fluid-model.jpg" alt="Height field from a Voronoi-based atmospheric flow simulation" loading="lazy"></div>
+        <figcaption><span><span class="name">Voronoi fluid model</span> <span class="what">Journal of Computational Physics</span></span><span class="year">2025</span></figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
 
-        
-        window.onload = typeWriter;
-    </script>
-    <div class="panels-container">
-        <div class="main-panel">
-            <h2>Risk Calculator</h2>
-            <h3>Enter a location to determine its coastal vulnerability:</h3>
-            <form action="/results" method="POST">
-                <div class="form-container">
-                    <input type="text" id="address" name="address" placeholder="eg. 3 Bagshot Row, Hobbiton Bag End, Hobbiton" required>
-                    <button type="submit">Submit</button>
-                </div>
-                <p class="note">Note: addresses must be in the continental USA within 20 miles of the coast</p>
-            </form>
-
-            
-        </div>
-
-        <p id="error-message" style="color: red; display: none;">An error occurred. Please try again.</p>
+<footer>Sam Millay, 2026</footer>
 
 <script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-
-    const address = document.getElementById('address').value;
-    const errorMessage = document.getElementById('error-message');
-    const form = event.target; 
-    const noteElement = document.querySelector('.note'); 
-
-    fetch('https://coastalrisk-backend-01f7cf588349.herokuapp.com/results', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            address: address
-        })
-    })
-    .then(response => {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            return response.json();
-        } else {
-            form.submit();
-        }
-    })
-    .then(data => {
-        if (data && data.error) {
-           
-            if (data.error === "No geocoding results found.") {
-                flashNoteRed(noteElement); 
-                return; 
-            }
-
-            
-            if (data.error === "Address is too far from the coast.") {
-                flashNoteRed(noteElement); 
-                return; 
-            }
-
-           
-            flashNoteRed(noteElement); 
-            return; 
-        }
-    })
-    .catch(error => {
-        flashNoteRed(noteElement); 
-        console.error('Fetch error:', error);
-    });
-});
-
-
-function flashNoteRed(element) {
-    const originalColor = element.style.color; 
-    element.style.color = 'red'; 
-
-    setTimeout(() => {
-        element.style.color = originalColor; 
-    }, 2000); 
-}
-
+  // Respect reduced-motion: show the still poster instead of looping video
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video').forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); });
+  }
 </script>
-
-
-        
-
-        
-
-        <div class="side-panel">
-            <h2>Additional Resources</h2>
-            <div class="resources">
-                <h3>What is a Coastal Vulnerability Index?</h3>
-                <ul>
-                    <li><a href="https://climate-adapt.eea.europa.eu/en/metadata/tools/coastal-vulnerability-index-2013-cvi#:~:text=The%20Coastal%20Vulnerability%20Index%20(CVI,et%20al.%2C%201991)." target="_blank">- Learn more about Coastal Vulnerability</a></li>
-                    <li><a href="https://www.britannica.com/science/geomorphology" target="_blank">- What is Geomorphology?</a></li>
-                </ul>
-            
-                <h3>Marine Protection Organizations:</h3>
-                <ul>
-                    <li><a href="https://oceana.org/" target="_blank">- Oceana</a></li>
-                    <li><a href="https://cleanoceanproject.org/" target="_blank">- Clean Ocean Project</a></li>
-                    <li><a href="https://theoceancleanup.com/" target="_blank">- The Ocean Cleanup</a></li>
-                </ul>
-                <h3>Further Reading:</h3>
-
-                <ul>
-                    <li><a href="https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level#:~:text=Evidence%20suggests%20sea%20level%20along,measured%20from%201920%20to%202020." target="_blank">- Sea Level Rise</a></li>
-                    <li><a href="https://sealevel.nasa.gov/understanding-sea-level/overview/" target="_blank">- NASA's Sea Level Change Portal</a></li>
-                    <li><a href="https://oceanliteracy.unesco.org/ocean-resources/" target="_blank">- Why are the Oceans so Important?</a></li>
-                
-                </ul>
-                <h3>Questions?</h3>
-                <div class = "help">
-                    - Email smillay55@gmail.com
-                </div>
-
-                
-                
-            </div>
-        </div>
-
-    </div>
-
-    <div class="donation-container">
-        <span class="donation-message">Keep your climate data free:</span>
-        <a href="donate" class="donate-button">Support</a>
-    </div>
-    
-    
-   
-    
 </body>
 </html>
